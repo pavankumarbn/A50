@@ -11,6 +11,7 @@
 
 #include "DJI_Codec.h"
 #include "DJI_API.h"
+#include "DJI_HardDriver.h"
 #include "DJI_Link.h"
 
 //////////////////////////////////////////////////////////////////////////

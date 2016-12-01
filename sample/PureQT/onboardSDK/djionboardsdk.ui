@@ -52,8 +52,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1350</width>
-         <height>1041</height>
+         <width>1368</width>
+         <height>1025</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_137">
@@ -114,7 +114,7 @@
                        <bool>true</bool>
                       </property>
                       <property name="currentIndex">
-                       <number>0</number>
+                       <number>3</number>
                       </property>
                       <item>
                        <property name="text">
@@ -187,7 +187,7 @@
                       <item>
                        <widget class="QLineEdit" name="lineEdit_portBaudrate">
                         <property name="text">
-                         <string>230400</string>
+                         <string>921600</string>
                         </property>
                        </widget>
                       </item>
@@ -301,10 +301,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_1">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -334,6 +334,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -352,10 +362,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_2">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -385,6 +395,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -403,10 +423,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_3">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -436,6 +456,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -454,10 +484,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_4">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -487,6 +517,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -505,10 +545,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_5">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -538,6 +578,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -556,10 +606,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_6">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -589,6 +639,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -607,10 +667,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_7">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -640,6 +700,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -658,10 +728,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_8">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -691,6 +761,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -709,10 +789,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_9">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -742,6 +822,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -760,10 +850,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_10">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -793,6 +883,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -811,10 +911,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_11">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -844,6 +944,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -862,10 +972,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_12">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -895,6 +1005,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -913,10 +1033,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_13">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -946,6 +1066,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -964,10 +1094,10 @@
                     <item>
                      <widget class="QComboBox" name="comboBox_14">
                       <property name="currentText">
-                       <string>Hold</string>
+                       <string>0Hz</string>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <property name="text">
@@ -997,6 +1127,16 @@
                       <item>
                        <property name="text">
                         <string>Hold</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>200Hz</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>400Hz</string>
                        </property>
                       </item>
                      </widget>
@@ -2006,6 +2146,9 @@
                       <string>P</string>
                      </property>
                     </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="le_flight"/>
                    </item>
                    <item>
                     <widget class="QCheckBox" name="cb_flight_autoSend">
@@ -6963,7 +7106,7 @@
      <x>0</x>
      <y>0</y>
      <width>1571</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile_F">
@@ -7058,16 +7201,16 @@
  <buttongroups>
   <buttongroup name="btg_flightHL"/>
   <buttongroup name="btg_flightYL"/>
-  <buttongroup name="btg_cameraRoll"/>
-  <buttongroup name="btg_flightSM"/>
-  <buttongroup name="btg_cameraPitch"/>
-  <buttongroup name="btg_cameraYaw"/>
-  <buttongroup name="btg_flightTask"/>
-  <buttongroup name="btg_cameraMode"/>
   <buttongroup name="btg_vrcMode"/>
-  <buttongroup name="btg_flightCL"/>
-  <buttongroup name="btg_flightVL"/>
-  <buttongroup name="btg_vrcGear"/>
+  <buttongroup name="btg_cameraMode"/>
   <buttongroup name="btg_cameraAngle"/>
+  <buttongroup name="btg_cameraYaw"/>
+  <buttongroup name="btg_flightCL"/>
+  <buttongroup name="btg_flightSM"/>
+  <buttongroup name="btg_flightVL"/>
+  <buttongroup name="btg_cameraPitch"/>
+  <buttongroup name="btg_flightTask"/>
+  <buttongroup name="btg_vrcGear"/>
+  <buttongroup name="btg_cameraRoll"/>
  </buttongroups>
 </ui>

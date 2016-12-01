@@ -21,6 +21,8 @@
 #include <string.h>
 #include "DJI_API.h"
 #include "DJI_Codec.h"
+#include "DJI_HardDriver.h"
+#include "DJI_Memory.h"
 
 #include "DJI_Logging.h"
 
@@ -249,7 +251,7 @@ void CoreAPI::callbackPoll(CoreAPI *api) {
 }
 
 void CoreAPI::setup() {
-  mmu.setupMMU();
+  mmu->setupMMU();
   setupSession();
 }
 

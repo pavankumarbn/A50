@@ -12,6 +12,7 @@
 #include "DJI_API.h"
 #include <stdio.h>
 #include <string.h>
+#include "DJI_HardDriver.h"
 
 using namespace DJI;
 using namespace DJI::onboardSDK;
@@ -28,11 +29,12 @@ CoreAPI::CoreAPI(HardDriver *sDevice, Version SDKVersion,
   CallBackHandler handler;
   handler.callback = userRecvCallback;
   handler.userData = userData;
-  init(sDevice, handler, userCallbackThread, SDKVersion);
+  init(sDevice, sDevice->getMmu(), handler, userCallbackThread, SDKVersion);
 }
 
-void CoreAPI::init(HardDriver *sDevice, CallBackHandler userRecvCallback,
-                   bool userCallbackThread, Version SDKVersion) {
+void CoreAPI::init(HardDriver *sDevice, MMU *mmuPtr,
+                   CallBackHandler userRecvCallback, bool userCallbackThread,
+                   Version SDKVersion) {
   serialDevice = sDevice;
   // serialDevice->init();
 
@@ -67,7 +69,7 @@ void CoreAPI::init(HardDriver *sDevice, CallBackHandler userRecvCallback,
   hotPointData = false;
   followData = false;
   wayPointData = false;
-  callbackThread = userCallbackThread;
+  callbackThread = userCallbackThread;  //! @todo implement
 
   nonBlockingCBThreadEnable = false;
   ack_data = 99;
@@ -76,12 +78,15 @@ void CoreAPI::init(HardDriver *sDevice, CallBackHandler userRecvCallback,
   //! @todo simplify code above
   memset((unsigned char *)&broadcastData, 0, sizeof(broadcastData));
 
+  mmu = mmuPtr;
+
   setup();
 }
 
 CoreAPI::CoreAPI(HardDriver *sDevice, Version SDKVersion,
                  CallBackHandler userRecvCallback, bool userCallbackThread) {
-  init(sDevice, userRecvCallback, userCallbackThread, SDKVersion);
+  init(sDevice, sDevice->getMmu(), userRecvCallback, userCallbackThread,
+       SDKVersion);
   getSDKVersion();
 }
 
@@ -261,12 +266,12 @@ void CoreAPI::setBroadcastFreq(uint8_t *dataLenIs16, CallBack callback,
   for (int i = 0; i < 16; ++i) {
     if (versionData.version == versionM100_31)
       if (i < 12) {
-        dataLenIs16[i] = (dataLenIs16[i] > 5 ? 5 : dataLenIs16[i]);
+        dataLenIs16[i] = (dataLenIs16[i] > 7 ? 5 : dataLenIs16[i]);
       } else
         dataLenIs16[i] = 0;
     else {
       if (i < 14) {
-        dataLenIs16[i] = (dataLenIs16[i] > 5 ? 5 : dataLenIs16[i]);
+        dataLenIs16[i] = (dataLenIs16[i] > 7 ? 5 : dataLenIs16[i]);
       } else
         dataLenIs16[i] = 0;
     }

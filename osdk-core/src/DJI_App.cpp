@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "DJI_API.h"
+#include "DJI_HardDriver.h"
 
 using namespace DJI;
 using namespace DJI::onboardSDK;
@@ -168,12 +169,11 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
           ackInterface(&param);
         }
         break;
-      case CODE_MISSION:
-        //! @todo add mission session decode
-        if (missionCallback.callback)
+      case CODE_MISSION: {  //! @todo add mission session decode
+        if (missionCallback.callback) {
           missionCallback.callback(this, protocolHeader,
                                    missionCallback.userData);
-        else {
+        } else {
           switch (ack) {
             case MISSION_MODE_A:
               break;
@@ -214,7 +214,7 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
               break;
           }
         }
-        break;
+      } break;
       case CODE_WAYPOINT:
         //! @todo add waypoint session decode
         if (wayPointEventCallback.callback)
@@ -223,6 +223,14 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
         else
           API_LOG(serialDevice, STATUS_LOG, "WAYPOINT DATA");
         break;
+      case CODE_TEST: {
+        unsigned char *pdata =
+            ((unsigned char *)protocolHeader) + sizeof(Header) + 2;
+        API_LOG(serialDevice, STATUS_LOG, "data %d, %.*s\n", *pdata, *pdata,
+                pdata + 1);
+        if (testCallback.callback)
+          testCallback.callback(this, protocolHeader, testCallback.userData);
+      } break;
       default:
         API_LOG(serialDevice, STATUS_LOG, "Unknown BROADCAST command code\n");
         break;

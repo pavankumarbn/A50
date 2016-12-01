@@ -20,13 +20,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
 HEADERS  += djionboardsdk.h \
-            QonboardSDK.h \
-    ../../../osdk-core/inc/DJI_Data.h
+            SDKWidgets.h
 
 SOURCES += main.cpp\
-           djionboardsdk.cpp \
-           QonboardSDK.cpp \
-    ../../../osdk-core/src/DJI_Data.cpp
+           djionboardsdk.cpp
 
 DJILIB += ONBOARDSDK\
           #GROUNDSTATION\
@@ -152,8 +149,9 @@ HEADERS += $$GRIDMAP_INC
 }
 
 contains(DJILIB,ONBOARDSDK){
-QT += serialport
+include( ../../../platform/qt/QonboardSDK.pri))
 include( ../../../osdk-core/osdk-core.pri)
+include(DataPannel.pri)
 }
 }
 
@@ -165,7 +163,8 @@ FORMS    += djionboardsdk.ui
 RESOURCES +=
 
 DISTFILES += \
-    CMakeLists.txt
+    CMakeLists.txt \
+    DataPannel.pri
 
 
 message("finish compile")

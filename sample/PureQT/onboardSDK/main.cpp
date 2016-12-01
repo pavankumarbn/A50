@@ -1,19 +1,18 @@
-#include "djionboardsdk.h"
-#include <QApplication>
 #include <stdio.h>
+#include <QApplication>
 #include <QDebug>
-#include "QonboardSDK.h"
+#include "DJI_HardDriver_Qt.h"
+#include "djionboardsdk.h"
 
-int main(int argc, char *argv[])
-{
-    /******/
-    qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
+int main(int argc, char *argv[]) {
+  /******/
+  qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
 
-   /******/
+  /******/
 
-    QApplication a(argc, argv);
-    DJIonboardSDK w;
-    w.showMaximized();
+  QApplication a(argc, argv);
+  DJIonboardSDK w;
+  w.showMaximized();
 
-    return a.exec();
+  return a.exec();
 }

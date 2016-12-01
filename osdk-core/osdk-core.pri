@@ -13,7 +13,8 @@ SOURCES += \
     $$PWD/src/DJI_Mission.cpp \
     $$PWD/src/DJI_VirtualRC.cpp \
     $$PWD/src/DJI_MOC.cpp \
-    $$PWD/src/DJI_WayPoint.cpp
+    $$PWD/src/DJI_WayPoint.cpp \
+    $$PWD/src/DJI_Data.cpp
 
 HEADERS += \
     $$PWD/inc/DJI_MOC.h \
@@ -34,6 +35,7 @@ HEADERS += \
     $$PWD/inc/DJI_Version.h \
     $$PWD/inc/DJI_VirtualRC.h \
     $$PWD/inc/DJI_WayPoint.h \
+    $$PWD/inc/DJI_Data.h \
     $$PWD/inc/DJICommonType.h
 
 INCLUDEPATH += $$PWD/inc

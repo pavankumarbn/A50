@@ -34,11 +34,11 @@
 #define DJI_API_H
 
 #include "DJI_App.h"
-#include "DJI_HardDriver.h"
 #include "DJI_Type.h"
 
 namespace DJI {
 namespace onboardSDK {
+class HardDriver;
 class CoreAPI;
 class Flight;
 class Camera;
@@ -151,7 +151,8 @@ enum BROADCAST_CODE {
   CODE_LOSTCTRL = 0x01,
   CODE_FROMMOBILE = 0x02,
   CODE_MISSION = 0x03,
-  CODE_WAYPOINT = 0x04
+  CODE_WAYPOINT = 0x04,
+  CODE_TEST = 0xEF
 };
 
 enum VIRTUALRC_CODE { CODE_VIRTUALRC_SETTINGS, CODE_VIRTUALRC_DATA };
@@ -171,6 +172,8 @@ enum BROADCAST_FREQ {
   BROADCAST_FREQ_50HZ = 3,
   BROADCAST_FREQ_100HZ = 4,
   BROADCAST_FREQ_HOLD = 5,
+  BROADCAST_FREQ_200HZ = 6,
+  BROADCAST_FREQ_400HZ = 7,
 };
 
 //! CoreAPI implements core Open Protocol communication between M100/M600/A3 and
@@ -186,13 +189,20 @@ enum BROADCAST_FREQ {
  * byteHandler() or byteStreamHandler()
  *
  */
+
 class CoreAPI {
+  //  friend class HardDriver;
+
+ public:
+  class MMU;
+
  public:
   CoreAPI(HardDriver *Driver = 0, Version SDKVersion = 0,
           bool userCallbackThread = false, CallBack userRecvCallback = 0,
           UserData userData = 0);
   CoreAPI(HardDriver *Driver, Version SDKVersion,
           CallBackHandler userRecvCallback, bool userCallbackThread = false);
+
   void sendPoll(void);
   void readPoll(void);
   //! @todo Implement callback poll handler
@@ -510,6 +520,7 @@ class CoreAPI {
   CallBackHandler followCallback;
   CallBackHandler missionCallback;
   CallBackHandler recvCallback;
+  CallBackHandler testCallback;
 
   VersionData versionData;
   ActivateData accountData;
@@ -519,7 +530,7 @@ class CoreAPI {
   SDKFilter filter;
 
   /// Serial Device Initialization
-  void init(HardDriver *Driver, CallBackHandler userRecvCallback,
+  void init(HardDriver *Driver, MMU *mmuPtr, CallBackHandler userRecvCallback,
             bool userCallbackThread, Version SDKVersion);
   void recvReqData(Header *protocolHeader);
   void appHandler(Header *protocolHeader);
@@ -623,18 +634,7 @@ class CoreAPI {
   void broadcast(Header *protocolHeader);
   BroadcastData broadcastData;
 
-  class MMU {
-   public:
-    MMU() {}
-    void setupMMU(void);
-    void freeMemory(MMU_Tab *mmu_tab);
-    MMU_Tab *allocMemory(unsigned short size);
-
-   private:
-    MMU_Tab memoryTable[MMU_TABLE_NUM];
-    unsigned char memory[MEMORY_SIZE];
-  };
-  MMU mmu;
+  MMU *mmu;
 
   unsigned short encrypt(unsigned char *pdest, const unsigned char *psrc,
                          unsigned short w_len, unsigned char is_ack,

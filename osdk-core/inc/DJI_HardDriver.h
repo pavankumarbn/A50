@@ -3,7 +3,8 @@
  *  @date Jul 01 2016
  *
  *  @brief
- *  Serial device driver abstraction. Provided as an abstract class. Please inherit and implement for individual platforms.
+ *  Serial device driver abstraction. Provided as an abstract class. Please
+ * inherit and implement for individual platforms.
  *
  *  @copyright
  *  2016 DJI. All rights reserved.
@@ -14,16 +15,12 @@
 
 #include <stdint.h>
 #include <time.h>
+#include "DJI_Memory.h"
 #include "DJI_Type.h"
-
-namespace DJI
-{
-namespace onboardSDK
-{
-
-class HardDriver
-{
-  public:
+namespace DJI {
+namespace onboardSDK {
+class HardDriver {
+ public:
   HardDriver() {}
 
   /*! @note How to use
@@ -77,14 +74,14 @@ class HardDriver
    *  it in DJI_HardDriver.cpp or inside this class
    *
    * */
-  public:
+ public:
   virtual void init() = 0;
   virtual time_ms getTimeStamp() = 0;
   virtual size_t send(const uint8_t *buf, size_t len) = 0;
   virtual size_t readall(uint8_t *buf, size_t maxlen) = 0;
-  virtual bool getDeviceStatus() {return true;}
+  virtual bool getDeviceStatus() { return true; }
 
-  public:
+ public:
   virtual void lockMemory() = 0;
   virtual void freeMemory() = 0;
 
@@ -97,19 +94,24 @@ class HardDriver
   virtual void notify() = 0;
   virtual void wait(int timeout) = 0;
 
-  virtual void lockProtocolHeader() {;}
-  virtual void freeProtocolHeader() {;}
+  virtual void lockProtocolHeader() { ; }
+  virtual void freeProtocolHeader() { ; }
 
-  virtual void lockNonBlockCBAck() {;}
-  virtual void freeNonBlockCBAck() {;}
+  virtual void lockNonBlockCBAck() { ; }
+  virtual void freeNonBlockCBAck() { ; }
 
-  virtual void notifyNonBlockCBAckRecv() {;}
-  virtual void nonBlockWait() {;}
+  virtual void notifyNonBlockCBAckRecv() { ; }
+  virtual void nonBlockWait() { ; }
 
-  public:
+ public:
   virtual void displayLog(const char *buf = 0);
-};
-} // namespace onboardSDK
-} // namespace DJI
 
-#endif // DJI_HARDDRIVER_H
+ private:
+  CoreAPI::MMU *getMmu() { return &mmu; }
+  CoreAPI::MMU mmu;
+  friend class CoreAPI;
+};
+}  // namespace onboardSDK
+}  // namespace DJI
+
+#endif  // DJI_HARDDRIVER_H

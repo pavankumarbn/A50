@@ -18,7 +18,7 @@
 #include "DJI_Memory.h"
 #include <stdio.h>
 #include <string.h>
-#include "DJI_API.h"
+#include "DJI_HardDriver.h"
 
 using namespace DJI::onboardSDK;
 
@@ -186,7 +186,7 @@ CMDSession *DJI::onboardSDK::CoreAPI::allocSession(unsigned short session_id,
   }
   if (i < 32 && CMDSessionTab[i].usageFlag == 0) {
     CMDSessionTab[i].usageFlag = 1;
-    memoryTab = mmu.allocMemory(size);
+    memoryTab = mmu->allocMemory(size);
     if (memoryTab == NULL)
       CMDSessionTab[i].usageFlag = 0;
     else {
@@ -200,7 +200,7 @@ CMDSession *DJI::onboardSDK::CoreAPI::allocSession(unsigned short session_id,
 void DJI::onboardSDK::CoreAPI::freeSession(CMDSession *session) {
   if (session->usageFlag == 1) {
     API_LOG(serialDevice, DEBUG_LOG, "session id %d\n", session->sessionID);
-    mmu.freeMemory(session->mmu);
+    mmu->freeMemory(session->mmu);
     session->usageFlag = 0;
   }
 }
@@ -211,7 +211,7 @@ ACKSession *DJI::onboardSDK::CoreAPI::allocACK(unsigned short session_id,
   if (session_id > 0 && session_id < 32) {
     if (ACKSessionTab[session_id - 1].mmu)
       freeACK(&ACKSessionTab[session_id - 1]);
-    memoryTab = mmu.allocMemory(size);
+    memoryTab = mmu->allocMemory(size);
     if (memoryTab == NULL) {
       API_LOG(serialDevice, ERROR_LOG, "there is not enough memory\n");
       return NULL;
@@ -225,5 +225,5 @@ ACKSession *DJI::onboardSDK::CoreAPI::allocACK(unsigned short session_id,
 }
 
 void DJI::onboardSDK::CoreAPI::freeACK(ACKSession *session) {
-  mmu.freeMemory(session->mmu);
+  mmu->freeMemory(session->mmu);
 }
