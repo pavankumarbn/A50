@@ -102,6 +102,7 @@ DJIonboardSDK::DJIonboardSDK(QWidget *parent)
   initCamera();
   initFollow();
   ui->widget_wp->initWayPoint();
+  ui->widget_test->init();
   initVirtualRC();
 #ifdef GROUNDSTATION
   initGroundStation();
@@ -1092,6 +1093,7 @@ void DJIonboardSDK::initSDK() {
   hp     = new HotPoint(api);
 
   ui->widget_wp->setApi(api);
+  ui->widget_test->setAPI(api);
 
   refreshPort();
   setPort();

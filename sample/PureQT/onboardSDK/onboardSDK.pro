@@ -155,6 +155,7 @@ HEADERS += $$GRIDMAP_INC
 contains(DJILIB,ONBOARDSDK){
 include( ../../../platform/qt/QonboardSDK.pri))
 include( ../../../osdk-core/osdk-core.pri)
+include( ../../../test/test-core/test-base.pri)
 include(DataPannel.pri)
 }
 }

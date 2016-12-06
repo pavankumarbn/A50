@@ -11,7 +11,7 @@ class Test {
 
   virtual void enterence(std::string s) = 0;
 
-  void injectFeedback(size_t size, char* buf);
+  void injectFeedback(size8_t size, char* buf);
   void injectFeedback(uint32_t data);
 
  public:

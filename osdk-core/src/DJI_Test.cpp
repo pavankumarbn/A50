@@ -1,4 +1,5 @@
 #include "DJI_Test.h"
+#include "DJI_HardDriver.h"
 
 using namespace DJI;
 using namespace DJI::onboardSDK;
@@ -10,7 +11,14 @@ Test::Test(CoreAPI *API) : api(API) {
   api->setTestCallback(hdl);
 }
 
-void Test::injectFeedback(size_t size, char *buf) {}
+void Test::injectFeedback(size8_t size, char *buf) {
+  uint8_t buffer[256];
+  buffer[0] = size;
+  memcpy(&buffer[1], buf, size);
+  API_LOG(api->getDriver(), STATUS_LOG, "send test inject data %d %.*s",
+          size + 1, size, &buffer[1]);
+  api->send(2, 0, SET_ACTIVATION, 0xFD, &buffer, size + 1, 500, 2, 0, 0);
+}
 
 void Test::injectFeedback(uint32_t data) {
   injectFeedback(sizeof(data), (char *)&data);

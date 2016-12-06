@@ -13,14 +13,13 @@ TEMPLATE = app
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-SOURCES += tst_coretest.cpp
+SOURCES +=
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 include(../../osdk-core/osdk-core.pri)
 include(../../platform/qt/QonboardSDK.pri))
+include(test-base.pri)
 
-HEADERS += \
-    ../cmdline.h
 
-INCLUDEPATH += \
-    ../
+DISTFILES += \
+    test-base.pri

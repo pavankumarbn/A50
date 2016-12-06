@@ -60,7 +60,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>2</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="tbFlight">
            <attribute name="title">
@@ -6171,7 +6171,7 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_8">
             <item>
-             <widget class="AutoTest" name="widget_2" native="true"/>
+             <widget class="AutoTest" name="widget_test" native="true"/>
             </item>
            </layout>
           </widget>
