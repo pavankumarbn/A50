@@ -18,7 +18,7 @@ using namespace DJI;
 using namespace DJI::onboardSDK;
 
 #ifndef STATIC_MEMORY
-WayPoint::WayPoint(CoreAPI *ControlAPI) {
+Waypoints::Waypoints(CoreAPI *ControlAPI) {
   api = ControlAPI;
   index = 0;
 }
@@ -30,7 +30,7 @@ WayPoint::WayPoint(WayPointData *list, uint8_t len, CoreAPI *ControlAPI) {
 }
 #endif  // STATIC_MEMORY
 
-void WayPoint::init(WayPointInitData *Info, CallBack callback,
+void Waypoints::init(WayPointInitData *Info, CallBack callback,
                     UserData userData) {
   if (Info) setInfo(*Info);
 
@@ -38,7 +38,7 @@ void WayPoint::init(WayPointInitData *Info, CallBack callback,
             500, 2, callback ? callback : missionCallback, userData);
 }
 
-MissionACK WayPoint::init(WayPointInitData *Info, int timeout) {
+MissionACK Waypoints::init(WayPointInitData *Info, int timeout) {
   if (Info) setInfo(*Info);
 
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_INIT, &info, sizeof(info),
@@ -51,7 +51,7 @@ MissionACK WayPoint::init(WayPointInitData *Info, int timeout) {
   return api->missionACKUnion.missionACK;
 }
 
-void WayPoint::start(CallBack callback, UserData userData) {
+void Waypoints::start(CallBack callback, UserData userData) {
   uint8_t start = 0;
 
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_SETSTART, &start,
@@ -59,7 +59,7 @@ void WayPoint::start(CallBack callback, UserData userData) {
             userData);
 }
 
-MissionACK WayPoint::start(int timeout) {
+MissionACK Waypoints::start(int timeout) {
   uint8_t start = 0;
 
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_SETSTART, &start,
@@ -72,7 +72,7 @@ MissionACK WayPoint::start(int timeout) {
   return api->missionACKUnion.missionACK;
 }
 
-void WayPoint::stop(CallBack callback, UserData userData) {
+void Waypoints::stop(CallBack callback, UserData userData) {
   uint8_t stop = 1;
 
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_SETSTART, &stop,
@@ -80,7 +80,7 @@ void WayPoint::stop(CallBack callback, UserData userData) {
             userData);
 }
 
-MissionACK WayPoint::stop(int timeout) {
+MissionACK Waypoints::stop(int timeout) {
   uint8_t stop = 1;
 
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_SETSTART, &stop,
@@ -93,7 +93,7 @@ MissionACK WayPoint::stop(int timeout) {
   return api->missionACKUnion.missionACK;
 }
 
-void WayPoint::pause(bool isPause, CallBack callback, UserData userData) {
+void Waypoints::pause(bool isPause, CallBack callback, UserData userData) {
   uint8_t data = isPause ? 0 : 1;
 
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_SETPAUSE, &data,
@@ -101,7 +101,7 @@ void WayPoint::pause(bool isPause, CallBack callback, UserData userData) {
             userData);
 }
 
-MissionACK WayPoint::pause(bool isPause, int timeout) {
+MissionACK Waypoints::pause(bool isPause, int timeout) {
   uint8_t data = isPause ? 0 : 1;
 
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_SETPAUSE, &data,
@@ -114,7 +114,7 @@ MissionACK WayPoint::pause(bool isPause, int timeout) {
   return api->missionACKUnion.missionACK;
 }
 
-void WayPoint::readIdleVelocity(CallBack callback, UserData userData) {
+void Waypoints::readIdleVelocity(CallBack callback, UserData userData) {
   uint8_t zero = 0;
 
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_GETVELOCITY, &zero,
@@ -122,14 +122,14 @@ void WayPoint::readIdleVelocity(CallBack callback, UserData userData) {
             userData ? userData : this);
 }
 
-bool WayPoint::uploadIndexData(WayPointData *data, CallBack callback,
+bool Waypoints::uploadIndexData(WayPointData *data, CallBack callback,
                                UserData userData) {
   setIndex(data, data->index);
   return uploadIndexData(
       data->index, callback ? callback : uploadIndexDataCallback, userData);
 }
 
-bool WayPoint::uploadIndexData(uint8_t pos, CallBack callback,
+bool Waypoints::uploadIndexData(uint8_t pos, CallBack callback,
                                UserData userData) {
   WayPointData send;
   if (pos < info.indexNumber)
@@ -144,16 +144,17 @@ bool WayPoint::uploadIndexData(uint8_t pos, CallBack callback,
   return true;
 }
 
-WayPointDataACK WayPoint::uploadIndexData(WayPointData *data, int timeout) {
+WayPointDataACK Waypoints::uploadIndexData(WayPointData *data, int timeout) {
   WayPointData wpData;
 
   setIndex(data, data->index);
 
   if (data->index < info.indexNumber)
     wpData = index[data->index];
-  else
-    throw std::runtime_error("Range error\n");
-
+  else {
+    //! @note throw not suppoeted in STM32
+    // throw std::runtime_error("Range error\n");
+  }
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_ADDPOINT, &wpData,
             sizeof(wpData), 1000, 4, 0, 0);
 
@@ -164,7 +165,7 @@ WayPointDataACK WayPoint::uploadIndexData(WayPointData *data, int timeout) {
   return api->missionACKUnion.waypointDataACK;
 }
 
-void WayPoint::updateIdleVelocity(float32_t meterPreSecond, CallBack callback,
+void Waypoints::updateIdleVelocity(float32_t meterPreSecond, CallBack callback,
                                   UserData userData) {
   api->send(2, encrypt, SET_MISSION, CODE_WAYPOINT_SETVELOCITY, &meterPreSecond,
             sizeof(meterPreSecond), 500, 2,
@@ -172,9 +173,9 @@ void WayPoint::updateIdleVelocity(float32_t meterPreSecond, CallBack callback,
             userData ? userData : this);
 }
 
-WayPointInitData WayPoint::getInfo() const { return info; }
+WayPointInitData Waypoints::getInfo() const { return info; }
 
-void WayPoint::setInfo(const WayPointInitData &value) {
+void Waypoints::setInfo(const WayPointInitData &value) {
   //! @todo set information for way point
   info = value;
   for (int i = 0; i < 16; ++i) info.reserved[i] = 0;
@@ -186,13 +187,13 @@ void WayPoint::setInfo(const WayPointInitData &value) {
 #endif  // STATIC_MEMORY
 }
 
-WayPointData *WayPoint::getIndex() const { return index; }
+WayPointData *Waypoints::getIndex() const { return index; }
 
-WayPointData *WayPoint::getIndex(size_t pos) const { return &(index[pos]); }
+WayPointData *Waypoints::getIndex(size_t pos) const { return &(index[pos]); }
 
-void WayPoint::idleVelocityCallback(CoreAPI *api, Header *protocolHeader,
+void Waypoints::idleVelocityCallback(CoreAPI *api, Header *protocolHeader,
                                     UserData wpapi) {
-  WayPoint *wp = (WayPoint *)wpapi;
+  Waypoints *wp = (Waypoints *)wpapi;
   WayPointVelocityACK ack;
 
   if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack))
@@ -211,9 +212,9 @@ void WayPoint::idleVelocityCallback(CoreAPI *api, Header *protocolHeader,
           wp->info.idleVelocity);
 }
 
-void WayPoint::readInitDataCallback(CoreAPI *api, Header *protocolHeader,
+void Waypoints::readInitDataCallback(CoreAPI *api, Header *protocolHeader,
                                     UserData wpapi) {
-  WayPoint *wp = (WayPoint *)wpapi;
+  Waypoints *wp = (Waypoints *)wpapi;
   WayPointInitACK ack;
 
   if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack))
@@ -233,7 +234,7 @@ void WayPoint::readInitDataCallback(CoreAPI *api, Header *protocolHeader,
           wp->info.indexNumber);
 }
 
-void WayPoint::uploadIndexDataCallback(CoreAPI *api, Header *protocolHeader,
+void Waypoints::uploadIndexDataCallback(CoreAPI *api, Header *protocolHeader,
                                        UserData wpapi __UNUSED) {
   WayPointDataACK ack;
 
@@ -251,7 +252,7 @@ void WayPoint::uploadIndexDataCallback(CoreAPI *api, Header *protocolHeader,
   API_LOG(api->getDriver(), STATUS_LOG, "Index number: %d\n", ack.index);
 }
 
-void WayPoint::setIndex(WayPointData *value, size_t pos) {
+void Waypoints::setIndex(WayPointData *value, size_t pos) {
   if (index == 0) {
     index = new WayPointData[info.indexNumber];
     if (index == NULL) {

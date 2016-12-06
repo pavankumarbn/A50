@@ -19,9 +19,6 @@
 #include "uidev.h"
 #endif
 #include "DJI_HardDriver_Qt.h"
-#include "SDKWidgets.h"
-
-#define DEG2RAD 0.01745329252
 
 using namespace DJI;
 using namespace DJI::onboardSDK;
@@ -71,16 +68,11 @@ class DJIonboardSDK : public QMainWindow {
   void updateGPS();
   void updateRTK();
 
-  QStandardItemModel *initAction();
-  void wpAddPoint();
-  void wpRemovePoint();
-
   void initSDK();
   void initFlight();
   void initCamera();
   void initFollow();
   void initDisplay();
-  void initWayPoint();
   void initVirtualRC();
 
  private slots:
@@ -214,34 +206,10 @@ class DJIonboardSDK : public QMainWindow {
   void on_btn_follow_stop_clicked();
   void on_tmr_follow_send();
 
-  void on_cb_waypoint_point_currentIndexChanged(int index);
-  void on_le_waypoint_number_editingFinished();
-  void on_btn_waypoint_action_clicked();
-  void on_btn_waypoint_reset_clicked();
-  void on_btn_waypoint_removeAction_clicked();
-  void on_btn_waypoint_viewPoint_clicked();
-  void on_btn_wp_ivset_clicked();
-  void on_btn_wp_ivRead_clicked();
-  void on_btn_waypoint_add_clicked();
-  void on_btn_waypoint_remove_clicked();
-  void on_btn_waypoint_init_clicked();
-  void on_btn_wp_pr_clicked(bool checked);
-  void on_le_wp_exec_editingFinished();
-  void on_btn_wp_loadAll_clicked();
-  void on_btn_wp_start_stop_clicked(bool checked);
-  void on_btn_wp_loadOne_clicked();
-  void on_waypoint_data_changed(const QModelIndex &topLeft,
-                                const QModelIndex &bottomRight,
-                                const QVector<int> &roles __UNUSED);
-
   void on_btn_gps_read_clicked();
   void on_btn_rtk_read_clicked();
 
   //! @todo sort
-
-  void on_btn_webTool_clicked(bool checked);
-
-  void on_btn_AbortWaypoint_clicked();
 
  private:
 #ifdef GROUNDSTATION
@@ -285,22 +253,14 @@ class DJIonboardSDK : public QMainWindow {
   Follow *follow;
   QTimer *followSend;
 
-  WayPoint *wp;
-  QStandardItemModel *waypointData;
-  QStandardItemModel *currentAction;
-  QStandardItemModel *nullAction;
-  QList<QStandardItemModel *> actionData;
-
   QTimer *timerBroadcast;
-
-  WayPointData wayPointDataTmp;
-
 #ifdef SDK_DEV
   UIDev *dev;
 #endif  // SDK_DEV
-  void functionAlloc();
 
   unsigned int versionIndex;
+
+  void functionAlloc();
 };
 
 #endif  // DJIONBOARDSDK_H

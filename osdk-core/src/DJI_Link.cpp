@@ -155,7 +155,8 @@ void CoreAPI::allocateACK(Header *protocolHeader) {
            ((unsigned char *)protocolHeader) + sizeof(Header),
            (protocolHeader->length - EXC_DATA_SIZE));
   } else {
-    throw std::runtime_error("Unknown ACK");
+    //! @note throw not supported in STM32
+    // throw std::runtime_error("Unknown ACK");
   }
 }
 
@@ -275,8 +276,12 @@ uint32_t DJI::onboardSDK::CoreAPI::getACKFrameStatus() {
   return ackFrameStatus;
 }
 
+//! @todo remove, new API at DJU_Sync.cpp
 void CoreAPI::setSyncFreq(uint32_t freqInHz) {
-  send(0, 1, SET_SYNC, CODE_SYNC_BROADCAST, &freqInHz, sizeof(freqInHz));
+  SyncCmdData data;
+  data.freq = freqInHz;
+  data.tag = 0;
+  send(0, 1, SET_SYNC, CODE_SYNC_BROADCAST, &data, sizeof(data));
 }
 
 unsigned short calculateLength(unsigned short size,

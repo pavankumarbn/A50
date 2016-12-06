@@ -62,7 +62,7 @@ bool DJI::onboardSDK::CoreAPI::getBroadcastFrameStatus() {
 #ifdef SDK_DEV
 #include "devApp.cpp"
 #else
-void DJI::onboardSDK::CoreAPI::broadcast(Header *protocolHeader) {
+void CoreAPI::unpackData(Header *protocolHeader) {
   unsigned char *pdata = ((unsigned char *)protocolHeader) + sizeof(Header);
   unsigned short *enableFlag;
   serialDevice->lockMSG();
@@ -71,7 +71,8 @@ void DJI::onboardSDK::CoreAPI::broadcast(Header *protocolHeader) {
   broadcastData.dataFlag = *enableFlag;
   size_t len = MSG_ENABLE_FLAG_LEN;
 
-  //! @warning Change to const (+change interface for passData) in next release
+  //! @warning Change to const (+change interface for passData) in next
+  //! release
   uint16_t DATA_FLAG = 0x0001;
   //! @todo better algorithm
 
@@ -129,10 +130,15 @@ void DJI::onboardSDK::CoreAPI::broadcast(Header *protocolHeader) {
    * @todo Implement proper notification mechanism
    */
   setBroadcastFrameStatus(true);
+}
 
+void DJI::onboardSDK::CoreAPI::broadcast(Header *protocolHeader) {
   if (broadcastCallback.callback)
     broadcastCallback.callback(this, protocolHeader,
                                broadcastCallback.userData);
+  else {
+    unpackData(protocolHeader);
+  }
 }
 #endif
 void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
@@ -150,11 +156,6 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
           fromMobileCallback.callback(this, protocolHeader,
                                       fromMobileCallback.userData);
         }
-        //! @note mobile control should not be a core library feature
-        //        else
-        //        {
-        //          parseFromMobileCallback(this, protocolHeader);
-        //        }
         break;
       case CODE_LOSTCTRL:
         API_LOG(serialDevice, STATUS_LOG, "onboardSDK lost control\n");

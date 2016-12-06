@@ -20,10 +20,14 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
 HEADERS  += djionboardsdk.h \
-            SDKWidgets.h
+            SDKWidgets.h \
+    autotest.h \
+    qwaypoints.h
 
 SOURCES += main.cpp\
-           djionboardsdk.cpp
+           djionboardsdk.cpp \
+    autotest.cpp \
+    qwaypoints.cpp
 
 DJILIB += ONBOARDSDK\
           #GROUNDSTATION\
@@ -158,7 +162,9 @@ include(DataPannel.pri)
 
 
 
-FORMS    += djionboardsdk.ui
+FORMS    += djionboardsdk.ui \
+    autotest.ui \
+    qwaypoints.ui
 
 RESOURCES +=
 

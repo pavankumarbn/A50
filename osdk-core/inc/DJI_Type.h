@@ -19,6 +19,8 @@
 #ifndef DJI_TYPE
 #define DJI_TYPE
 
+//! @todo separaty this file
+
 #include <stdio.h>
 #include <exception>
 #include <stdexcept>
@@ -221,25 +223,12 @@ typedef struct Ack {
 
 #pragma pack(1)
 
+typedef struct SyncCmdData {
+  uint32_t freq;
+  uint16_t tag;
+} SyncCmdData;
+
 typedef uint8_t BatteryData;
-
-/**
- * Gimbal Data
- */
-typedef struct GimbalAngleData {
-  int16_t yaw;
-  int16_t roll;
-  int16_t pitch;
-  uint8_t mode;
-  uint8_t duration;
-} GimbalAngleData;
-
-typedef struct GimbalSpeedData {
-  int16_t yaw;
-  int16_t roll;
-  int16_t pitch;
-  uint8_t reserved;  // always 0x80;
-} GimbalSpeedData;
 
 typedef float float32_t;
 typedef double float64_t;

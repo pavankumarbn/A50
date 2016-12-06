@@ -21,11 +21,11 @@ namespace DJI
 namespace onboardSDK
 {
 
-class WayPoint
+class Waypoints
 {
   public:
 #ifndef STATIC_MEMORY
-  WayPoint(CoreAPI *ControlAPI = 0);
+  Waypoints(CoreAPI *ControlAPI = 0);
 #else
   WayPoint(WayPointData *list, uint8_t len, CoreAPI *ControlAPI = 0);
 #endif // STATIC_MEMORY

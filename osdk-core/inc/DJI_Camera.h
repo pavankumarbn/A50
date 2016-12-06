@@ -14,16 +14,28 @@
 
 #include "DJI_API.h"
 
-namespace DJI
-{
-namespace onboardSDK
-{
-//! Camera class for controlling camera and gimbal-related functions available through open protocol 
-class Camera
-{
-  public:
-  enum CAMERA_CODE
-  {
+namespace DJI {
+namespace onboardSDK {
+//! Camera class for controlling camera and gimbal-related functions available
+//! through open protocol
+typedef struct GimbalAngleData {
+  int16_t yaw;
+  int16_t roll;
+  int16_t pitch;
+  uint8_t mode;
+  uint8_t duration;
+} GimbalAngleData;
+
+typedef struct GimbalSpeedData {
+  int16_t yaw;
+  int16_t roll;
+  int16_t pitch;
+  uint8_t reserved;  // always 0x80;
+} GimbalSpeedData;
+
+class Camera {
+ public:
+  enum CAMERA_CODE {
     CODE_GIMBAL_SPEED = 0x1A,
     CODE_GIMBAL_ANGLE = 0x1B,
     CODE_CAMERA_SHOT = 0x20,
@@ -31,11 +43,12 @@ class Camera
     CODE_CAMERA_VIDEO_STOP = 0x22
   };
 
-  public:
+ public:
   Camera(CoreAPI *ControlAPI = 0);
 
   //! @note all camera control functions are none-callback function.
-  //! The setCamera function handles camera-specific tasks (Take picture, Start/stop video)
+  //! The setCamera function handles camera-specific tasks (Take picture,
+  //! Start/stop video)
   void setCamera(CAMERA_CODE camera_cmd);
   void setGimbalAngle(GimbalAngleData *data);
   void setGimbalSpeed(GimbalSpeedData *data);
@@ -48,14 +61,14 @@ class Camera
   bool isRollLimit() const;
   bool isPitchLimit() const;
 
-  public: //! @note Access method
+ public:  //! @note Access method
   CoreAPI *getApi() const;
   void setApi(CoreAPI *value);
 
-  private:
+ private:
   CoreAPI *api;
 };
-} // namespace onboardSDK
-} // namespace DJI
+}  // namespace onboardSDK
+}  // namespace DJI
 
-#endif // DJI_CAMERA_H
+#endif  // DJI_CAMERA_H

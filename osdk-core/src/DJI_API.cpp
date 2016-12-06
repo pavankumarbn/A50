@@ -693,6 +693,11 @@ SDKFilter CoreAPI::getFilter() const { return filter; }
 
 void CoreAPI::setVersion(const Version &value) { versionData.version = value; }
 
+void CoreAPI::setTestCallback(const CallBackHandler &value)
+{
+    testCallback = value;
+}
+
 void CoreAPI::setControlCallback(CoreAPI *api, Header *protocolHeader,
                                  UserData userData __UNUSED) {
   unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
