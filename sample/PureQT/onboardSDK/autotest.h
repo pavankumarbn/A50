@@ -63,9 +63,10 @@ class ActivationTest : public TestCase {
   virtual QString init();
   virtual QString calback();
 
-  void activateCallback(DJI::onboardSDK::CoreAPI *api,
-                        DJI::onboardSDK::Header *protocolHeader,
-                        DJI::UserData userData);
+ public:
+  static void handler(DJI::onboardSDK::CoreAPI *api,
+                      DJI::onboardSDK::Header *protocolHeader,
+                      DJI::UserData userData);  //! @todo implement
 };
 
 class AutoTest : public QWidget {
