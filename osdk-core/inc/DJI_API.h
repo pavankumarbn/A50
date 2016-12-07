@@ -653,6 +653,8 @@ class CoreAPI {
 
   void setTestCallback(const CallBackHandler &value);
 
+  VersionData getVersionData() const;
+
  private:
   bool callbackThread;
   bool hotPointData;

@@ -693,6 +693,8 @@ SDKFilter CoreAPI::getFilter() const { return filter; }
 
 void CoreAPI::setVersion(const Version &value) { versionData.version = value; }
 
+VersionData CoreAPI::getVersionData() const { return versionData; }
+
 void CoreAPI::setTestCallback(const CallBackHandler &value) {
   testCallback = value;
 }

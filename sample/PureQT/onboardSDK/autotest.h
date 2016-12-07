@@ -14,11 +14,11 @@ namespace Ui {
 class AutoTest;
 }
 
+class CoreTest;
+
 class TestCase {
  public:
-  TestCase(DJI::onboardSDK::Test *T) : test(T) {
-    parser = new cmdline::parser();
-  }
+  TestCase(CoreTest *T) : test(T) { parser = new cmdline::parser(); }
 
  public:
   virtual QString init()    = 0;
@@ -28,7 +28,7 @@ class TestCase {
 
  protected:
   cmdline::parser *parser;
-  DJI::onboardSDK::Test *test;
+  CoreTest *test;
 };
 
 class CoreTest : public DJI::onboardSDK::Test {
@@ -43,19 +43,29 @@ class CoreTest : public DJI::onboardSDK::Test {
 
 class VersionTest : public TestCase {
  public:
-  VersionTest(DJI::onboardSDK::Test *T) : TestCase(T) {}
+  VersionTest(CoreTest *T) : TestCase(T) {}
 
  public:
   virtual QString init() { return "version"; }
   virtual QString calback() {
-    test->getAPI()->getDroneVersion();
+    test->getAPI()->getDroneVersion(handler, test);
     return "waiting";
+  }
+
+ public:
+  static void handler(DJI::onboardSDK::CoreAPI *api,
+                      DJI::onboardSDK::Header *protocolHeader,
+                      DJI::UserData userData) {
+    CoreTest *Test = (CoreTest *)userData;
+    DJI::onboardSDK::CoreAPI::getDroneVersionCallback(api, protocolHeader,
+                                                      userData);
+    Test->injectFeedback(32, api->getVersionData().version_name);
   }
 };
 
 class ActivationTest : public TestCase {
  public:
-  ActivationTest(DJI::onboardSDK::Test *T) : TestCase(T) {}
+  ActivationTest(CoreTest *T) : TestCase(T) {}
 
  public:
   virtual QString init();
