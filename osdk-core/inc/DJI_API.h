@@ -34,6 +34,7 @@
 #define DJI_API_H
 
 #include "DJI_App.h"
+#include "DJI_Memory.h"
 #include "DJI_Type.h"
 
 namespace DJI {
@@ -192,10 +193,6 @@ enum BROADCAST_FREQ {
 
 class CoreAPI {
   //  friend class HardDriver;
-
- public:
-  class MMU;
-
  public:
   CoreAPI(HardDriver *Driver = 0, Version SDKVersion = 0,
           bool userCallbackThread = false, CallBack userRecvCallback = 0,

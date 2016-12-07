@@ -18,37 +18,38 @@
 #include "DJI_Memory.h"
 #include <stdio.h>
 #include <string.h>
+#include "DJI_API.h"
 #include "DJI_HardDriver.h"
 
 using namespace DJI::onboardSDK;
 
-void CoreAPI::MMU::setupMMU() {
+void MMU::setupMMU() {
   unsigned int i;
-  memoryTable[0].tabIndex = 0;
+  memoryTable[0].tabIndex  = 0;
   memoryTable[0].usageFlag = 1;
-  memoryTable[0].pmem = memory;
-  memoryTable[0].memSize = 0;
+  memoryTable[0].pmem      = memory;
+  memoryTable[0].memSize   = 0;
   for (i = 1; i < (MMU_TABLE_NUM - 1); i++) {
-    memoryTable[i].tabIndex = i;
+    memoryTable[i].tabIndex  = i;
     memoryTable[i].usageFlag = 0;
   }
-  memoryTable[MMU_TABLE_NUM - 1].tabIndex = MMU_TABLE_NUM - 1;
+  memoryTable[MMU_TABLE_NUM - 1].tabIndex  = MMU_TABLE_NUM - 1;
   memoryTable[MMU_TABLE_NUM - 1].usageFlag = 1;
-  memoryTable[MMU_TABLE_NUM - 1].pmem = memory + MEMORY_SIZE;
-  memoryTable[MMU_TABLE_NUM - 1].memSize = 0;
+  memoryTable[MMU_TABLE_NUM - 1].pmem      = memory + MEMORY_SIZE;
+  memoryTable[MMU_TABLE_NUM - 1].memSize   = 0;
 }
 
-void CoreAPI::MMU::freeMemory(MMU_Tab *mmu_tab) {
+void MMU::freeMemory(MMU_Tab *mmu_tab) {
   if (mmu_tab == (MMU_Tab *)0) return;
   if (mmu_tab->tabIndex == 0 || mmu_tab->tabIndex == (MMU_TABLE_NUM - 1))
     return;
   mmu_tab->usageFlag = 0;
 }
 
-MMU_Tab *CoreAPI::MMU::allocMemory(unsigned short size) {
+MMU_Tab *MMU::allocMemory(unsigned short size) {
   unsigned int mem_used = 0;
   unsigned char i;
-  unsigned char j = 0;
+  unsigned char j                = 0;
   unsigned char mmu_tab_used_num = 0;
   unsigned char mmu_tab_used_index[MMU_TABLE_NUM];
 
@@ -56,7 +57,7 @@ MMU_Tab *CoreAPI::MMU::allocMemory(unsigned short size) {
   unsigned int temp_area[2] = {0xFFFFFFFF, 0xFFFFFFFF};
 
   unsigned int record_temp32 = 0;
-  unsigned char magic_flag = 0;
+  unsigned char magic_flag   = 0;
 
   if (size > PRO_PURE_DATA_MAX_SIZE || size > MEMORY_SIZE) return (MMU_Tab *)0;
 
@@ -69,8 +70,8 @@ MMU_Tab *CoreAPI::MMU::allocMemory(unsigned short size) {
   if (MEMORY_SIZE < (mem_used + size)) return (MMU_Tab *)0;
 
   if (mem_used == 0) {
-    memoryTable[1].pmem = memoryTable[0].pmem;
-    memoryTable[1].memSize = size;
+    memoryTable[1].pmem      = memoryTable[0].pmem;
+    memoryTable[1].memSize   = size;
     memoryTable[1].usageFlag = 1;
     return &memoryTable[1];
   }
@@ -98,7 +99,7 @@ MMU_Tab *CoreAPI::MMU::allocMemory(unsigned short size) {
 
     record_temp32 += temp32 - memoryTable[mmu_tab_used_index[i]].memSize;
     if (record_temp32 >= size && magic_flag == 0) {
-      j = i;
+      j          = i;
       magic_flag = 1;
     }
   }
@@ -123,7 +124,7 @@ MMU_Tab *CoreAPI::MMU::allocMemory(unsigned short size) {
         memoryTable[i].pmem = memoryTable[mmu_tab_used_index[j]].pmem +
                               memoryTable[mmu_tab_used_index[j]].memSize;
 
-        memoryTable[i].memSize = size;
+        memoryTable[i].memSize   = size;
         memoryTable[i].usageFlag = 1;
         return &memoryTable[i];
       }
@@ -136,7 +137,7 @@ MMU_Tab *CoreAPI::MMU::allocMemory(unsigned short size) {
       memoryTable[i].pmem =
           memoryTable[temp_area[0]].pmem + memoryTable[temp_area[0]].memSize;
 
-      memoryTable[i].memSize = size;
+      memoryTable[i].memSize   = size;
       memoryTable[i].usageFlag = 1;
       return &memoryTable[i];
     }
@@ -150,13 +151,13 @@ void DJI::onboardSDK::CoreAPI::setupSession() {
   for (i = 0; i < SESSION_TABLE_NUM; i++) {
     CMDSessionTab[i].sessionID = i;
     CMDSessionTab[i].usageFlag = 0;
-    CMDSessionTab[i].mmu = (MMU_Tab *)NULL;
+    CMDSessionTab[i].mmu       = (MMU_Tab *)NULL;
   }
 
   for (i = 0; i < (SESSION_TABLE_NUM - 1); i++) {
-    ACKSessionTab[i].sessionID = i + 1;
+    ACKSessionTab[i].sessionID     = i + 1;
     ACKSessionTab[i].sessionStatus = ACK_SESSION_IDLE;
-    ACKSessionTab[i].mmu = (MMU_Tab *)NULL;
+    ACKSessionTab[i].mmu           = (MMU_Tab *)NULL;
   }
 }
 
@@ -186,7 +187,7 @@ CMDSession *DJI::onboardSDK::CoreAPI::allocSession(unsigned short session_id,
   }
   if (i < 32 && CMDSessionTab[i].usageFlag == 0) {
     CMDSessionTab[i].usageFlag = 1;
-    memoryTab = mmu->allocMemory(size);
+    memoryTab                  = mmu->allocMemory(size);
     if (memoryTab == NULL)
       CMDSessionTab[i].usageFlag = 0;
     else {

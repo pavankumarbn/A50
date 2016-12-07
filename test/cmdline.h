@@ -578,17 +578,17 @@ class parser {
    public:
     virtual ~option_base() {}
 
-    virtual bool has_value() const = 0;
-    virtual bool set() = 0;
+    virtual bool has_value() const             = 0;
+    virtual bool set()                         = 0;
     virtual bool set(const std::string &value) = 0;
-    virtual bool has_set() const = 0;
-    virtual bool valid() const = 0;
-    virtual bool must() const = 0;
+    virtual bool has_set() const               = 0;
+    virtual bool valid() const                 = 0;
+    virtual bool must() const                  = 0;
 
-    virtual const std::string &name() const = 0;
-    virtual char short_name() const = 0;
+    virtual const std::string &name() const        = 0;
+    virtual char short_name() const                = 0;
     virtual const std::string &description() const = 0;
-    virtual std::string short_description() const = 0;
+    virtual std::string short_description() const  = 0;
   };
 
   class option_without_value : public option_base {
@@ -652,7 +652,7 @@ class parser {
     bool set(const std::string &value) {
       try {
         actual = read(value);
-        has = true;
+        has    = true;
       } catch (const std::exception &e) {
         return false;
       }

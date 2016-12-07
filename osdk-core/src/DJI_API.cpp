@@ -38,42 +38,42 @@ void CoreAPI::init(HardDriver *sDevice, MMU *mmuPtr,
   serialDevice = sDevice;
   // serialDevice->init();
 
-  seq_num = 0;
-  ackFrameStatus = 11;
+  seq_num              = 0;
+  ackFrameStatus       = 11;
   broadcastFrameStatus = false;
 
-  filter.recvIndex = 0;
+  filter.recvIndex  = 0;
   filter.reuseCount = 0;
   filter.reuseIndex = 0;
-  filter.encode = 0;
+  filter.encode     = 0;
 
-  broadcastCallback.callback = 0;
-  broadcastCallback.userData = 0;
-  fromMobileCallback.callback = 0;
-  fromMobileCallback.userData = 0;
-  hotPointCallback.callback = 0;
-  wayPointCallback.callback = 0;
-  hotPointCallback.userData = 0;
+  broadcastCallback.callback     = 0;
+  broadcastCallback.userData     = 0;
+  fromMobileCallback.callback    = 0;
+  fromMobileCallback.userData    = 0;
+  hotPointCallback.callback      = 0;
+  wayPointCallback.callback      = 0;
+  hotPointCallback.userData      = 0;
   wayPointEventCallback.callback = 0;
   wayPointEventCallback.userData = 0;
-  wayPointCallback.userData = 0;
-  followCallback.callback = 0;
-  followCallback.userData = 0;
-  missionCallback.callback = 0;
-  missionCallback.userData = 0;
+  wayPointCallback.userData      = 0;
+  followCallback.callback        = 0;
+  followCallback.userData        = 0;
+  missionCallback.callback       = 0;
+  missionCallback.userData       = 0;
 
   recvCallback.callback = userRecvCallback.callback;
   recvCallback.userData = userRecvCallback.userData;
 
   callbackThread = false;
-  hotPointData = false;
-  followData = false;
-  wayPointData = false;
+  hotPointData   = false;
+  followData     = false;
+  wayPointData   = false;
   callbackThread = userCallbackThread;  //! @todo implement
 
   nonBlockingCBThreadEnable = false;
-  ack_data = 99;
-  versionData.version = SDKVersion;
+  ack_data                  = 99;
+  versionData.version       = SDKVersion;
 
   //! @todo simplify code above
   memset((unsigned char *)&broadcastData, 0, sizeof(broadcastData));
@@ -95,16 +95,16 @@ void CoreAPI::send(unsigned char session, unsigned char is_enc, CMD_SET cmdSet,
                    CallBack ackCallback, int timeout, int retry) {
   Command param;
   unsigned char *ptemp = (unsigned char *)encodeSendData;
-  *ptemp++ = cmdSet;
-  *ptemp++ = cmdID;
+  *ptemp++             = cmdSet;
+  *ptemp++             = cmdID;
 
   memcpy(encodeSendData + SET_CMD_SIZE, pdata, len);
 
-  param.handler = ackCallback;
+  param.handler     = ackCallback;
   param.sessionMode = session;
-  param.length = len + SET_CMD_SIZE;
-  param.buf = encodeSendData;
-  param.retry = retry;
+  param.length      = len + SET_CMD_SIZE;
+  param.buf         = encodeSendData;
+  param.retry       = retry;
 
   param.timeout = timeout;
   param.encrypt = is_enc;
@@ -119,16 +119,16 @@ void CoreAPI::send(unsigned char session_mode, bool is_enc, CMD_SET cmd_set,
                    int retry_time, CallBack ack_handler, UserData userData) {
   Command param;
   unsigned char *ptemp = (unsigned char *)encodeSendData;
-  *ptemp++ = cmd_set;
-  *ptemp++ = cmd_id;
+  *ptemp++             = cmd_set;
+  *ptemp++             = cmd_id;
 
   memcpy(encodeSendData + SET_CMD_SIZE, pdata, len);
 
-  param.handler = ack_handler;
+  param.handler     = ack_handler;
   param.sessionMode = session_mode;
-  param.length = len + SET_CMD_SIZE;
-  param.buf = encodeSendData;
-  param.retry = retry_time;
+  param.length      = len + SET_CMD_SIZE;
+  param.buf         = encodeSendData;
+  param.retry       = retry_time;
 
   param.timeout = timeout;
   param.encrypt = is_enc ? 1 : 0;
@@ -146,21 +146,21 @@ void CoreAPI::ack(req_id_t req_id, unsigned char *ackdata, int len) {
   memcpy(encodeACK, ackdata, len);
 
   param.sessionID = req_id.session_id;
-  param.seqNum = req_id.sequence_number;
-  param.encrypt = req_id.need_encrypt;
-  param.buf = encodeACK;
-  param.length = len;
+  param.seqNum    = req_id.sequence_number;
+  param.encrypt   = req_id.need_encrypt;
+  param.buf       = encodeACK;
+  param.length    = len;
 
   this->ackInterface(&param);
 }
 
 void CoreAPI::getDroneVersion(CallBack callback, UserData userData) {
-  versionData.version_ack = ACK_COMMON_NO_RESPONSE;
-  versionData.version_crc = 0x0;
+  versionData.version_ack     = ACK_COMMON_NO_RESPONSE;
+  versionData.version_crc     = 0x0;
   versionData.version_name[0] = 0;
 
-  unsigned cmd_timeout = 100;  // unit is ms
-  unsigned retry_time = 3;
+  unsigned cmd_timeout   = 100;  // unit is ms
+  unsigned retry_time    = 3;
   unsigned char cmd_data = 0;
 
   send(2, 0, SET_ACTIVATION, CODE_GETVERSION, (unsigned char *)&cmd_data, 1,
@@ -169,12 +169,12 @@ void CoreAPI::getDroneVersion(CallBack callback, UserData userData) {
 }
 
 VersionData CoreAPI::getDroneVersion(int timeout) {
-  versionData.version_ack = ACK_COMMON_NO_RESPONSE;
-  versionData.version_crc = 0x0;
+  versionData.version_ack     = ACK_COMMON_NO_RESPONSE;
+  versionData.version_crc     = 0x0;
   versionData.version_name[0] = 0;
 
-  unsigned cmd_timeout = 100;  // unit is ms
-  unsigned retry_time = 3;
+  unsigned cmd_timeout   = 100;  // unit is ms
+  unsigned retry_time    = 3;
   unsigned char cmd_data = 0;
 
   send(2, 0, SET_ACTIVATION, CODE_GETVERSION, (unsigned char *)&cmd_data, 1,
@@ -210,13 +210,13 @@ VersionData CoreAPI::getDroneVersion(int timeout) {
 
 void CoreAPI::activate(ActivateData *data, CallBack callback,
                        UserData userData) {
-  data->version = versionData.version;
-  accountData = *data;
+  data->version        = versionData.version;
+  accountData          = *data;
   accountData.reserved = 2;
 
-  for (int i = 0; i < 32; ++i)
+  for (int i             = 0; i < 32; ++i)
     accountData.iosID[i] = '0';  //! @note for ios verification
-  API_LOG(serialDevice, DEBUG_LOG, "version 0x%X/n", versionData.version);
+  API_LOG(serialDevice, DEBUG_LOG, "version 0x%X\n", versionData.version);
   API_LOG(serialDevice, DEBUG_LOG, "%.32s", accountData.iosID);
   send(2, 0, SET_ACTIVATION, CODE_ACTIVATE, (unsigned char *)&accountData,
        sizeof(accountData) - sizeof(char *), 1000, 3,
@@ -228,11 +228,11 @@ void CoreAPI::activate(ActivateData *data, CallBack callback,
 }
 
 unsigned short CoreAPI::activate(ActivateData *data, int timeout) {
-  data->version = versionData.version;
-  accountData = *data;
+  data->version        = versionData.version;
+  accountData          = *data;
   accountData.reserved = 2;
 
-  for (int i = 0; i < 32; ++i)
+  for (int i             = 0; i < 32; ++i)
     accountData.iosID[i] = '0';  //! @note for ios verification
   API_LOG(serialDevice, DEBUG_LOG, "version 0x%X/n", versionData.version);
   API_LOG(serialDevice, DEBUG_LOG, "%.32s", accountData.iosID);
@@ -342,30 +342,30 @@ void CoreAPI::setBroadcastFreqDefaults() {
 
   if (versionData.version == versionM100_31 ||
       versionData.version == versionM100_23) {
-    freq[0] = BROADCAST_FREQ_1HZ;
-    freq[1] = BROADCAST_FREQ_10HZ;
-    freq[2] = BROADCAST_FREQ_50HZ;
-    freq[3] = BROADCAST_FREQ_100HZ;
-    freq[4] = BROADCAST_FREQ_50HZ;
-    freq[5] = BROADCAST_FREQ_10HZ;
-    freq[6] = BROADCAST_FREQ_1HZ;
-    freq[7] = BROADCAST_FREQ_10HZ;
-    freq[8] = BROADCAST_FREQ_50HZ;
-    freq[9] = BROADCAST_FREQ_100HZ;
+    freq[0]  = BROADCAST_FREQ_1HZ;
+    freq[1]  = BROADCAST_FREQ_10HZ;
+    freq[2]  = BROADCAST_FREQ_50HZ;
+    freq[3]  = BROADCAST_FREQ_100HZ;
+    freq[4]  = BROADCAST_FREQ_50HZ;
+    freq[5]  = BROADCAST_FREQ_10HZ;
+    freq[6]  = BROADCAST_FREQ_1HZ;
+    freq[7]  = BROADCAST_FREQ_10HZ;
+    freq[8]  = BROADCAST_FREQ_50HZ;
+    freq[9]  = BROADCAST_FREQ_100HZ;
     freq[10] = BROADCAST_FREQ_50HZ;
     freq[11] = BROADCAST_FREQ_10HZ;
   } else if (versionData.version == versionA3_31 ||
              versionData.version == versionA3_32) {
-    freq[0] = BROADCAST_FREQ_1HZ;
-    freq[1] = BROADCAST_FREQ_10HZ;
-    freq[2] = BROADCAST_FREQ_50HZ;
-    freq[3] = BROADCAST_FREQ_100HZ;
-    freq[4] = BROADCAST_FREQ_50HZ;
-    freq[5] = BROADCAST_FREQ_10HZ;
-    freq[6] = BROADCAST_FREQ_0HZ;
-    freq[7] = BROADCAST_FREQ_0HZ;
-    freq[8] = BROADCAST_FREQ_1HZ;
-    freq[9] = BROADCAST_FREQ_10HZ;
+    freq[0]  = BROADCAST_FREQ_1HZ;
+    freq[1]  = BROADCAST_FREQ_10HZ;
+    freq[2]  = BROADCAST_FREQ_50HZ;
+    freq[3]  = BROADCAST_FREQ_100HZ;
+    freq[4]  = BROADCAST_FREQ_50HZ;
+    freq[5]  = BROADCAST_FREQ_10HZ;
+    freq[6]  = BROADCAST_FREQ_0HZ;
+    freq[7]  = BROADCAST_FREQ_0HZ;
+    freq[8]  = BROADCAST_FREQ_1HZ;
+    freq[9]  = BROADCAST_FREQ_10HZ;
     freq[10] = BROADCAST_FREQ_50HZ;
     freq[11] = BROADCAST_FREQ_100HZ;
     freq[12] = BROADCAST_FREQ_50HZ;
@@ -410,16 +410,16 @@ void CoreAPI::setBroadcastFreqToZero() {
    *
    */
 
-  freq[0] = BROADCAST_FREQ_0HZ;
-  freq[1] = BROADCAST_FREQ_0HZ;
-  freq[2] = BROADCAST_FREQ_0HZ;
-  freq[3] = BROADCAST_FREQ_0HZ;
-  freq[4] = BROADCAST_FREQ_0HZ;
-  freq[5] = BROADCAST_FREQ_0HZ;
-  freq[6] = BROADCAST_FREQ_0HZ;
-  freq[7] = BROADCAST_FREQ_0HZ;
-  freq[8] = BROADCAST_FREQ_0HZ;
-  freq[9] = BROADCAST_FREQ_0HZ;
+  freq[0]  = BROADCAST_FREQ_0HZ;
+  freq[1]  = BROADCAST_FREQ_0HZ;
+  freq[2]  = BROADCAST_FREQ_0HZ;
+  freq[3]  = BROADCAST_FREQ_0HZ;
+  freq[4]  = BROADCAST_FREQ_0HZ;
+  freq[5]  = BROADCAST_FREQ_0HZ;
+  freq[6]  = BROADCAST_FREQ_0HZ;
+  freq[7]  = BROADCAST_FREQ_0HZ;
+  freq[8]  = BROADCAST_FREQ_0HZ;
+  freq[9]  = BROADCAST_FREQ_0HZ;
   freq[10] = BROADCAST_FREQ_0HZ;
   freq[11] = BROADCAST_FREQ_0HZ;
   if (versionData.version == versionA3_31 ||
@@ -468,30 +468,30 @@ unsigned short CoreAPI::setBroadcastFreqDefaults(int timeout) {
 
   if (versionData.version == versionM100_31 ||
       versionData.version == versionM100_23) {
-    freq[0] = BROADCAST_FREQ_1HZ;
-    freq[1] = BROADCAST_FREQ_10HZ;
-    freq[2] = BROADCAST_FREQ_50HZ;
-    freq[3] = BROADCAST_FREQ_100HZ;
-    freq[4] = BROADCAST_FREQ_50HZ;
-    freq[5] = BROADCAST_FREQ_10HZ;
-    freq[6] = BROADCAST_FREQ_1HZ;
-    freq[7] = BROADCAST_FREQ_10HZ;
-    freq[8] = BROADCAST_FREQ_50HZ;
-    freq[9] = BROADCAST_FREQ_100HZ;
+    freq[0]  = BROADCAST_FREQ_1HZ;
+    freq[1]  = BROADCAST_FREQ_10HZ;
+    freq[2]  = BROADCAST_FREQ_50HZ;
+    freq[3]  = BROADCAST_FREQ_100HZ;
+    freq[4]  = BROADCAST_FREQ_50HZ;
+    freq[5]  = BROADCAST_FREQ_10HZ;
+    freq[6]  = BROADCAST_FREQ_1HZ;
+    freq[7]  = BROADCAST_FREQ_10HZ;
+    freq[8]  = BROADCAST_FREQ_50HZ;
+    freq[9]  = BROADCAST_FREQ_100HZ;
     freq[10] = BROADCAST_FREQ_50HZ;
     freq[11] = BROADCAST_FREQ_10HZ;
   } else if (versionData.version == versionA3_31 ||
              versionData.version == versionA3_32) {
-    freq[0] = BROADCAST_FREQ_1HZ;
-    freq[1] = BROADCAST_FREQ_10HZ;
-    freq[2] = BROADCAST_FREQ_50HZ;
-    freq[3] = BROADCAST_FREQ_100HZ;
-    freq[4] = BROADCAST_FREQ_50HZ;
-    freq[5] = BROADCAST_FREQ_10HZ;
-    freq[6] = BROADCAST_FREQ_0HZ;
-    freq[7] = BROADCAST_FREQ_0HZ;
-    freq[8] = BROADCAST_FREQ_1HZ;
-    freq[9] = BROADCAST_FREQ_10HZ;
+    freq[0]  = BROADCAST_FREQ_1HZ;
+    freq[1]  = BROADCAST_FREQ_10HZ;
+    freq[2]  = BROADCAST_FREQ_50HZ;
+    freq[3]  = BROADCAST_FREQ_100HZ;
+    freq[4]  = BROADCAST_FREQ_50HZ;
+    freq[5]  = BROADCAST_FREQ_10HZ;
+    freq[6]  = BROADCAST_FREQ_0HZ;
+    freq[7]  = BROADCAST_FREQ_0HZ;
+    freq[8]  = BROADCAST_FREQ_1HZ;
+    freq[9]  = BROADCAST_FREQ_10HZ;
     freq[10] = BROADCAST_FREQ_50HZ;
     freq[11] = BROADCAST_FREQ_100HZ;
     freq[12] = BROADCAST_FREQ_50HZ;
@@ -554,7 +554,7 @@ void CoreAPI::setDriver(HardDriver *sDevice) { serialDevice = sDevice; }
 void CoreAPI::getDroneVersionCallback(CoreAPI *api, Header *protocolHeader,
                                       UserData userData __UNUSED) {
   unsigned char *ptemp = ((unsigned char *)protocolHeader) + sizeof(Header);
-  size_t ack_length = protocolHeader->length - EXC_DATA_SIZE;
+  size_t ack_length    = protocolHeader->length - EXC_DATA_SIZE;
 
   if (ack_length > 1) {
     api->versionData.version_ack = ptemp[0] + (ptemp[1] << 8);
@@ -693,15 +693,14 @@ SDKFilter CoreAPI::getFilter() const { return filter; }
 
 void CoreAPI::setVersion(const Version &value) { versionData.version = value; }
 
-void CoreAPI::setTestCallback(const CallBackHandler &value)
-{
-    testCallback = value;
+void CoreAPI::setTestCallback(const CallBackHandler &value) {
+  testCallback = value;
 }
 
 void CoreAPI::setControlCallback(CoreAPI *api, Header *protocolHeader,
                                  UserData userData __UNUSED) {
   unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
-  unsigned char data = 0x1;
+  unsigned char data      = 0x1;
 
   if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack_data)) {
     memcpy((unsigned char *)&ack_data,

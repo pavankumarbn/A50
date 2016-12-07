@@ -75,7 +75,7 @@ class HardDriver {
    *
    * */
  public:
-  virtual void init() = 0;
+  virtual void init()            = 0;
   virtual time_ms getTimeStamp() = 0;
   virtual size_t send(const uint8_t *buf, size_t len) = 0;
   virtual size_t readall(uint8_t *buf, size_t maxlen) = 0;
@@ -91,7 +91,7 @@ class HardDriver {
   virtual void lockACK() = 0;
   virtual void freeACK() = 0;
 
-  virtual void notify() = 0;
+  virtual void notify()          = 0;
   virtual void wait(int timeout) = 0;
 
   virtual void lockProtocolHeader() { ; }
@@ -107,8 +107,8 @@ class HardDriver {
   virtual void displayLog(const char *buf = 0);
 
  private:
-  CoreAPI::MMU *getMmu() { return &mmu; }
-  CoreAPI::MMU mmu;
+  MMU *getMmu() { return &mmu; }
+  MMU mmu;
   friend class CoreAPI;
 };
 }  // namespace onboardSDK

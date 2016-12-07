@@ -163,7 +163,7 @@ class DataBroadcast {
   Data::GlobalPosition      getGlobalPosition()     const;
   Data::RelativePosition    getRelativePosition()   const;
   Data::GPSInfo             getGPSInfo()            const;
-  Data::RTK                 getRTKInof()            const;
+  Data::RTK                 getRTKInfo()            const;
   Data::Mag                 getMag()                const;
   Data::RC                  getRC()                 const;
   Data::Gimbal              getGimbal()             const;

@@ -13,15 +13,14 @@
 #ifndef DJI_MEMORY_H
 #define DJI_MEMORY_H
 
-#include "DJI_API.h"
 #include "DJI_Type.h"
 
 namespace DJI {
 namespace onboardSDK {
 
-class CoreAPI::MMU {
+class MMU {
  public:
-  CoreAPI::MMU() {}
+  MMU() {}
   void setupMMU(void);
   void freeMemory(MMU_Tab *mmu_tab);
   MMU_Tab *allocMemory(unsigned short size);

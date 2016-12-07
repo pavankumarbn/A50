@@ -13,7 +13,7 @@ using namespace DJI::onboardSDK;
  Data::GlobalPosition      DataBroadcast::getGlobalPosition()     const {  api->getDriver()->lockMSG(); Data::GlobalPosition      ans = gp;         api->getDriver()->freeMSG();  return ans;}
  Data::RelativePosition    DataBroadcast::getRelativePosition()   const {  api->getDriver()->lockMSG(); Data::RelativePosition    ans = rp;         api->getDriver()->freeMSG();  return ans;}
  Data::GPSInfo             DataBroadcast::getGPSInfo()            const {  api->getDriver()->lockMSG(); Data::GPSInfo             ans = gps;        api->getDriver()->freeMSG();  return ans;}
- Data::RTK                 DataBroadcast::getRTKInof()            const {  api->getDriver()->lockMSG(); Data::RTK                 ans = rtk;        api->getDriver()->freeMSG();  return ans;}
+ Data::RTK                 DataBroadcast::getRTKInfo()            const {  api->getDriver()->lockMSG(); Data::RTK                 ans = rtk;        api->getDriver()->freeMSG();  return ans;}
  Data::Mag                 DataBroadcast::getMag()                const {  api->getDriver()->lockMSG(); Data::Mag                 ans = mag;        api->getDriver()->freeMSG();  return ans;}
  Data::RC                  DataBroadcast::getRC()                 const {  api->getDriver()->lockMSG(); Data::RC                  ans = rc;         api->getDriver()->freeMSG();  return ans;}
  Data::Gimbal              DataBroadcast::getGimbal()             const {  api->getDriver()->lockMSG(); Data::Gimbal              ans = gimbal;     api->getDriver()->freeMSG();  return ans;}
