@@ -47,20 +47,12 @@ class VersionTest : public TestCase {
 
  public:
   virtual QString init() { return "version"; }
-  virtual QString calback() {
-    test->getAPI()->getDroneVersion(handler, test);
-    return "waiting";
-  }
+  virtual QString calback();
 
  public:
   static void handler(DJI::onboardSDK::CoreAPI *api,
                       DJI::onboardSDK::Header *protocolHeader,
-                      DJI::UserData userData) {
-    CoreTest *Test = (CoreTest *)userData;
-    DJI::onboardSDK::CoreAPI::getDroneVersionCallback(api, protocolHeader,
-                                                      userData);
-    Test->injectFeedback(32, api->getVersionData().version_name);
-  }
+                      DJI::UserData userData);
 };
 
 class ActivationTest : public TestCase {

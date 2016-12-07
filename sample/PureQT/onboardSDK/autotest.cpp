@@ -120,5 +120,18 @@ QString ActivationTest::calback() {
   data.ID     = parser->get<uint32_t>("id");
   data.encKey = const_cast<char *>(parser->get<std::string>("key").c_str());
   test->getAPI()->activate(&data, 0, test);
-  return "waiting";
+  return "waiting activation";
+}
+
+QString VersionTest::calback() {
+  test->getAPI()->getDroneVersion(handler, test);
+  return "waiting version";
+}
+
+void VersionTest::handler(CoreAPI *api, Header *protocolHeader,
+                          UserData userData) {
+  CoreTest *Test = (CoreTest *)userData;
+  DJI::onboardSDK::CoreAPI::getDroneVersionCallback(api, protocolHeader,
+                                                    userData);
+  Test->injectFeedback(32, api->getVersionData().version_name);
 }
