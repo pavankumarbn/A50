@@ -2,10 +2,10 @@
 #define AUTOTEST_H
 
 #include <QDebug>
+#include <QMap>
 #include <QString>
 #include <QStringList>
 #include <QWidget>
-#include <Qmap>
 #include "DJI_API.h"
 #include "DJI_Test.h"
 #include "cmdline.h"
