@@ -1093,9 +1093,10 @@ void DJIonboardSDK::initSDK() {
   hp     = new HotPoint(api);
   mfio   = new MFIO(api);
 
-  ui->widget_wp->setApi(api);
+  ui->widget_wp->setAPI(api);
   ui->widget_test->setAPI(api);
-  ui->widget_mfio->setMfio(mfio);
+  ui->widget_broadcast->setAPI(api);
+  ui->widget_mfio->setMFIO(mfio);
 
   refreshPort();
   setPort();

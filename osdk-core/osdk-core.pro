@@ -21,4 +21,5 @@ SOURCES += tst_coretest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 DISTFILES += \
-    osdk-core.pri
+    osdk-core.pri \
+    osdk-core-inc.pri

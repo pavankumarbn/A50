@@ -60,7 +60,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="tbFlight">
            <attribute name="title">
@@ -6175,6 +6175,16 @@
             </item>
            </layout>
           </widget>
+          <widget class="QWidget" name="tab_2">
+           <attribute name="title">
+            <string>Data</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="Broadcast" name="widget_broadcast" native="true"/>
+            </item>
+           </layout>
+          </widget>
           <widget class="QWidget" name="tab">
            <attribute name="title">
             <string>Test</string>
@@ -6306,6 +6316,12 @@
    <class>MFIOPannel</class>
    <extends>QWidget</extends>
    <header>mfiopannel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Broadcast</class>
+   <extends>QWidget</extends>
+   <header>broadcast.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

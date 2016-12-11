@@ -15,4 +15,4 @@ void MFIOPannel::on_btn_init_clicked() {
              QString(ui->le_freq->text()).toUInt(), 0, 0);
 }
 
-void MFIOPannel::setMfio(DJI::onboardSDK::MFIO *value) { mfio = value; }
+void MFIOPannel::setMFIO(DJI::onboardSDK::MFIO *value) { mfio = value; }

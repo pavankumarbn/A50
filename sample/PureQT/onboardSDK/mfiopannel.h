@@ -15,7 +15,7 @@ class MFIOPannel : public QWidget {
   explicit MFIOPannel(QWidget *parent = 0);
   ~MFIOPannel();
 
-  void setMfio(DJI::onboardSDK::MFIO *value);
+  void setMFIO(DJI::onboardSDK::MFIO *value);
 
  private slots:
   void on_btn_init_clicked();

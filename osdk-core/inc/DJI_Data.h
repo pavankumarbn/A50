@@ -11,12 +11,10 @@ namespace onboardSDK {
 
 class Data {
  public:
-  struct TimeStamp {
+  typedef struct TimeStamp {
     uint32_t time_ms;
     uint32_t time_ns;
-  };
-
-  typedef struct TimeStamp TimeStamp;
+  } TimeStamp;
 
   typedef struct SyncStamp {
     uint32_t time;  //! @note relative sync time
@@ -153,7 +151,11 @@ class Data {
 
 class DataBroadcast {
  public:
-  DataBroadcast(CoreAPI* API) : api(API) {}
+  static void callbackData(DJI::onboardSDK::CoreAPI* api, Header* header,
+                           UserData data);
+
+ public:
+  DataBroadcast(CoreAPI* API = 0);
 
   // clang-format off
   Data::TimeStamp           getTimeStamp()          const;
@@ -175,6 +177,10 @@ class DataBroadcast {
   Data::SDKInfo             getSDKInfo()            const;
   // clang-format on
 
+  CoreAPI* getApi() const;
+
+  void setAPI(CoreAPI* value);
+
  private:
   // clang-format off
   typedef enum FLAG {
@@ -182,7 +188,7 @@ class DataBroadcast {
     FLAG_QUATERNION     = 0X0002,
     FLAG_ACCELERATION   = 0X0004,
     FLAG_VELOCITY       = 0X0008,
-    FLAG_PALSTANCE      = 0X010,
+    FLAG_PALSTANCE      = 0X0010,
     FLAG_POSITION       = 0X0020,
     FLAG_GPSINFO        = 0X0040,
     FLAG_RTKINFO        = 0X0080,
@@ -196,37 +202,9 @@ class DataBroadcast {
   } FLAG;
   // clang-format on
  private:
-  void unpackData(Header* protocolHeader) {
-    uint8_t* pdata = ((uint8_t*)protocolHeader) + sizeof(Header);
-    pdata += 2;
-    passFlag = *(uint16_t*)pdata;
-    pdata += sizeof(uint16_t);
-    api->getDriver()->lockMSG();
-    // clang-format off
-    unpackOne(FLAG_TIME        ,&timeStamp ,pdata,sizeof(timeStamp ));
-    unpackOne(FLAG_TIME        ,&syncStamp ,pdata,sizeof(syncStamp ));
-    unpackOne(FLAG_QUATERNION  ,&q         ,pdata,sizeof(q         ));
-    unpackOne(FLAG_ACCELERATION,&a         ,pdata,sizeof(a         ));
-    unpackOne(FLAG_VELOCITY    ,&v         ,pdata,sizeof(v         ));
-    unpackOne(FLAG_PALSTANCE   ,&w         ,pdata,sizeof(w         ));
-    unpackOne(FLAG_VELOCITY    ,&vi        ,pdata,sizeof(vi        ));
-    unpackOne(FLAG_POSITION    ,&gp        ,pdata,sizeof(gp        ));
-    unpackOne(FLAG_POSITION    ,&rp        ,pdata,sizeof(rp        ));
-    unpackOne(FLAG_GPSINFO     ,&gps       ,pdata,sizeof(gps       ));
-    unpackOne(FLAG_RTKINFO     ,&rtk       ,pdata,sizeof(rtk       ));
-    unpackOne(FLAG_MAG         ,&mag       ,pdata,sizeof(mag       ));
-    unpackOne(FLAG_RC          ,&rc        ,pdata,sizeof(rc        ));
-    unpackOne(FLAG_GIMBAL      ,&gimbal    ,pdata,sizeof(gimbal    ));
-    unpackOne(FLAG_STATUS      ,&staus     ,pdata,sizeof(staus     ));
-    unpackOne(FLAG_BATTERY     ,&battery   ,pdata,sizeof(battery   ));
-    unpackOne(FLAG_DEVICE      ,&info      ,pdata,sizeof(info      ));
-     // clang format on
-    api->getDriver()->freeMSG();
-  }
+  void unpackData(Header* protocolHeader);
 
-  inline void unpackOne(FLAG flag, void* data, uint8_t* buf, size_t size) {
-    if (flag & passFlag) memcpy((uint8_t*)data, (uint8_t*)buf, size);
-  }
+  inline void unpackOne(FLAG flag, void* data, uint8_t* buf, size_t size);
 
  private:
   // clang-format off
@@ -252,6 +230,7 @@ class DataBroadcast {
  private:
   CoreAPI* api;
   uint16_t passFlag;
+  CallBackHandler handler;
 };
 
 class DataSubscribe {

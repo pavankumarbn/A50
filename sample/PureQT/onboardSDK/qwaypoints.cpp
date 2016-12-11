@@ -17,7 +17,7 @@ QWaypoints::~QWaypoints() { delete ui; }
 
 DJI::onboardSDK::CoreAPI *QWaypoints::getApi() const { return api; }
 
-void QWaypoints::setApi(DJI::onboardSDK::CoreAPI *value) { api = value; }
+void QWaypoints::setAPI(DJI::onboardSDK::CoreAPI *value) { api = value; }
 
 DJI::onboardSDK::Waypoints *QWaypoints::getWp() const { return wp; }
 

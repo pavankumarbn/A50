@@ -20,7 +20,7 @@ class QWaypoints : public QWidget {
   ~QWaypoints();
 
   DJI::onboardSDK::CoreAPI *getApi() const;
-  void setApi(DJI::onboardSDK::CoreAPI *value);
+  void setAPI(DJI::onboardSDK::CoreAPI *value);
 
   DJI::onboardSDK::Waypoints *getWp() const;
   void setWp(DJI::onboardSDK::Waypoints *value);
