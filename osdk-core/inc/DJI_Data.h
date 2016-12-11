@@ -1,6 +1,7 @@
 #ifndef DATASUBSCRIBE_H
 #define DATASUBSCRIBE_H
 
+#include <string.h>
 #include "DJI_API.h"
 #include "DJI_HardDriver.h"
 //! @warning This SDK structure only support SDK V3.2.20 or later

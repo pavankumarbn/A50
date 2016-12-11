@@ -1,4 +1,5 @@
 #include "DJI_Test.h"
+#include <string.h>
 #include "DJI_HardDriver.h"
 
 using namespace DJI;
