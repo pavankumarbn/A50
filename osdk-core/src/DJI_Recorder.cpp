@@ -1,4 +1,5 @@
 #include "DJI_Recorder.h"
+#include <string.h>
 
 using namespace DJI::onboardSDK;
 using namespace DJI;
