@@ -11,10 +11,12 @@ namespace onboardSDK {
 
 class Data {
  public:
-  typedef struct TimeStamp {
+  struct TimeStamp {
     uint32_t time_ms;
     uint32_t time_ns;
-  } TimeStamp;
+  };
+
+  typedef struct TimeStamp TimeStamp;
 
   typedef struct SyncStamp {
     uint32_t time;  //! @note relative sync time

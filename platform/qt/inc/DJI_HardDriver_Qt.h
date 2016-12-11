@@ -3,6 +3,7 @@
 
 #include <DJI_API.h>
 #include <DJI_Camera.h>
+#include <DJI_Data.h>
 #include <DJI_Flight.h>
 #include <DJI_Follow.h>
 #include <DJI_HardDriver.h>
