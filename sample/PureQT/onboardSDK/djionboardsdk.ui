@@ -60,7 +60,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>4</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tbFlight">
            <attribute name="title">
@@ -6165,6 +6165,16 @@
             <string>Empty</string>
            </attribute>
           </widget>
+          <widget class="QWidget" name="tab_mfio">
+           <attribute name="title">
+            <string>mfio</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <widget class="MFIOPannel" name="widget_mfio" native="true"/>
+            </item>
+           </layout>
+          </widget>
           <widget class="QWidget" name="tab">
            <attribute name="title">
             <string>Test</string>
@@ -6292,22 +6302,28 @@
    <header>qwaypoints.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>MFIOPannel</class>
+   <extends>QWidget</extends>
+   <header>mfiopannel.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="btg_flightSM"/>
-  <buttongroup name="btg_flightVL"/>
-  <buttongroup name="btg_flightHL"/>
-  <buttongroup name="btg_cameraMode"/>
-  <buttongroup name="btg_cameraYaw"/>
-  <buttongroup name="btg_cameraPitch"/>
-  <buttongroup name="btg_flightCL"/>
   <buttongroup name="btg_flightTask"/>
-  <buttongroup name="btg_cameraAngle"/>
-  <buttongroup name="btg_flightYL"/>
+  <buttongroup name="btg_flightSM"/>
   <buttongroup name="btg_cameraRoll"/>
   <buttongroup name="btg_vrcGear"/>
   <buttongroup name="btg_vrcMode"/>
+  <buttongroup name="btg_cameraPitch"/>
+  <buttongroup name="btg_flightYL"/>
+  <buttongroup name="btg_cameraMode"/>
+  <buttongroup name="btg_flightVL"/>
+  <buttongroup name="btg_cameraYaw"/>
+  <buttongroup name="btg_flightHL"/>
+  <buttongroup name="btg_flightCL"/>
+  <buttongroup name="btg_cameraAngle"/>
  </buttongroups>
 </ui>

@@ -99,7 +99,9 @@ enum CMD_SET {
   SET_BROADCAST  = 0x02,
   SET_MISSION    = 0x03,
   SET_SYNC       = 0x04,
-  SET_VIRTUALRC  = 0x05
+  SET_VIRTUALRC  = 0x05,
+  SET_RECORDER   = 0x06,
+  SET_MFIO       = 0x09
 };
 
 enum SYNC_CODE { CODE_SYNC_BROADCAST = 0x00 };

@@ -22,12 +22,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 HEADERS  += djionboardsdk.h \
             SDKWidgets.h \
     autotest.h \
-    qwaypoints.h
+    qwaypoints.h \
+    mfiopannel.h \
+    recorder.h
 
 SOURCES += main.cpp\
            djionboardsdk.cpp \
     autotest.cpp \
-    qwaypoints.cpp
+    qwaypoints.cpp \
+    mfiopannel.cpp \
+    recorder.cpp
 
 DJILIB += ONBOARDSDK\
           #GROUNDSTATION\
@@ -154,7 +158,7 @@ HEADERS += $$GRIDMAP_INC
 
 contains(DJILIB,ONBOARDSDK){
 include( ../../../platform/qt/QonboardSDK.pri))
-include( ../../../osdk-core/osdk-core.pri)
+#include( ../../../osdk-core/osdk-core.pri)
 include( ../../../test/test-core/test-base.pri)
 include(DataPannel.pri)
 }
@@ -165,7 +169,9 @@ include(DataPannel.pri)
 
 FORMS    += djionboardsdk.ui \
     autotest.ui \
-    qwaypoints.ui
+    qwaypoints.ui \
+    mfiopannel.ui \
+    recorder.ui
 
 RESOURCES +=
 

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MFIOPannel</class>
+ <widget class="QWidget" name="MFIOPannel">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>833</width>
+    <height>88</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QComboBox" name="cb_channel">
+       <item>
+        <property name="text">
+         <string>channel_F1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>channel_F2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>channel_F3</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>channel_F4</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>channel_F5</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>channel_F6</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>channel_F7</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>channel_F8</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cb_mode">
+       <item>
+        <property name="text">
+         <string>PWMO</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>PWMI</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GPO</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>GPI</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ADC</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>value</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="le_val"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>freq</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="le_freq"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_init">
+       <property name="text">
+        <string>init</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_get">
+       <property name="text">
+        <string>get</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_set">
+       <property name="text">
+        <string>set</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

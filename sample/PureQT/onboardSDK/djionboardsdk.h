@@ -245,6 +245,7 @@ class DJIonboardSDK : public QMainWindow {
   QTimer *vrcSend;
 
   HotPoint *hp;
+  MFIO *mfio;
 
   Camera *cam;
   uint8_t camFlag;

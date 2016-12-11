@@ -7,6 +7,7 @@
 #include <DJI_Follow.h>
 #include <DJI_HardDriver.h>
 #include <DJI_HotPoint.h>
+#include <DJI_MFIO.h>
 #include <DJI_VirtualRC.h>
 #include <DJI_WayPoint.h>
 #include <QMutex>

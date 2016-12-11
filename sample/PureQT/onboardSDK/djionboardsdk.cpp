@@ -1091,9 +1091,11 @@ void DJIonboardSDK::initSDK() {
   vrc    = new VirtualRC(api);
   cam    = new Camera(api);
   hp     = new HotPoint(api);
+  mfio   = new MFIO(api);
 
   ui->widget_wp->setApi(api);
   ui->widget_test->setAPI(api);
+  ui->widget_mfio->setMfio(mfio);
 
   refreshPort();
   setPort();
