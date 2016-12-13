@@ -36,8 +36,7 @@ class Data {
   } Vector3f;
   typedef struct VelocityInfo {
     uint8_t health : 1;
-    uint8_t sensorID : 4;
-    uint8_t reserve : 3;
+    uint8_t reserve : 7;
   } VelocityInfo;
 
   typedef struct GlobalPosition {
@@ -147,6 +146,130 @@ class Data {
   } SDKInfo;
 
  public:
+  typedef enum ERROR {
+    ERROR_NONE                          = 0,
+    ERROR_COMPASS_ABNORMAL              = 1,
+    ERROR_ASSISTANT_LINK_SOFT_PROTECTED = 2,
+    ERROR_DEVICE_LOCKED                 = 3,  //
+    ERROR_TOO_FAR_FROM_HOMEPOINT        = 4,
+    ERROR_IMU_NEED_CALIBRATION          = 5,
+    ERROR_INTERNAL_6                    = 6,
+    ERROR_IMU_PREHEATING                = 7,
+    ERROR_COMPASS_CALIBRATING           = 8,
+    ERROR_IMU_DAMAGED                   = 9,
+    ERROR_NO_GPS_IN_BEGINNER_MODE       = 10,
+    ERROR_BATTERY_INTERNAL_11           = 11,
+    ERROR_BATTERY_INFO                  = 12,
+    ERROR_BATTERY_LOWPOWER_SERIOUS      = 13,
+    ERROR_BATTERY_CAPACITY_LOWLAND      = 14,
+    ERROR_BATTERY_VOLTAGE_LOWLAND       = 15,
+    ERROR_BATTERY_TEMPERATURE_LOWLAND   = 16,
+    ERROR_BATTERY_INTERNAL_LOWLAND      = 17,  //
+    ERROR_BATTERY_INTERNAL_18           = 18,  //
+    ERROR_RUNNING_SIMULATOR             = 19,
+    ERROR_PACKING                       = 20,
+    ERROR_GROUND_NOT_HORI               = 21,  //
+    ERROR_NOT_ACTIVATED                 = 22,  //
+    ERROR_NFZ                           = 23,
+    ERROR_IMU_NEED_CALIBRATION_2        = 24,
+    ERROR_ESC_INTERNAL                  = 25,
+    ERROR_IMU_INITING                   = 26,
+    ERROR_UPGRADING                     = 27,
+    ERROR_RUN_SIMULATOR_BEFORE          = 28,
+    ERROR_IMU_CALIBRATING               = 29,
+    ERROR_TAKEOFF_TILT_TOO_LARGE        = 30,  //
+    ERROR_RESERVED_31                   = 31,
+    ERROR_RESERVED_32                   = 32,
+    ERROR_RESERVED_33                   = 33,
+    ERROR_RESERVED_34                   = 34,
+    ERROR_RESERVED_35                   = 35,
+    ERROR_RESERVED_36                   = 36,
+    ERROR_RESERVED_37                   = 37,
+    ERROR_RESERVED_38                   = 38,
+    ERROR_RESERVED_39                   = 39,
+    ERROR_RESERVED_40                   = 40,
+    ERROR_INTERNAL_41                   = 41,
+    ERROR_BAROMETER_DAMAGED             = 42,  //
+    ERROR_IMU_DAMAGED                   = 43,  //
+    ERROR_PREPAREING                    = 44,
+    ERROR_GPS_OFFLINE                   = 45,
+    ERROR_INTERNAL_46                   = 46,  //
+    ERROR_INTERNAL_47                   = 47,
+    ERROR_INTERNAL_48                   = 48,
+    ERROR_RESERVED_49                   = 49,
+    ERROR_RESERVED_50                   = 50,
+    ERROR_RESERVED_51                   = 51,
+    ERROR_RESERVED_52                   = 52,
+    ERROR_RESERVED_53                   = 53,
+    ERROR_RESERVED_54                   = 54,
+    ERROR_RESERVED_55                   = 55,
+    ERROR_RESERVED_56                   = 56,
+    ERROR_RESERVED_57                   = 57,
+    ERROR_RESERVED_58                   = 58,
+    ERROR_RESERVED_59                   = 59,
+    ERROR_RESERVED_60                   = 60,
+    ERROR_IMU_OFFLINE                   = 61,
+    ERROR_RC_CALIBRATING                = 62,
+    ERROR_RC_CALI_ERROR                 = 63,
+    ERROR_RC_NEED_CALI                  = 64,
+    ERROR_RC_NEED_CALI_2                = 65,
+    ERROR_RC_CHANNEL_MAPPING            = 66,
+    ERROR_INTERNAL_67                   = 67,  //
+    ERROR_CONFIG_NOT_FINISHED           = 68,
+    ERROR_RESERVED_69                   = 69,
+    ERROR_IMU_INTERNAL_DAMAGED          = 70,
+    ERROR_BAROMETER_INTERNAL_DAMAGED    = 71,
+    ERROR_COMPASS_INTERNAL_DAMAGED      = 72,
+    ERROR_GPS_INTERNAL_DAMAGED          = 73,
+    ERROR_INTERNAL_DAMAGED_74           = 74,  //
+    ERROR_INTERNAL_DAMAGED_75           = 75,
+    ERROR_RC_NEED_CALI_3                = 76,  //
+    ERROR_INTERNAL_77                   = 77,
+    ERROR_BATTERY_NOT_ENOUGH            = 78,
+    ERROR_BATTERY_INTERNAL_79           = 79,
+    ERROR_RESERVED_80                   = 80,
+    ERROR_BATTERY_VOLTAGE_DIFF_81       = 81,
+    ERROR_BATTERY_BOLTAHGE_DIFF_82      = 82,
+    ERROR_NEED_NEW_FIRMWARE             = 83,
+    ERROR_GIMBAL_IMU_DATA               = 84,
+    ERROR_GIMBAL_ESC_PITCH              = 85,
+    ERROR_GIMBAL_ESC_ROLL               = 86,
+    ERROR_GIMBAL_ESC_YAW                = 87,
+    ERROR_GIMBAL_UPGRADING              = 88,
+    ERROR_GIMBAL_OFFLINE                = 89,
+    ERROR_GIMBAL_PITCH_AUTO_OSCILLATION = 90,
+    ERROR_GIMBAL_ROLL_AUTO_OSCILLATION  = 91,
+    ERROR_GIMBAL_YAW_AUTO_OSCILLATION   = 92,
+    ERROR_IMU_INTERNAL_NEED_REBOOT      = 93,
+    ERROR_INTERNAL_94                   = 94,
+    ERROR_MOTOR_LOCKED                  = 95,  //
+    ERROR_MOTOR_UNBALANCE               = 96,
+    ERROR_MOTOR_WITHOUT_BLADE           = 97,
+    ERROR_MOTOR_INTERNAL                = 98,
+    ERROR_INTERNAL_99                   = 99,  //
+    ERROR_ROLL_OVER                     = 100,
+    ERROR_BATTERY_INTERNAL_101          = 101,
+    ERROR_RTK_INITING                   = 102,
+    ERROR_RTK_FALL_TO_INIT              = 103,
+    ERROR_RESERVED_104                  = 104,
+    ERROR_RESERVED_105                  = 105,
+    ERROR_RESERVED_106                  = 106,
+    ERROR_RESERVED_107                  = 107,
+    ERROR_RESERVED_108                  = 108,
+    ERROR_RESERVED_109                  = 109,
+    ERROR_ALREADY_DONE                  = 110,
+    ERROR_INTERNAL_111                  = 111,
+    ERROR_ESC_CALIBRATING               = 112,
+    ERROR_GPS_INTERNAL                  = 113,
+    ERROR_GIMBAL_CALIBRATING            = 114,
+    ERROR_INTERNAL_115                  = 115,
+    ERROR_INTERNAL_DAMAGED_116          = 116,
+    ERROR_ESC_NEED_UPGRADE              = 117,
+    ERROR_INTERNAL_118                  = 118,
+    ERROR_INTERNAL_119                  = 119,
+    ERROR_COMPASS_MOUNT_ERROR           = 120,
+    ERROR_INTERNAL_121                  = 121
+  } ERROR;
 };
 
 class DataBroadcast {

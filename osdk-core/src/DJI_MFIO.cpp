@@ -25,3 +25,6 @@ void MFIO::init(MFIO::MODE mode, CHANNEL channel, uint32_t defaultValue,
 void MFIO::initCallback(CoreAPI *api, Header *header, UserData data) {
   API_LOG(api->getDriver(), STATUS_LOG, "callback");
 }
+
+void DJI::onboardSDK::MFIO::setValue(MFIO::CHANNEL channel, uint32_t value,
+                                     CallBack fn, UserData data) {}

@@ -35,6 +35,12 @@ class MFIO {
     ERROR_INIT_PORT_DATA   = 4
   } INIT_ERROR;
 
+  typedef enum SET_ERROR {
+    ERROR_SET_NONT = 0,
+    ERROR_SET_PROT = 1,  //! @note port not exit or not an output config
+    ERROR_SET_MAP  = 2   //! @note port not map to f channle
+  } SET_ERROR;
+
   MFIO(CoreAPI* API) : api(API) { channelUsage = 0; }
 
   void init(MODE mode, CHANNEL channel, uint32_t defaultValue, uint16_t freq,
@@ -63,8 +69,23 @@ class MFIO {
     uint16_t freq;
   } InitData;
 
+  typedef struct SetData {
+    uint8_t port;
+    uint32_t data;
+  } SetData;
+
+  typedef uint32_t GetData;
+
+  typedef struct GetResult {
+    uint8_t reserved;
+    uint32_t value;
+  } GetResult;
+
 #pragma pack()
 };
+
+void MFIO::setValue(MFIO::CHANNEL channel, uint32_t value, CallBack fn,
+                    UserData data);
 
 //! @note not decided how to use
 /*class GPI {
