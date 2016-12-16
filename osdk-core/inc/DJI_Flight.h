@@ -97,6 +97,7 @@ class Flight {
   //! @version 3.1
   enum SmoothMode { SMOOTH_DISABLE = 0x00, SMOOTH_ENABLE = 0x01 };
 
+  //! @todo 3.2.20
   enum Status {
     STATUS_GROUND_STANDBY    = 1,
     STATUS_TAKE_OFF          = 2,

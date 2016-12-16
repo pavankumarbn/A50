@@ -9,11 +9,11 @@ namespace onboardSDK {
 class MFIO {
  public:
   typedef enum MODE {
-    MODE_PWM_OUT = 0,  // PWMO
-    MODE_PWM_IN  = 1,  // PWMI
-    MOD_GPIO_OUT = 2,  // GPO
-    MOD_GPIO_IN  = 3,  // GPI
-    MODE_ADC     = 4   // ADC
+    MODE_PWM_OUT  = 0,  // PWMO
+    MODE_PWM_IN   = 1,  // PWMI
+    MODE_GPIO_OUT = 2,  // GPO
+    MODE_GPIO_IN  = 3,  // GPI
+    MODE_ADC      = 4   // ADC
   } MODE;
 
   typedef enum CHANNEL {
@@ -83,9 +83,6 @@ class MFIO {
 
 #pragma pack()
 };
-
-void MFIO::setValue(MFIO::CHANNEL channel, uint32_t value, CallBack fn,
-                    UserData data);
 
 //! @note not decided how to use
 /*class GPI {

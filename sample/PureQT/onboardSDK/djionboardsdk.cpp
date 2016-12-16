@@ -1095,7 +1095,7 @@ void DJIonboardSDK::initSDK() {
 
   ui->widget_wp->setAPI(api);
   ui->widget_test->setAPI(api);
-  ui->widget_broadcast->setAPI(api);
+  // ui->widget_broadcast->setAPI(api);
   ui->widget_mfio->setMFIO(mfio);
 
   refreshPort();

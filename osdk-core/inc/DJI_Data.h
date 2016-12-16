@@ -156,7 +156,7 @@ class Data {
     ERROR_INTERNAL_6                    = 6,
     ERROR_IMU_PREHEATING                = 7,
     ERROR_COMPASS_CALIBRATING           = 8,
-    ERROR_IMU_DAMAGED                   = 9,
+    ERROR_IMU_DAMAGED_9                 = 9,
     ERROR_NO_GPS_IN_BEGINNER_MODE       = 10,
     ERROR_BATTERY_INTERNAL_11           = 11,
     ERROR_BATTERY_INFO                  = 12,
@@ -190,7 +190,7 @@ class Data {
     ERROR_RESERVED_40                   = 40,
     ERROR_INTERNAL_41                   = 41,
     ERROR_BAROMETER_DAMAGED             = 42,  //
-    ERROR_IMU_DAMAGED                   = 43,  //
+    ERROR_IMU_DAMAGED_43                = 43,  //
     ERROR_PREPAREING                    = 44,
     ERROR_GPS_OFFLINE                   = 45,
     ERROR_INTERNAL_46                   = 46,  //
@@ -270,6 +270,64 @@ class Data {
     ERROR_COMPASS_MOUNT_ERROR           = 120,
     ERROR_INTERNAL_121                  = 121
   } ERROR;
+
+  typedef enum MODE {
+    MODE_FREE_TO_SKY         = 0,
+    MODE_A                   = 1,
+    MODE_CURSELOCK           = 2,
+    MODE_RESERVED_3          = 3,
+    MODE_RESERVED_4          = 4,
+    MODE_RESERVED_5          = 5,
+    MODE_P_GPS               = 6,
+    MODE_P_GPS_CURSELOCK     = 7,
+    MODE_RESERVED_8          = 8,
+    MODE_HOTPOINT            = 9,
+    MODE_TAKING_OFF_STATUS_1 = 10,
+    MODE_TAKING_OFF_STATUS_2 = 11,
+    MODE_LANDING             = 12,
+    MODE_RESERVED_13         = 13,
+    MODE_WAYPOINTS           = 14,
+    MODE_RETURN_HOME         = 15,
+    MODE_RESERVED_16         = 16,
+    MODE_SDK                 = 17,
+    MODE_RESERVED_18         = 18,
+    MODE_RESERVED_19         = 19,
+    MODE_RESERVED_20         = 20,
+    MODE_RESERVED_21         = 21,
+    MODE_RESERVED_22         = 22,
+    MODE_ERSERVED_23         = 23,
+    MODE_RESERVED_24         = 24,
+    MODE_FOLLOW              = 25,
+    MODE_RESERVED_26         = 26,
+    MODE_RESERVED_27         = 27,
+    MODE_RESERVED_28         = 28,
+    MODE_RESERVED_29         = 29,
+    MODE_RESERVED_30         = 30,
+    MODE_SPORT               = 31,
+    MODE_BEGINNER            = 32,
+    MODE_LOWLANDING          = 33,
+    MODE_RESERVED_34         = 34,
+    MODE_RESERVED_35         = 35,
+    MODE_RESERVED_36         = 36,
+    MODE_RESERVED_37         = 37,
+    MODE_RESERVED_38         = 38,
+    MODE_RESERVED_39         = 39,
+    MODE_RESERVED_40         = 40,
+    MODE_ENGINE_START        = 41,
+    MODE_RESERVED_42         = 42
+  } MODE;
+
+  typedef enum LANDING_GEAR {
+    GEAR_UNDEFINED  = 0,
+    GEAR_DOWN       = 1,
+    GEAR_UP_TO_DOWN = 2,
+    GEAR_UP         = 3,
+    GEAR_DOWN_TO_UP = 4,
+    GEAR_HOLD       = 5,
+    GEAR_PACKED     = 6,
+    GEAR_PACKING    = 7,
+    GEAR_UNPACKING  = 8
+  } LANDING_GEAR;
 };
 
 class DataBroadcast {
