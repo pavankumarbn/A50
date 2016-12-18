@@ -18,7 +18,10 @@ SOURCES += \
     $$PWD/src/DJI_MOS.cpp \
     $$PWD/src/DJI_Test.cpp \
     $$PWD/src/DJI_MFIO.cpp \
-    $$PWD/src/DJI_Recorder.cpp
+    $$PWD/src/DJI_Recorder.cpp \
+    $$PWD/src/DJI_Assistant.cpp \
+    $$PWD/src/DJI_Database.cpp \
+    $$PWD/src/DJI_Broadcast.cpp
 
 HEADERS += \
     $$PWD/inc/DJI_MOC.h \
@@ -44,6 +47,10 @@ HEADERS += \
     $$PWD/inc/DJI_Sync.h \
     $$PWD/inc/DJI_Test.h \
     $$PWD/inc/DJI_MFIO.h \
-    $$PWD/inc/DJI_Recorder.h
+    $$PWD/inc/DJI_Recorder.h \
+    $$PWD/inc/DJI_Assistant.h \
+    $$PWD/inc/DJI_Database.h \
+    $$PWD/inc/DJI_Status.h \
+    $$PWD/inc/DJI_Broadcast.h
 
 INCLUDEPATH += $$PWD/inc

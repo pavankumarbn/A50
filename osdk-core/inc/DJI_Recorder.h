@@ -12,7 +12,7 @@ class Recorder {
     uint16_t len;
     uint8_t data[128];
   } Frame;
-#pragma pack
+#pragma pack()
  public:
   Recorder(CoreAPI* API = 0) : api(API) {}
 

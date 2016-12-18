@@ -61,7 +61,9 @@ class PackageBase {
 };
 
 template <uint32_t UID>
-class Package : public PackageBase {};
+class Package : public PackageBase {
+    
+};
 
 }  // onboardSDK
 }  // DJI

@@ -60,7 +60,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tbFlight">
            <attribute name="title">
@@ -114,7 +114,7 @@
                        <bool>true</bool>
                       </property>
                       <property name="currentIndex">
-                       <number>3</number>
+                       <number>6</number>
                       </property>
                       <item>
                        <property name="text">
@@ -133,7 +133,22 @@
                       </item>
                       <item>
                        <property name="text">
-                        <string>A3_V3.2</string>
+                        <string>A3_V3.2.11</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>A3_V3.2.14</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>A3_V3.2.20</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>A3_V3.2.20_test</string>
                        </property>
                       </item>
                      </widget>

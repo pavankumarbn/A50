@@ -67,9 +67,9 @@ void CoreAPI::unpackData(Header *protocolHeader) {
   unsigned short *enableFlag;
   serialDevice->lockMSG();
   pdata += 2;
-  enableFlag = (unsigned short *)pdata;
+  enableFlag             = (unsigned short *)pdata;
   broadcastData.dataFlag = *enableFlag;
-  size_t len = MSG_ENABLE_FLAG_LEN;
+  size_t len             = MSG_ENABLE_FLAG_LEN;
 
   //! @warning Change to const (+change interface for passData) in next
   //! release
@@ -137,7 +137,12 @@ void DJI::onboardSDK::CoreAPI::broadcast(Header *protocolHeader) {
     broadcastCallback.callback(this, protocolHeader,
                                broadcastCallback.userData);
   else {
-    unpackData(protocolHeader);
+    if (getSDKVersion() < MAKE_VERSION(3, 2, 20, 0))
+      unpackData(protocolHeader);
+    else
+      API_LOG(getDriver(), ERROR_LOG,
+              "Broadcast data decoder too old,Please use Class DataBroadcast "
+              "or Class DataSubscribe in DJI_Data.h to decode data.");
   }
 }
 #endif
@@ -163,10 +168,10 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
         if (protocolHeader->sessionID > 0) {
           buf[0] = buf[1] = 0;
           param.sessionID = protocolHeader->sessionID;
-          param.seqNum = protocolHeader->sequenceNumber;
-          param.encrypt = protocolHeader->enc;
-          param.buf = buf;
-          param.length = 2;
+          param.seqNum    = protocolHeader->sequenceNumber;
+          param.encrypt   = protocolHeader->enc;
+          param.buf       = buf;
+          param.length    = 2;
           ackInterface(&param);
         }
         break;
@@ -231,6 +236,8 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
                 pdata + 1);
         if (testCallback.callback)
           testCallback.callback(this, protocolHeader, testCallback.userData);
+      } break;
+      case CODE_SUBSCRIBE: {
       } break;
       default:
         API_LOG(serialDevice, STATUS_LOG, "Unknown BROADCAST command code\n");

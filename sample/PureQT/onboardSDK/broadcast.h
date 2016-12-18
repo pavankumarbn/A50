@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-#include "DJI_Data.h"
+#include "DJI_Broadcast.h"
+
 namespace Ui {
 class Broadcast;
 }
