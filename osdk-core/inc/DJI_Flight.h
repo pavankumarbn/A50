@@ -15,6 +15,7 @@
 
 namespace DJI {
 namespace onboardSDK {
+
 #pragma pack(1)
 
 typedef struct FlightData {
@@ -27,13 +28,12 @@ typedef struct FlightData {
 
 #pragma pack()
 
-//! Flight class encapsulates all flight control related functions provided by
-//! the DJI OnboardSDK.
-class Flight {
+class Control {
  public:
   typedef enum COMMAND {
-    COMMAND_TAKEOFF                = 1,
-    COMMAND_LANDING                = 2,
+    COMMAND_TAKEOFF = 1,
+    COMMAND_LANDING = 2,
+    //! @note independent mode COMMAND_CURSELOCK, cannot contorl through SDK
     COMMAND_CURSELOCK              = 5,
     COMMAND_GOHOME                 = 6,
     COMMAND_STARTMOTOR             = 7,
@@ -68,6 +68,72 @@ class Flight {
     ERROR_COMMAND_PACKED_MODE_NOT_SUPPORTED = 16
   } COMMAND_ERROR;
 
+  enum VerticalLogic {
+    VERTICAL_VELOCITY = 0x00,
+    VERTICAL_POSITION = 0x10,
+    VERTICAL_THRUST   = 0x20,
+  };
+
+  enum HorizontalLogic {
+    HORIZONTAL_ANGLE     = 0x00,
+    HORIZONTAL_VELOCITY  = 0x40,
+    HORIZONTAL_POSITION  = 0x80,
+    HORIZONTAL_PALSTANCE = 0xC0
+  };
+
+  enum YawLogic { YAW_ANGLE = 0x00, YAW_RATE = 0x08 };
+
+  enum HorizontalCoordinate {
+    HORIZONTAL_GROUND = 0x00,
+    HORIZONTAL_BODY   = 0x02
+  };
+
+  enum SmoothMode { SMOOTH_DISABLE = 0x00, SMOOTH_ENABLE = 0x01 };
+
+#pragma pack(1)
+  typedef struct FlightData {
+    uint8_t flag;
+    float32_t x;
+    float32_t y;
+    float32_t z;
+    float32_t yaw;
+  } FlightData;
+
+  typedef struct AdvancedFlightData {
+    uint8_t flag;
+    uint8_t advFlag;
+    float32_t x;
+    float32_t y;
+    float32_t z;
+    float32_t yaw;
+    float32_t xFeedforward;
+    float32_t yFeedforward;
+  } AdvancedFlightData;
+#pragma pack()
+
+ public:
+  Control(CoreAPI *API = 0);
+  void obtain();
+  void release();
+  void command();
+  void check();
+  void input(uint8_t flag, float32_t x, float32_t y, float32_t z, float32_t yaw,
+             float32_t xFeedforward = 0, float32_t yFeedforward = 0);
+  void emergencyBreak();
+
+ private:
+  void basic(FlightData *data);
+  void advanced(AdvancedFlightData *data);
+
+ private:
+  CoreAPI *api;
+};
+
+//! @attention stupid deep coupling class abandoned in V3.2.20
+//! Flight class encapsulates all flight control related functions provided by
+//! the DJI OnboardSDK.
+class Flight {
+ public:
   enum TASK  //! @note unused after 3.2.20
   { TASK_GOHOME  = 1,
     TASK_TAKEOFF = 4,
@@ -82,7 +148,7 @@ class Flight {
   enum HorizontalLogic {
     HORIZONTAL_ANGLE    = 0x00,
     HORIZONTAL_VELOCITY = 0x40,
-    HORIZONTAL_POSITION = 0X80,
+    HORIZONTAL_POSITION = 0x80,
   };
 
   enum YawLogic { YAW_ANGLE = 0x00, YAW_RATE = 0x08 };
@@ -97,7 +163,6 @@ class Flight {
   //! @version 3.1
   enum SmoothMode { SMOOTH_DISABLE = 0x00, SMOOTH_ENABLE = 0x01 };
 
-  //! @todo 3.2.20
   enum Status {
     STATUS_GROUND_STANDBY    = 1,
     STATUS_TAKE_OFF          = 2,
@@ -151,20 +216,28 @@ class Flight {
  public:
   Flight(CoreAPI *ControlAPI = 0);
 
+  //! @note old featuer delete later
+  //! @code
   void task(TASK taskname, CallBack TaskCallback = 0, UserData userData = 0);
   unsigned short task(TASK taskname, int timer);
   void setArm(bool enable, CallBack ArmCallback = 0, UserData userData = 0);
   unsigned short setArm(bool enable, int timer);
+  //! @endcode
+
   void control(uint8_t flag, float32_t x, float32_t y, float32_t z,
                float32_t yaw);  //! @deprecated This function will be
                                 //! deprecated, please use setMovementControl
                                 //! instead.
   void advancedControl();
+
   void setMovementControl(uint8_t flag, float32_t x, float32_t y, float32_t z,
                           float32_t yaw);
+
   void setFlight(FlightData *data);  //! @deprecated old interface. PLease use
                                      //! setMovementControl instead.
 
+  //! @note all feedback data please use DataBroadcast or Datasubscribe these
+  //! featuer will be delete later
   QuaternionData getQuaternion() const;
 
   EulerAngle getEulerAngle() const;

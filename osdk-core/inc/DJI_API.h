@@ -101,7 +101,8 @@ enum CMD_SET {
   SET_SYNC       = 0x04,
   SET_VIRTUALRC  = 0x05,
   SET_RECORDER   = 0x06,
-  SET_MFIO       = 0x09
+  SET_MFIO       = 0x09,
+  SET_SUBSCRIBE  = 0x0B
 };
 
 enum SYNC_CODE { CODE_SYNC_BROADCAST = 0x00 };
@@ -277,6 +278,8 @@ class CoreAPI {
   */
   unsigned short activate(ActivateData *data, int timeout);
 
+  //! @note move to DJI_FLIGHT.h class Control in V3.2.20
+ private:
   void setControl(bool enable, CallBack callback = 0, UserData userData = 0);
 
   /// Blocking API Control
@@ -294,6 +297,7 @@ class CoreAPI {
   */
   unsigned short setControl(bool enable, int timeout);
 
+ public:
   /// Activation Control
   /**
    * Get Activation information
@@ -303,6 +307,7 @@ class CoreAPI {
   /// Activation Control
   void setAccountData(const ActivateData &value);
 
+  //! @todo move to MOS
   void sendToMobile(uint8_t *data, uint8_t len, CallBack callback = 0,
                     UserData userData = 0);
 
@@ -325,13 +330,16 @@ class CoreAPI {
    * 10 - Battery Level\n
    * 11 - Control Information\n
    */
+  //! @todo move to DJI_Data.h class DataBroadcast;
   void setBroadcastFreq(uint8_t *dataLenIs16, CallBack callback = 0,
                         UserData userData = 0);
+  //! @todo move to DJI_Data.h class DataBroadcast;
   unsigned short setBroadcastFreq(uint8_t *dataLenIs16, int timeout);
 
   /**
    * Reset all broadcast frequencies to their default values
    */
+  //! @todo move to DJI_Data.h class DataBroadcast;
   void setBroadcastFreqDefaults();
 
   /**
@@ -346,11 +354,13 @@ class CoreAPI {
    * @todo
    * Implement high resolution timer to catch ACK timeout
    */
+  //! @todo move to DJI_Data.h class DataBroadcast;
   unsigned short setBroadcastFreqDefaults(int timeout);
 
   /*
    * Set all broadcast frequencies to zero. Only ACK data will stay on the line.
    */
+  //! @todo move to DJI_Data.h class DataBroadcast;
   void setBroadcastFreqToZero();
 
   /**

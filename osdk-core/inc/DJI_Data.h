@@ -28,14 +28,105 @@ class DataSubscribe {
   DataSubscribe(CoreAPI* API) : api(API) {}
 
  private:
-  void verify();
-  void subscribe();
-  void add();
-  void remove();
-  void updateFreq();
-  void pause();
-  void info();
-  void packageInfo();
+  typedef enum SUBSCRIBE_CODE {
+    CODE_SUBSCRIBE_VERSION_MATCH       = 0x00,
+    CODE_SUBSCRIBE_ADD_PACKAGE         = 0x01,
+    CODE_SUBSCRIBE_RESET               = 0x02,
+    CODE_SUBSCRIBE_REMOVE_PACKAGE      = 0x03,
+    CODE_SUBSCRIBE_UPDATE_PACKAGE_FREQ = 0X04,
+    CODE_SUBSCRIBE_PAUSE_RESUME        = 0x05,
+    CODE_SUBSCRIBE_GET_CONFIG          = 0x06
+  } SUBSCRIBE_CODE;
+
+  typedef enum RESULT_CODE {
+    RESULT_SUCESS                   = 0x00,
+    RESULT_INPUT_ILLEGAL            = 0x01,
+    RESULT_NEED_VERSION_MATCH       = 0x02,
+    RESULT_PACKAGE_OUT_OF_RANGE     = 0x03,
+    RESULT_PACKAGE_ALREADY_EXIST    = 0x04,
+    RESULT_PACKAGE_NOT_EXIST        = 0x05,
+    RESULT_ILLEGAL_FREQUENCY        = 0x06,
+    RESULT_PACKAGE_TOO_LARGE        = 0x07,
+    RESULT_PIPELINE_OVERFLOW        = 0x08,
+    RESULT_INTERNAL_ERROR_0X09      = 0x09,
+    RESULT_EMPTY_PACKAGE            = 0x20,
+    RESULT_INPUT_SEGMENTATION_FAULT = 0x21,
+    RESULT_ILLEGAL_UID              = 0x22,
+    RESULT_PERMISSION_DENY          = 0x23,
+    RESULT_MULTIPLE_SUBSCRIBE       = 0x24,
+    RESULT_SOUCE_DEVICE_OFFLINE     = 0x25,
+    RESULT_PAUSED                   = 0x48,
+    RESULT_RESUMED                  = 0x49,
+    RESULT_INTERNAL_ERROR_0X4A      = 0x4a,
+    RESULT_INTERNAL_ERROR_0X50      = 0x50,
+    RESULT_VERSION_VERSION_TOO_FAR  = 0x51,
+    RESULT_INTERNAL_ERROR_0XFF      = 0xFF
+  } GENERAL_RESULT_CODE;
+
+#pragma pack(1)
+  typedef uint32_t VersionData;
+  typedef struct SubscribeData {
+    uint8_t packageID;
+    uint16_t ferq;
+    uint8_t config;
+    uint8_t clauseNumber;
+    //! @note variable data add through memcpy
+    //! uint32_t* uidList;
+  } SubscribeData;
+#pragma pack()
+
+ public:
+  void verify() {
+    VersionData data = Data::DBVersion;
+    api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
+              CODE_SUBSCRIBE_VERSION_MATCH, &data, sizeof(data), 500, 2,
+              verifyCallback, this);
+  }
+  void subscribe(uint8_t id, uint16_t freq, uint8_t flag, uint8_t clauseNumber,
+                 uint32_t* uid) {
+    SubscribeData data;
+    data.packageID    = id;
+    data.ferq         = freq;
+    data.config       = flag;
+    data.clauseNumber = clauseNumber;
+    //    data.uidList                  = uid;
+    static const size_t bufferLen = 128;
+    uint8_t buffer[bufferLen];
+    size_t size = sizeof(SubscribeData) + sizeof(uint32_t) * clauseNumber;
+    if (size > bufferLen) {
+      API_LOG(api->getDriver(), ERROR_LOG,
+              "subscribe segementation overflow size %d , max %d", size,
+              bufferLen);
+    } else {
+      memcpy(buffer, (uint8_t*)&data, sizeof(data));
+      memcpy(buffer + sizeof(SubscribeData), uid,
+             sizeof(uint32_t) * clauseNumber);
+      api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
+                CODE_SUBSCRIBE_ADD_PACKAGE, buffer, size, 500, 1,
+                addPackageCallback, this);
+    }
+  }
+  void reset() {
+    uint8_t data = 0;
+    api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE, CODE_SUBSCRIBE_RESET,
+              &data, 0, 500, 1, resetCallback, this);
+  }
+  void remove(uint8_t packageID) {
+    uint8_t data = packageID;
+    api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
+              CODE_SUBSCRIBE_REMOVE_PACKAGE, &data, sizeof(data), 500, 1,
+              removeCallback, this);
+  }
+  void changeFreq(uint8_t packageID, uint16_t freq);
+  void pause(uint8_t packageID);
+  void resume(uint8_t packageID);
+  //  void getInfo();
+
+ public:
+  static void verifyCallback(CoreAPI* API, Header* header, UserData THIS);
+  static void addPackageCallback(CoreAPI* API, Header* header, UserData THIS);
+  static void resetCallback(CoreAPI* API, Header* header, UserData THIS);
+  static void removeCallback(CoreAPI* API, Header* header, UserData THIS);
 
  private:
   void verifyAuthorty();
@@ -55,9 +146,19 @@ class DataPublish {
 
 class PackageBase {
  public:
+  typedef void* PackageBuffer;
+  typedef void (*Callback)(DataSubscribe*, PackageBuffer, UserData);
+
+  typedef struct CallbackHandler {
+  } CallbackHandler;
+
  private:
-  uint32_t* uidList;
-  void* packagePtr;
+  void* memoryPoll;
+  CallbackHandler unpackHandler;
+  size16_t size;
+  size8_t number;
+  size8_t clauseNumber;
+  uint32_t* clauseUID;
 };
 
 template <uint32_t UID>

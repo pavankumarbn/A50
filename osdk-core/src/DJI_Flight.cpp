@@ -79,10 +79,10 @@ void Flight::control(uint8_t flag, float32_t x, float32_t y, float32_t z,
                      float32_t yaw) {
   FlightData data;
   data.flag = flag;
-  data.x = x;
-  data.y = y;
-  data.z = z;
-  data.yaw = yaw;
+  data.x    = x;
+  data.y    = y;
+  data.z    = z;
+  data.yaw  = yaw;
   setFlight(&data);
 }
 
@@ -90,10 +90,10 @@ void Flight::setMovementControl(uint8_t flag, float32_t x, float32_t y,
                                 float32_t z, float32_t yaw) {
   FlightData data;
   data.flag = flag;
-  data.x = x;
-  data.y = y;
-  data.z = z;
-  data.yaw = yaw;
+  data.x    = x;
+  data.y    = y;
+  data.z    = z;
+  data.yaw  = yaw;
   api->send(0, encrypt, SET_CONTROL, CODE_CONTROL, &data, sizeof(FlightData));
 }
 
@@ -226,18 +226,18 @@ EulerianAngle Flight::toEulerianAngle(QuaternionData data) {
   EulerianAngle ans;
 
   double q2sqr = data.q2 * data.q2;
-  double t0 = -2.0 * (q2sqr + data.q3 * data.q3) + 1.0;
-  double t1 = +2.0 * (data.q1 * data.q2 + data.q0 * data.q3);
-  double t2 = -2.0 * (data.q1 * data.q3 - data.q0 * data.q2);
-  double t3 = +2.0 * (data.q2 * data.q3 + data.q0 * data.q1);
-  double t4 = -2.0 * (data.q1 * data.q1 + q2sqr) + 1.0;
+  double t0    = -2.0 * (q2sqr + data.q3 * data.q3) + 1.0;
+  double t1    = +2.0 * (data.q1 * data.q2 + data.q0 * data.q3);
+  double t2    = -2.0 * (data.q1 * data.q3 - data.q0 * data.q2);
+  double t3    = +2.0 * (data.q2 * data.q3 + data.q0 * data.q1);
+  double t4    = -2.0 * (data.q1 * data.q1 + q2sqr) + 1.0;
 
   t2 = t2 > 1.0 ? 1.0 : t2;
   t2 = t2 < -1.0 ? -1.0 : t2;
 
   ans.pitch = asin(t2);
-  ans.roll = atan2(t3, t4);
-  ans.yaw = atan2(t1, t0);
+  ans.roll  = atan2(t3, t4);
+  ans.yaw   = atan2(t1, t0);
 
   return ans;
 }
@@ -246,8 +246,8 @@ EulerAngle Flight::toEulerAngle(QuaternionData quaternionData) {
   EulerAngle ans;
 
   double q2sqr = quaternionData.q2 * quaternionData.q2;
-  double t0 = -2.0 * (q2sqr + quaternionData.q3 * quaternionData.q3) + 1.0;
-  double t1 = +2.0 * (quaternionData.q1 * quaternionData.q2 +
+  double t0    = -2.0 * (q2sqr + quaternionData.q3 * quaternionData.q3) + 1.0;
+  double t1    = +2.0 * (quaternionData.q1 * quaternionData.q2 +
                       quaternionData.q0 * quaternionData.q3);
   double t2 = -2.0 * (quaternionData.q1 * quaternionData.q3 -
                       quaternionData.q0 * quaternionData.q2);
@@ -259,8 +259,8 @@ EulerAngle Flight::toEulerAngle(QuaternionData quaternionData) {
   t2 = t2 < -1.0 ? -1.0 : t2;
 
   ans.pitch = asin(t2);
-  ans.roll = atan2(t3, t4);
-  ans.yaw = atan2(t1, t0);
+  ans.roll  = atan2(t3, t4);
+  ans.yaw   = atan2(t1, t0);
 
   return ans;
 }
@@ -279,4 +279,51 @@ QuaternionData Flight::toQuaternion(EulerianAngle eulerAngleData) {
   ans.q2 = t2 * t5 * t0 + t3 * t4 * t1;
   ans.q3 = t2 * t4 * t1 - t3 * t5 * t0;
   return ans;
+}
+
+void Control::input(uint8_t flag, float32_t x, float32_t y, float32_t z,
+                    float32_t yaw, float32_t xFeedforward,
+                    float32_t yFeedforward) {
+  if (xFeedforward == 0 && yFeedforward == 0) {
+    FlightData data;
+    data.flag = flag;
+    data.x    = x;
+    data.y    = y;
+    data.z    = z;
+    data.yaw  = yaw;
+    basic(&data);
+  } else {
+    AdvancedFlightData data;
+    data.flag         = flag;
+    data.advFlag      = 0x01;
+    data.x            = x;
+    data.y            = y;
+    data.z            = z;
+    data.yaw          = yaw;
+    data.xFeedforward = xFeedforward;
+    data.yFeedforward = yFeedforward;
+    advanced(&data);
+  }
+}
+
+void Control::emergencyBreak() {
+  AdvancedFlightData data;
+  data.flag         = 0x4B;
+  data.advFlag      = 0x02;
+  data.x            = 0;
+  data.y            = 0;
+  data.z            = 0;
+  data.yaw          = 0;
+  data.xFeedforward = 0;
+  data.yFeedforward = 0;
+  advanced(&data);
+}
+
+void Control::basic(Control::FlightData *data) {
+  api->send(0, encript, SET_CONTROL, CODE_CONTROL, &data, sizeof(FlightData));
+}
+
+void Control::advanced(Control::AdvancedFlightData *data) {
+  api->send(0, encript, SET_CONTROL, CODE_CONTROL, &data,
+            sizeof(AdvancedFlightData));
 }
