@@ -40,14 +40,29 @@ unsigned char getCmdCode(Header *protocolHeader) {
 }
 
 BroadcastData DJI::onboardSDK::CoreAPI::getBroadcastData() const {
+  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+    API_LOG(api->getDriver(), ERROR_LOG,
+            "Flight class abandoned please port your code to class Control");
+    return;
+  }
   return broadcastData;
 }
 
 BatteryData DJI::onboardSDK::CoreAPI::getBatteryCapacity() const {
+  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+    API_LOG(api->getDriver(), ERROR_LOG,
+            "Flight class abandoned please port your code to class Control");
+    return;
+  }
   return broadcastData.battery;
 }
 
 CtrlInfoData DJI::onboardSDK::CoreAPI::getCtrlInfo() const {
+  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+    API_LOG(api->getDriver(), ERROR_LOG,
+            "Flight class abandoned please port your code to class Control");
+    return;
+  }
   return broadcastData.ctrlInfo;
 }
 

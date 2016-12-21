@@ -65,12 +65,22 @@ unsigned short Flight::task(TASK taskname, int timeout) {
 }
 
 void Flight::setArm(bool enable, CallBack ArmCallback, UserData userData) {
+  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+    API_LOG(api->getDriver(), ERROR_LOG,
+            "Flight class abandoned please port your code to class Control");
+    return;
+  }
   uint8_t data = enable ? 1 : 0;
   api->send(2, encrypt, SET_CONTROL, CODE_SETARM, &data, 1, 0, 1,
             ArmCallback ? ArmCallback : Flight::armCallback, userData);
 }
 
 unsigned short Flight::setArm(bool enable, int timeout) {
+  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+    API_LOG(api->getDriver(), ERROR_LOG,
+            "Flight class abandoned please port your code to class Control");
+    return;
+  }
   uint8_t data = enable ? 1 : 0;
   api->send(2, encrypt, SET_CONTROL, CODE_SETARM, &data, 1, 0, 1, 0, 0);
 
@@ -303,6 +313,14 @@ void Control::release(CallBack callback, UserData userData) {
             userData);
 }
 
+void Control::command(Control::COMMAND cmd, CallBack callback,
+                      UserData userData) {
+  uint8_t data = cmd;
+  api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_TASK, &data,
+            sizeof(data), 500, 2, callback ? callback : commandCallback,
+            userData);
+}
+
 void Control::input(uint8_t flag, float32_t x, float32_t y, float32_t z,
                     float32_t yaw, float32_t xFeedforward,
                     float32_t yFeedforward) {
@@ -392,6 +410,100 @@ void Control::setControlCallback(CoreAPI *api, Header *protocolHeader,
         API_LOG(api->getDriver(), ERROR_LOG, "While calling this function");
       }
       break;
+  }
+}
+
+void Control::commandCallback(CoreAPI *api, Header *protocolHeader,
+                              UserData userData __UNUSED) {
+  unsigned short ack_data;
+  if (protocolHeader->length - EXC_DATA_SIZE <= 2) {
+    memcpy((unsigned char *)&ack_data,
+           ((unsigned char *)protocolHeader) + sizeof(Header),
+           (protocolHeader->length - EXC_DATA_SIZE));
+    switch (ack_data) {
+      case ERROR_COMMAND_NONE:
+        API_LOG(api->getDriver(), STATUS_LOG, "successful,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_MOTOR_ON:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_MOTOR_ON,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_MOTOR_OFF:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_MOTOR_OFF,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_IN_AIR:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_IN_AIR,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_NOT_IN_AIR:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_NOT_IN_AIR,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_NO_HOMEPOINT:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_NO_HOMEPOINT,%d\n",
+                ack_data);
+        break;
+      case ERROR_COMMAND_BAD_GPS:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_BAD_GPS,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_IN_SIMULATOR:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_IN_SIMULATOR,%d\n",
+                ack_data);
+        break;
+      case ERROR_COMMAND_ALREADY_RUNNING:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_ALREADY_RUNNING,%d\n",
+                ack_data);
+        break;
+      case ERROR_COMMAND_NOT_RUNNING:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_NOT_RUNNING,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_INVAILD:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_INVAILD,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_NO_LANDING_GEAR:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_NO_LANDING_GEAR,%d\n",
+                ack_data);
+        break;
+      case ERROR_COMMAND_GIMBAL_MOUNTED:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_GIMBAL_MOUNTED,%d\n",
+                ack_data);
+        break;
+      case ERROR_COMMAND_BAD_SENSOR:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_BAD_SENSOR,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_ALREADY_PACKED:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_ALREADY_PACKED,%d\n",
+                ack_data);
+        break;
+      case ERROR_COMMAND_NO_PACKED:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command ERROR_COMMAND_NO_PACKED,%d\n", ack_data);
+        break;
+      case ERROR_COMMAND_PACKED_MODE_NOT_SUPPORTED:
+        API_LOG(
+            api->getDriver(), STATUS_LOG,
+            "fail to run command ERROR_COMMAND_PACKED_MODE_NOT_SUPPORTED,%d\n",
+            ack_data);
+        break;
+      default:
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "fail to run command Unknown Error,%d\n", ack_data);
+    }
+  } else {
+    API_LOG(api->getDriver(), ERROR_LOG,
+            "ACK is exception,session id %d,sequence %d\n",
+            protocolHeader->sessionID, protocolHeader->sequenceNumber);
   }
 }
 

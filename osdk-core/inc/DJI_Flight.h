@@ -115,11 +115,7 @@ class Control {
   Control(CoreAPI *API = 0);
   void obtain(CallBack callback = 0, UserData userData = 0);
   void release(CallBack callback = 0, UserData userData = 0);
-  void command(COMMAND cmd, CallBack callback = 0, UserData userData = 0) {
-    uint8_t data = cmd;
-    api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_TASK, &data,
-              sizeof(data), 500, 2, CoreAPI::setControlCallback);
-  }
+  void command(COMMAND cmd, CallBack callback = 0, UserData userData = 0);
   void input(uint8_t flag, float32_t x, float32_t y, float32_t z, float32_t yaw,
              float32_t xFeedforward = 0, float32_t yFeedforward = 0);
   void emergencyBreak();
@@ -127,6 +123,8 @@ class Control {
  public:
   static void setControlCallback(CoreAPI *api, Header *protocolHeader,
                                  UserData userData);
+  static void commandCallback(CoreAPI *api, Header *protocolHeader,
+                              UserData userData);
 
  private:
   void basic(FlightData *data);
