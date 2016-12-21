@@ -444,6 +444,7 @@ class CoreAPI {
                                UserData userData = 0);
   static void getDroneVersionCallback(CoreAPI *api, Header *protocolHeader,
                                       UserData userData = 0);
+  //! @todo move to Controlh
   static void setControlCallback(CoreAPI *api, Header *protocolHeader,
                                  UserData userData = 0);
   static void sendToMobileCallback(CoreAPI *api, Header *protocolHeader,
@@ -562,47 +563,6 @@ class CoreAPI {
   //} //! @todo unify
   /**Get broadcasted data values from flight controller.*/
   // {
-  class Data {
-   public:
-    typedef struct TimeStamp {
-      uint32_t ms;
-      uint32_t ns;
-    } TimeStamp;
-
-    typedef struct DataFrame {
-      TimeStamp time;
-      size_t len;
-      uint8_t *buf;
-    } DataFrame;
-
-    struct DataInfo;
-
-    typedef struct DataItem {
-      struct DataInfo *info;
-      bool sync;
-      uint8_t *buf;
-      DataFrame *frame;
-    } DataItem;
-
-    typedef struct DataInfo {
-      uint32_t UID;
-      size_t len;
-      size_t recved;
-      uint32_t freq;
-      //! @todo loop buffer
-      DataItem *indexPoll;
-      size8_t indexSize;
-    } DataInfo;
-
-   public:
-    Data(CoreAPI *API = 0) : api(API) {}
-
-   private:
-    CoreAPI *api;
-    DataInfo *info;
-    DataFrame *framePoll;
-  };
-  Data SDKData;
 
  public:
   /// Activation Control
@@ -661,9 +621,10 @@ class CoreAPI {
   void callApp(SDKFilter *p_filter);
   void storeData(SDKFilter *p_filter, unsigned char in_data);
 
- public:
+ private:
   HardDriver *serialDevice;
 
+ public:
   void setTestCallback(const CallBackHandler &value);
 
   VersionData getVersionData() const;

@@ -234,6 +234,7 @@ class DJIonboardSDK : public QMainWindow {
   QByteArray *key;
 
   Flight *flight;
+  Control *control;
   uint8_t flightFlag;
   float32_t flightX;
   float32_t flightY;

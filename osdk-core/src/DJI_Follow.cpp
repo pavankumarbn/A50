@@ -21,13 +21,13 @@ Follow::Follow(CoreAPI *ControlAPI) {
 }
 
 void Follow::resetData() {
-  followData.mode = MODE_RELATIVE;
-  followData.yaw = YAW_TOTARGET;
-  followData.target.latitude = api->getBroadcastData().pos.latitude;
+  followData.mode             = MODE_RELATIVE;
+  followData.yaw              = YAW_TOTARGET;
+  followData.target.latitude  = api->getBroadcastData().pos.latitude;
   followData.target.longitude = api->getBroadcastData().pos.longitude;
-  followData.target.height = api->getBroadcastData().pos.altitude;
-  followData.target.angle = 0;
-  followData.sensitivity = 1;
+  followData.target.height    = api->getBroadcastData().pos.altitude;
+  followData.target.angle     = 0;
+  followData.sensitivity      = 1;
 }
 
 void Follow::start(FollowData *Data, CallBack callback, UserData userData) {
@@ -48,9 +48,9 @@ MissionACK Follow::start(FollowData *Data, int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_FOLLOW_START, &followData,
             sizeof(followData), 500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
@@ -66,9 +66,9 @@ MissionACK Follow::stop(int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_FOLLOW_STOP, &zero, sizeof(zero), 500,
             2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
@@ -85,9 +85,9 @@ MissionACK Follow::pause(bool isPause, int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_FOLLOW_SETPAUSE, &followData,
             sizeof(followData), 500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
@@ -100,10 +100,10 @@ void Follow::updateTarget(FollowTarget target) {
 
 void Follow::updateTarget(float64_t latitude, float64_t longitude,
                           uint16_t height, uint16_t angle) {
-  followData.target.latitude = latitude;
+  followData.target.latitude  = latitude;
   followData.target.longitude = longitude;
-  followData.target.height = height;
-  followData.target.angle = angle;
+  followData.target.height    = height;
+  followData.target.angle     = angle;
   api->send(0, encrypt, SET_MISSION, CODE_FOLLOW_TARGET, &(followData.target),
             sizeof(FollowTarget));
 }

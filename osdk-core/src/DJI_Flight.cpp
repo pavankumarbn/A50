@@ -36,6 +36,12 @@ void Flight::setSimulating(bool value) { simulating = value; }
 #endif  // USE_SIMULATION
 
 void Flight::task(TASK taskname, CallBack TaskCallback, UserData userData) {
+  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+    API_LOG(api->getDriver(), ERROR_LOG,
+            "Flight class abandoned please port your code to class Control");
+    return;
+  }
+
   taskData.cmdData = taskname;
   taskData.cmdSequence++;
 
@@ -51,9 +57,9 @@ unsigned short Flight::task(TASK taskname, int timeout) {
   api->send(2, encrypt, SET_CONTROL, CODE_TASK, (unsigned char *)&taskData,
             sizeof(taskData), 100, 3, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.simpleACK;
 }
@@ -68,9 +74,9 @@ unsigned short Flight::setArm(bool enable, int timeout) {
   uint8_t data = enable ? 1 : 0;
   api->send(2, encrypt, SET_CONTROL, CODE_SETARM, &data, 1, 0, 1, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.simpleACK;
 }
@@ -281,6 +287,22 @@ QuaternionData Flight::toQuaternion(EulerianAngle eulerAngleData) {
   return ans;
 }
 
+Control::Control(CoreAPI *API) : api(API) {}
+
+void Control::obtain(CallBack callback, UserData userData) {
+  unsigned char data = 1;
+  api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL, &data, 1,
+            500, 2, callback ? callback : Control::setControlCallback,
+            userData);
+}
+
+void Control::release(CallBack callback, UserData userData) {
+  unsigned char data = 1;
+  api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL, &data, 1,
+            500, 2, callback ? callback : Control::setControlCallback,
+            userData);
+}
+
 void Control::input(uint8_t flag, float32_t x, float32_t y, float32_t z,
                     float32_t yaw, float32_t xFeedforward,
                     float32_t yFeedforward) {
@@ -319,11 +341,66 @@ void Control::emergencyBreak() {
   advanced(&data);
 }
 
+void Control::setControlCallback(CoreAPI *api, Header *protocolHeader,
+                                 UserData userData __UNUSED) {
+  unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
+  unsigned char data      = 0x1;
+
+  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack_data)) {
+    memcpy((unsigned char *)&ack_data,
+           ((unsigned char *)protocolHeader) + sizeof(Header),
+           (protocolHeader->length - EXC_DATA_SIZE));
+  } else {
+    API_LOG(api->getDriver(), ERROR_LOG,
+            "ACK is exception, session id %d,sequence %d\n",
+            protocolHeader->sessionID, protocolHeader->sequenceNumber);
+  }
+
+  switch (ack_data) {
+    case ACK_SETCONTROL_ERROR_MODE:
+      if (api->getSDKVersion() != versionA3_32) {
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "Obtain control failed: switch to F mode\n");
+      } else {
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "Obtain control failed: switch to P mode\n");
+      }
+      break;
+    case ACK_SETCONTROL_RELEASE_SUCCESS:
+      API_LOG(api->getDriver(), STATUS_LOG, "Released control successfully\n");
+      break;
+    case ACK_SETCONTROL_OBTAIN_SUCCESS:
+      API_LOG(api->getDriver(), STATUS_LOG, "Obtained control successfully\n");
+      break;
+    case ACK_SETCONTROL_OBTAIN_RUNNING:
+      API_LOG(api->getDriver(), STATUS_LOG, "Obtain control running\n");
+      api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL,
+                &data, sizeof(data), 500, 2, CoreAPI::setControlCallback);
+      break;
+    case ACK_SETCONTROL_RELEASE_RUNNING:
+      API_LOG(api->getDriver(), STATUS_LOG, "Release control running\n");
+      data = 0;
+      api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL,
+                &data, sizeof(data), 500, 2, CoreAPI::setControlCallback);
+      break;
+    case ACK_SETCONTROL_IOC:
+      API_LOG(api->getDriver(), STATUS_LOG,
+              "IOC mode opening can not obtain control\n");
+      break;
+    default:
+      if (!api->decodeACKStatus(ack_data)) {
+        API_LOG(api->getDriver(), ERROR_LOG, "While calling this function");
+      }
+      break;
+  }
+}
+
 void Control::basic(Control::FlightData *data) {
-  api->send(0, encript, SET_CONTROL, CODE_CONTROL, &data, sizeof(FlightData));
+  api->send(0, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_CONTROL, &data,
+            sizeof(FlightData));
 }
 
 void Control::advanced(Control::AdvancedFlightData *data) {
-  api->send(0, encript, SET_CONTROL, CODE_CONTROL, &data,
+  api->send(0, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_CONTROL, &data,
             sizeof(AdvancedFlightData));
 }

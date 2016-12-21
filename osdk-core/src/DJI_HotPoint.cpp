@@ -25,15 +25,15 @@ HotPoint::HotPoint(CoreAPI *ControlAPI) {
 void HotPoint::initData() {
   hotPointData.version = 0;
 
-  hotPointData.height = api->getBroadcastData().pos.altitude;
+  hotPointData.height    = api->getBroadcastData().pos.altitude;
   hotPointData.longitude = api->getBroadcastData().pos.longitude;
-  hotPointData.latitude = api->getBroadcastData().pos.latitude;
+  hotPointData.latitude  = api->getBroadcastData().pos.latitude;
 
-  hotPointData.radius = 10;
-  hotPointData.yawRate = 15;
-  hotPointData.clockwise = 1;
+  hotPointData.radius     = 10;
+  hotPointData.yawRate    = 15;
+  hotPointData.clockwise  = 1;
   hotPointData.startPoint = HotPoint::VIEW_NEARBY;
-  hotPointData.yawMode = HotPoint::YAW_INSIDE;
+  hotPointData.yawMode    = HotPoint::YAW_INSIDE;
 }
 
 void HotPoint::start(CallBack callback, UserData userData) {
@@ -46,9 +46,9 @@ HotPointStartACK HotPoint::start(int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_START, &hotPointData,
             sizeof(hotPointData), 500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.hotpointStartACK;
 }
@@ -64,9 +64,9 @@ MissionACK HotPoint::stop(int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_STOP, &zero, sizeof(zero),
             500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
@@ -83,30 +83,30 @@ MissionACK HotPoint::pause(bool isPause, int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_SETPAUSE, &data,
             sizeof(data), 500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
 
 void HotPoint::updateYawRate(HotPoint::YawRate &Data, CallBack callback,
                              UserData userData) {
-  hotPointData.yawRate = Data.yawRate;
+  hotPointData.yawRate   = Data.yawRate;
   hotPointData.clockwise = Data.clockwise ? 1 : 0;
   api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_YAWRATE, &Data, sizeof(Data),
             500, 2, callback ? callback : missionCallback, userData);
 }
 
 MissionACK HotPoint::updateYawRate(HotPoint::YawRate &Data, int timeout) {
-  hotPointData.yawRate = Data.yawRate;
+  hotPointData.yawRate   = Data.yawRate;
   hotPointData.clockwise = Data.clockwise ? 1 : 0;
   api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_YAWRATE, &Data, sizeof(Data),
             500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
@@ -114,7 +114,7 @@ MissionACK HotPoint::updateYawRate(HotPoint::YawRate &Data, int timeout) {
 void HotPoint::updateYawRate(float32_t yawRate, bool isClockwise,
                              CallBack callback, UserData userData) {
   YawRate p;
-  p.yawRate = yawRate;
+  p.yawRate   = yawRate;
   p.clockwise = isClockwise ? 1 : 0;
   updateYawRate(p, callback, userData);
 }
@@ -130,9 +130,9 @@ MissionACK HotPoint::updateRadius(float32_t meter, int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_RADIUS, &meter,
             sizeof(meter), 500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
@@ -148,9 +148,9 @@ MissionACK HotPoint::resetYaw(int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_SETYAW, &zero, sizeof(zero),
             500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
@@ -166,29 +166,29 @@ MissionACK HotPoint::readData(int timeout) {
   api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_LOAD, &zero, sizeof(zero),
             500, 2, 0, 0);
 
-  api->serialDevice->lockACK();
-  api->serialDevice->wait(timeout);
-  api->serialDevice->freeACK();
+  api->getDriver()->lockACK();
+  api->getDriver()->wait(timeout);
+  api->getDriver()->freeACK();
 
   return api->missionACKUnion.missionACK;
 }
 
 void HotPoint::setData(const HotPointData &value) {
-  hotPointData = value;
+  hotPointData         = value;
   hotPointData.version = 0;
 }
 
 void HotPoint::setHotPoint(float64_t longtitude, float64_t latitude,
                            float64_t altitude) {
   hotPointData.longitude = longtitude;
-  hotPointData.latitude = latitude;
-  hotPointData.height = altitude;
+  hotPointData.latitude  = latitude;
+  hotPointData.height    = altitude;
 }
 
 void HotPoint::setHotPoint(GPSPositionData gps) {
   hotPointData.longitude = gps.longitude;
-  hotPointData.latitude = gps.latitude;
-  hotPointData.height = gps.altitude;
+  hotPointData.latitude  = gps.latitude;
+  hotPointData.height    = gps.altitude;
 }
 
 void HotPoint::setRadius(float64_t meter) { hotPointData.radius = meter; }
