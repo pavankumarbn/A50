@@ -6200,6 +6200,16 @@
             </item>
            </layout>
           </widget>
+          <widget class="QWidget" name="tab_control">
+           <attribute name="title">
+            <string>Control</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <widget class="ControlPannel" name="widget_control" native="true"/>
+            </item>
+           </layout>
+          </widget>
           <widget class="QWidget" name="tab">
            <attribute name="title">
             <string>Test</string>
@@ -6337,6 +6347,12 @@
    <class>Broadcast</class>
    <extends>QWidget</extends>
    <header>broadcast.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ControlPannel</class>
+   <extends>QWidget</extends>
+   <header>controlpannel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

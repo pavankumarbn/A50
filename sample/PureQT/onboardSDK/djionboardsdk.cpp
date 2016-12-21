@@ -1098,6 +1098,7 @@ void DJIonboardSDK::initSDK() {
   ui->widget_test->setAPI(api);
   ui->widget_broadcast->setAPI(api);
   ui->widget_mfio->setMFIO(mfio);
+  ui->widget_control->setAPI(api);
 
   refreshPort();
   setPort();
@@ -1140,15 +1141,18 @@ void DJIonboardSDK::on_cb_core_mechine_activated(int index) {
       versionIndex = 2;
       break;
     case 3:
+    case 4:
       api->setVersion(versionA3_32);
       versionIndex = 3;
       break;
-    case 4:
+    case 5:
       api->setVersion(version_3_2_20_release);
       versionIndex = 3;
-    case 5:
+      break;
+    case 6:
       api->setVersion(version_3_2_20_test);
       versionIndex = 3;
+      break;
   }
   functionAlloc();
 }

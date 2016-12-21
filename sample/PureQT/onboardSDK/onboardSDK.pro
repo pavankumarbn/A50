@@ -161,6 +161,7 @@ include( ../../../platform/qt/QonboardSDK.pri))
 #include( ../../../osdk-core/osdk-core.pri)
 include( ../../../test/test-core/test-base.pri)
 include(DataPannel.pri)
+include(ControlPannel.pri)
 }
 }
 
@@ -177,7 +178,8 @@ RESOURCES +=
 
 DISTFILES += \
     CMakeLists.txt \
-    DataPannel.pri
+    DataPannel.pri \
+    ControlPannel.pri
 
 
 message("finish compile")

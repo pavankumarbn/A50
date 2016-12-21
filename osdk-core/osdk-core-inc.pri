@@ -22,6 +22,11 @@ HEADERS += \
     $$PWD/inc/DJI_Sync.h \
     $$PWD/inc/DJI_Test.h \
     $$PWD/inc/DJI_MFIO.h \
-    $$PWD/inc/DJI_Recorder.h
+    $$PWD/inc/DJI_Recorder.h \
+    $$PWD/inc/DJI_Assistant.h \
+    $$PWD/inc/DJI_Database.h \
+    $$PWD/inc/DJI_Status.h \
+    $$PWD/inc/DJI_Broadcast.h \
+    $$PWD/inc/dbauto.h
 
 INCLUDEPATH += $$PWD/inc

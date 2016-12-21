@@ -28,6 +28,7 @@ typedef struct FlightData {
 
 #pragma pack()
 
+//! @todo move to DJI_Control.h
 class Control {
  public:
   typedef enum COMMAND {
@@ -113,12 +114,15 @@ class Control {
 
  public:
   Control(CoreAPI *API = 0);
+  CoreAPI *getApi() const;
+  void setAPI(CoreAPI *value);
+
   void obtain(CallBack callback = 0, UserData userData = 0);
   void release(CallBack callback = 0, UserData userData = 0);
   void command(COMMAND cmd, CallBack callback = 0, UserData userData = 0);
   void input(uint8_t flag, float32_t x, float32_t y, float32_t z, float32_t yaw,
              float32_t xFeedforward = 0, float32_t yFeedforward = 0);
-  void emergencyBreak();
+  void emergencyBrake();
 
  public:
   static void setControlCallback(CoreAPI *api, Header *protocolHeader,
@@ -139,10 +143,8 @@ class Control {
 //! the DJI OnboardSDK.
 class Flight {
  public:
-  enum TASK  //! @note unused after 3.2.20
-  { TASK_GOHOME  = 1,
-    TASK_TAKEOFF = 4,
-    TASK_LANDING = 6 };
+  //! @note unused after 3.2.20
+  enum TASK { TASK_GOHOME = 1, TASK_TAKEOFF = 4, TASK_LANDING = 6 };
 
   enum VerticalLogic {
     VERTICAL_VELOCITY = 0x00,

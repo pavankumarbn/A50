@@ -36,7 +36,7 @@ void Flight::setSimulating(bool value) { simulating = value; }
 #endif  // USE_SIMULATION
 
 void Flight::task(TASK taskname, CallBack TaskCallback, UserData userData) {
-  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+  if (api->getSDKVersion() < MAKE_VERSION(3, 2, 20, 0)) {
     API_LOG(api->getDriver(), ERROR_LOG,
             "Flight class abandoned please port your code to class Control");
     return;
@@ -65,7 +65,7 @@ unsigned short Flight::task(TASK taskname, int timeout) {
 }
 
 void Flight::setArm(bool enable, CallBack ArmCallback, UserData userData) {
-  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+  if (api->getSDKVersion() < MAKE_VERSION(3, 2, 20, 0)) {
     API_LOG(api->getDriver(), ERROR_LOG,
             "Flight class abandoned please port your code to class Control");
     return;
@@ -76,10 +76,10 @@ void Flight::setArm(bool enable, CallBack ArmCallback, UserData userData) {
 }
 
 unsigned short Flight::setArm(bool enable, int timeout) {
-  if (api->getSDKVersion() > MAKE_VERSION(3, 2, 20, 0)) {
+  if (api->getSDKVersion() < MAKE_VERSION(3, 2, 20, 0)) {
     API_LOG(api->getDriver(), ERROR_LOG,
             "Flight class abandoned please port your code to class Control");
-    return;
+    return 255;
   }
   uint8_t data = enable ? 1 : 0;
   api->send(2, encrypt, SET_CONTROL, CODE_SETARM, &data, 1, 0, 1, 0, 0);
@@ -346,7 +346,7 @@ void Control::input(uint8_t flag, float32_t x, float32_t y, float32_t z,
   }
 }
 
-void Control::emergencyBreak() {
+void Control::emergencyBrake() {
   AdvancedFlightData data;
   data.flag         = 0x4B;
   data.advFlag      = 0x02;
@@ -516,3 +516,7 @@ void Control::advanced(Control::AdvancedFlightData *data) {
   api->send(0, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_CONTROL, &data,
             sizeof(AdvancedFlightData));
 }
+
+void Control::setAPI(CoreAPI *value) { api = value; }
+
+CoreAPI *Control::getApi() const { return api; }
