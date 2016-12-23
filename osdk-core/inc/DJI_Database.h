@@ -235,12 +235,13 @@ typedef struct DataClauseInfo {
   uint16_t freq;  //! @note max freq in Hz
   size8_t size;
   UserData userMethod;
-  // char brief[64];
+  //  char brief[64];
 } DataClauseInfo;
 
 //! @note dynamic linkage
 extern const DataClauseInfo DataBase[];
 extern const uint32_t DBVersion;
+extern const size_t toaltalClauseNumber;
 
 //! @note static linkage
 // clang-format off

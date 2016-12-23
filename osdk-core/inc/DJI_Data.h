@@ -12,20 +12,20 @@ namespace onboardSDK {
 
 class DataSubscribe {
  public:
-  class DataClause {
-   public:
-    void* getPtr() const;
-    void setPtr(void* value);
+  //  class DataClause {
+  //   public:
+  //    void* getPtr() const;
+  //    void setPtr(void* value);
 
-    void* ptr;
+  //    void* ptr;
 
-   public:
-    DataClause(void* PTR) : ptr(PTR) {}
-  };
+  //   public:
+  //    DataClause(void* PTR) : ptr(PTR) {}
+  //  };
 
  public:
- public:
-  DataSubscribe(CoreAPI* API) : api(API) {}
+  DataSubscribe(CoreAPI* API = 0) : api(API) {}
+  void setAPI(CoreAPI* value);
 
  private:
   typedef enum SUBSCRIBE_CODE {
@@ -76,47 +76,11 @@ class DataSubscribe {
 #pragma pack()
 
  public:
-  void verify() {
-    VersionData data = Data::DBVersion;
-    api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
-              CODE_SUBSCRIBE_VERSION_MATCH, &data, sizeof(data), 500, 2,
-              verifyCallback, this);
-  }
+  void verify(CallBack callback = 0, UserData userData = 0);
   void subscribe(uint8_t id, uint16_t freq, uint8_t flag, uint8_t clauseNumber,
-                 uint32_t* uid) {
-    SubscribeData data;
-    data.packageID    = id;
-    data.ferq         = freq;
-    data.config       = flag;
-    data.clauseNumber = clauseNumber;
-    //    data.uidList                  = uid;
-    static const size_t bufferLen = 128;
-    uint8_t buffer[bufferLen];
-    size_t size = sizeof(SubscribeData) + sizeof(uint32_t) * clauseNumber;
-    if (size > bufferLen) {
-      API_LOG(api->getDriver(), ERROR_LOG,
-              "subscribe segementation overflow size %d , max %d", size,
-              bufferLen);
-    } else {
-      memcpy(buffer, (uint8_t*)&data, sizeof(data));
-      memcpy(buffer + sizeof(SubscribeData), uid,
-             sizeof(uint32_t) * clauseNumber);
-      api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
-                CODE_SUBSCRIBE_ADD_PACKAGE, buffer, size, 500, 1,
-                addPackageCallback, this);
-    }
-  }
-  void reset() {
-    uint8_t data = 0;
-    api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE, CODE_SUBSCRIBE_RESET,
-              &data, 0, 500, 1, resetCallback, this);
-  }
-  void remove(uint8_t packageID) {
-    uint8_t data = packageID;
-    api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
-              CODE_SUBSCRIBE_REMOVE_PACKAGE, &data, sizeof(data), 500, 1,
-              removeCallback, this);
-  }
+                 uint32_t* uid);
+  void reset(CallBack callback = 0, UserData userData = 0);
+  void remove(uint8_t packageID);
   void changeFreq(uint8_t packageID, uint16_t freq);
   void pause(uint8_t packageID);
   void resume(uint8_t packageID);
@@ -127,6 +91,8 @@ class DataSubscribe {
   static void addPackageCallback(CoreAPI* API, Header* header, UserData THIS);
   static void resetCallback(CoreAPI* API, Header* header, UserData THIS);
   static void removeCallback(CoreAPI* API, Header* header, UserData THIS);
+
+  static const int maxPakcageNumber = 5;
 
  private:
   void verifyAuthorty();
@@ -144,6 +110,7 @@ class DataPublish {
  private:
 };
 
+//! @todo implement
 class PackageBase {
  public:
   typedef void* PackageBuffer;

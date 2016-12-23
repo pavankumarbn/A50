@@ -1,10 +1,13 @@
 include( ../../../osdk-core/osdk-core-inc.pri)
 
 HEADERS += \
-    broadcast.h
+    broadcast.h \
+    subscribepannel.h
 
 SOURCES += \
-    broadcast.cpp
+    broadcast.cpp \
+    subscribepannel.cpp
 
 FORMS += \
-    broadcast.ui
+    broadcast.ui \
+    subscribepannel.ui

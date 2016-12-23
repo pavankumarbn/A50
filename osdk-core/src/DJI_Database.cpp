@@ -5,7 +5,7 @@ using namespace DJI::onboardSDK;
 using namespace DJI::onboardSDK::Data;
 
 // clang-format off
-const DJI::onboardSDK::Data::DataClauseInfo
+const DataClauseInfo
 DJI::onboardSDK::Data::DataBase[] =
 {
     {Data::UID_Quaternion              , sizeof(Structure<UID_Quaternion               >::type), 200, 0},
@@ -41,4 +41,6 @@ DJI::onboardSDK::Data::DataBase[] =
     {Data::UID_CONTROL_DEVICE          , sizeof(Structure<UID_CONTROL_DEVICE           >::type), 50 , 0}
 };
 //clang-format on
-const uint32_t DBVersion = 0x00000100;
+const uint32_t DJI::onboardSDK::Data::DBVersion = 0x00000100;
+
+const size_t DJI::onboardSDK::Data::toaltalClauseNumber  = sizeof(DataBase)/sizeof(DataClauseInfo);

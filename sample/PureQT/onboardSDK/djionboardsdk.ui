@@ -60,7 +60,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tbFlight">
            <attribute name="title">
@@ -6194,9 +6194,38 @@
            <attribute name="title">
             <string>Data</string>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_9">
-            <item>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="1" column="0">
              <widget class="Broadcast" name="widget_broadcast" native="true"/>
+            </item>
+            <item row="1" column="1">
+             <widget class="SubscribePannel" name="widget_subscribe" native="true"/>
+            </item>
+            <item row="0" column="0">
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="1">
+             <spacer name="horizontalSpacer_8">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -6353,6 +6382,12 @@
    <class>ControlPannel</class>
    <extends>QWidget</extends>
    <header>controlpannel.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SubscribePannel</class>
+   <extends>QWidget</extends>
+   <header>subscribepannel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
