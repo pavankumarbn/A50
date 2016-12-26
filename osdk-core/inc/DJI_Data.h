@@ -117,6 +117,8 @@ class PackageBase {
   typedef void (*Callback)(DataSubscribe*, PackageBuffer, UserData);
 
   typedef struct CallbackHandler {
+    Callback callback;
+    UserData data;
   } CallbackHandler;
 
  private:

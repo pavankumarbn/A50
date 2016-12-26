@@ -232,8 +232,8 @@ struct Structure {
 
 typedef struct DataClauseInfo {
   uint32_t uid;
-  uint16_t freq;  //! @note max freq in Hz
   size8_t size;
+  uint16_t freq;  //! @note max freq in Hz
   UserData userMethod;
   //  char brief[64];
 } DataClauseInfo;
