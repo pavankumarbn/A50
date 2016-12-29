@@ -12,7 +12,7 @@ Test::Test(CoreAPI *API) : api(API) {
   api->setTestCallback(hdl);
 }
 
-void Test::injectFeedback(size8_t size, char *buf) {
+void Test::injectFeedback(size8_t size, const char *buf) {
   uint8_t buffer[256];
   buffer[0] = size;
   memcpy(&buffer[1], buf, size);
