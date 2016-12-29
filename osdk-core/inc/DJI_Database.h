@@ -225,11 +225,6 @@ typedef struct SDKInfo {
 
 #pragma pack()
 
-template <uint32_t UID>
-struct Structure {
-  typedef void type;
-};
-
 typedef struct DataClauseInfo {
   const uint32_t uid;
   const size8_t size;
@@ -240,6 +235,9 @@ typedef struct DataClauseInfo {
 } DataClauseInfo;
 
 //! @note dynamic linkage
+//! @note cpp03 standard not support
+//! static constant vector annouced in
+//! a class
 extern const DataClauseInfo DataBase[];
 extern const uint32_t DBVersion;
 extern const size_t toaltalClauseNumber;
