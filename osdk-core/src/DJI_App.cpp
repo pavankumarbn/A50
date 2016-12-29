@@ -152,7 +152,7 @@ void DJI::onboardSDK::CoreAPI::broadcast(Header *protocolHeader) {
     broadcastCallback.callback(this, protocolHeader,
                                broadcastCallback.userData);
   else {
-    if (getSDKVersion() < MAKE_VERSION(3, 2, 20, 0))
+    if (getSDKVersion() <= MAKE_VERSION(3, 2, 20, 0))
       unpackData(protocolHeader);
     else
       API_LOG(getDriver(), ERROR_LOG,

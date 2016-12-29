@@ -54,15 +54,15 @@
 #endif  // WIN32
 
 //! This is the default status printing mechanism
-#define API_LOG(driver, title, fmt, ...)                               \
-  if ((title)) {                                                       \
-    int len = (sprintf(DJI::onboardSDK::buffer, "%s %s,line %d: " fmt, \
-                       (title) ? (title) : "NONE", __func__, __LINE__, \
-                       ##__VA_ARGS__));                                \
-    if ((len != -1) && (len < 1024))                                   \
-      (driver)->displayLog();                                          \
-    else                                                               \
-      (driver)->displayLog("ERROR: log printer inner fault\n");        \
+#define API_LOG(driver, title, fmt, ...)                                 \
+  if ((title)) {                                                         \
+    int len = (sprintf(DJI::onboardSDK::buffer, "\n%s %s,line %d: " fmt, \
+                       (title) ? (title) : "NONE", __func__, __LINE__,   \
+                       ##__VA_ARGS__));                                  \
+    if ((len != -1) && (len < 1024))                                     \
+      (driver)->displayLog();                                            \
+    else                                                                 \
+      (driver)->displayLog("ERROR: log printer inner fault\n");          \
   }
 
 #ifdef API_TRACE_DATA
@@ -125,9 +125,9 @@ const size_t CALLBACK_LIST_NUM = 10;
 /**
  * @note size is in Bytes
  */
-const size_t MAX_ACK_SIZE = 64;
+const size_t MAX_ACK_SIZE      = 64;
 const size_t M100_MAX_ACK_SIZE = 64;
-const size_t A3_MAX_ACK_SIZE = 63;
+const size_t A3_MAX_ACK_SIZE   = 63;
 
 //! The CoreAPI class definition is detailed in DJI_API.h
 class CoreAPI;
