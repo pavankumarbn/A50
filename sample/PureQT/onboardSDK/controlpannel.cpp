@@ -3,6 +3,9 @@
 #include "DJI_HardDriver.h"
 #include "ui_controlpannel.h"
 
+using namespace DJI;
+using namespace DJI::onboardSDK;
+
 ControlPannel::ControlPannel(QWidget *parent)
     : QWidget(parent), ui(new Ui::ControlPannel) {
   ui->setupUi(this);
@@ -70,4 +73,58 @@ void ControlPannel::on_btn_flight_runCommand_clicked() {
   }
   qDebug() << ui->cb_command->currentIndex() << c;
   controler->command(c);
+}
+
+void ControlPannel::on_btn_control_clicked(bool checked) {
+  if (checked)
+    controler->obtain();
+  else
+    controler->release();
+}
+
+void ControlPannel::setControlCallback(CoreAPI *This, Header *header,
+                                       UserData userData) {
+  ControlPannel *sdk      = (ControlPannel *)userData;
+  unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
+  unsigned char data      = 0x1;
+
+  if (header->length - EXC_DATA_SIZE <= 2) {
+    memcpy((unsigned char *)&ack_data,
+           ((unsigned char *)header) + sizeof(Header),
+           (header->length - EXC_DATA_SIZE));
+  } else {
+    API_LOG(This->getDriver(), ERROR_LOG,
+            "ACK is exception,seesion id %d,sequence %d\n", header->sessionID,
+            header->sequenceNumber);
+  }
+
+  switch (ack_data) {
+    case ACK_SETCONTROL_ERROR_MODE:
+      if (sdk) {
+        sdk->ui->btn_control->setText("Switch to mod P");
+      } else
+        API_LOG(This->getDriver(), ERROR_LOG, "known SDK pointer 0.");
+      break;
+    case ACK_SETCONTROL_RELEASE_SUCCESS:
+      if (sdk)
+        sdk->ui->btn_control->setText("Obtain Control");
+      else
+        API_LOG(This->getDriver(), ERROR_LOG, "known SDK pointer 0.");
+      break;
+    case ACK_SETCONTROL_OBTAIN_SUCCESS:
+      if (sdk)
+        sdk->ui->btn_control->setText("Release Control");
+      else
+        API_LOG(This->getDriver(), ERROR_LOG, "known SDK pointer 0.");
+      break;
+    case ACK_SETCONTROL_OBTAIN_RUNNING:
+      This->send(2, encrypt, SET_CONTROL, CODE_SETCONTROL, &data, 1, 500, 2,
+                 ControlPannel::setControlCallback, userData);
+      break;
+    case ACK_SETCONTROL_RELEASE_RUNNING:
+      data = 0;
+      This->send(2, encrypt, SET_CONTROL, CODE_SETCONTROL, &data, 1, 500, 2,
+                 ControlPannel::setControlCallback, userData);
+      break;
+  }
 }

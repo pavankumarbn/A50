@@ -38,7 +38,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_16">
         <item>
-         <widget class="QPushButton" name="btn_flight_arm_2">
+         <widget class="QPushButton" name="btn_control">
           <property name="text">
            <string>Obtain Control</string>
           </property>
@@ -505,22 +505,28 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_18">
            <item>
-            <widget class="QGroupBox" name="groupBox6">
+            <widget class="QGroupBox" name="groupBox9">
              <property name="minimumSize">
               <size>
                <width>110</width>
                <height>62</height>
               </size>
              </property>
+             <property name="maximumSize">
+              <size>
+               <width>250</width>
+               <height>80</height>
+              </size>
+             </property>
              <property name="title">
-              <string>Yaw Logic</string>
+              <string>Smooth Mode</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_25">
+             <layout class="QVBoxLayout" name="verticalLayout_2">
               <item>
-               <widget class="QRadioButton" name="btr_flight_YLA">
+               <widget class="QRadioButton" name="btr_flight_SMD">
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -528,24 +534,30 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>Angle</string>
+                 <string>Disable</string>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_SM</string>
+                </attribute>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="btr_flight_SME">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Enable</string>
                 </property>
                 <property name="checked">
                  <bool>true</bool>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QRadioButton" name="btr_flight_YLP">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Palstance</string>
-                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_SM</string>
+                </attribute>
                </widget>
               </item>
              </layout>
@@ -577,6 +589,9 @@
                 <property name="text">
                  <string>Ground</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_CL</string>
+                </attribute>
                </widget>
               </item>
               <item>
@@ -593,6 +608,9 @@
                 <property name="checked">
                  <bool>true</bool>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_CL</string>
+                </attribute>
                </widget>
               </item>
              </layout>
@@ -619,6 +637,9 @@
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
+             <property name="checkable">
+              <bool>false</bool>
+             </property>
              <layout class="QVBoxLayout" name="verticalLayout_23">
               <item>
                <widget class="QRadioButton" name="btr_flight_HLA">
@@ -631,6 +652,9 @@
                 <property name="text">
                  <string>Angle</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_HL</string>
+                </attribute>
                </widget>
               </item>
               <item>
@@ -647,6 +671,9 @@
                 <property name="checked">
                  <bool>true</bool>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_HL</string>
+                </attribute>
                </widget>
               </item>
               <item>
@@ -660,6 +687,28 @@
                 <property name="text">
                  <string>Position</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_HL</string>
+                </attribute>
+               </widget>
+              </item>
+              <item>
+               <widget class="QRadioButton" name="btr_flight_HLW">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Palstance</string>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_HL</string>
+                </attribute>
                </widget>
               </item>
              </layout>
@@ -694,6 +743,9 @@
                 <property name="checked">
                  <bool>true</bool>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_VL</string>
+                </attribute>
                </widget>
               </item>
               <item>
@@ -710,6 +762,9 @@
                 <property name="checked">
                  <bool>false</bool>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_VL</string>
+                </attribute>
                </widget>
               </item>
               <item>
@@ -723,59 +778,15 @@
                 <property name="text">
                  <string>Thrust</string>
                 </property>
+                <attribute name="buttonGroup">
+                 <string notr="true">btg_VL</string>
+                </attribute>
                </widget>
               </item>
              </layout>
             </widget>
            </item>
           </layout>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox9">
-           <property name="maximumSize">
-            <size>
-             <width>250</width>
-             <height>80</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>smooth mode</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
-            <item>
-             <widget class="QRadioButton" name="btr_flight_SME">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>15</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Enable</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QRadioButton" name="btr_flight_SMD">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>15</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Disable</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_5">
@@ -804,4 +815,10 @@
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="btg_HL"/>
+  <buttongroup name="btg_VL"/>
+  <buttongroup name="btg_CL"/>
+  <buttongroup name="btg_SM"/>
+ </buttongroups>
 </ui>

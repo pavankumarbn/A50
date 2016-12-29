@@ -84,7 +84,6 @@ class DJIonboardSDK : public QMainWindow {
   void on_btn_coreSet_clicked();
   void on_btn_coreActive_clicked();
   void on_btn_coreVersion_clicked();
-  void on_btn_coreSetControl_clicked();
   void on_btn_core_setSync_clicked();
   void on_btn_coreRead_clicked();
   void on_btn_mobile_clicked();
@@ -234,7 +233,6 @@ class DJIonboardSDK : public QMainWindow {
   QByteArray *key;
 
   Flight *flight;
-  Control *control;
   uint8_t flightFlag;
   float32_t flightX;
   float32_t flightY;

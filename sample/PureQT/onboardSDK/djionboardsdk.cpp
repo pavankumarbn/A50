@@ -329,13 +329,6 @@ void DJIonboardSDK::on_btn_coreActive_clicked() {
 
 void DJIonboardSDK::on_btn_coreVersion_clicked() { api->getDroneVersion(); }
 
-void DJIonboardSDK::on_btn_coreSetControl_clicked() {
-  if (ui->btn_coreSetControl->text() == "Release Control")
-    control->release(DJIonboardSDK::setControlCallback, this);
-  else
-    control->obtain(DJIonboardSDK::setControlCallback, this);
-}
-
 void DJIonboardSDK::on_btn_VRC_resetAll_clicked() {
   on_btn_VRC_resetRight_clicked();
   on_btn_VRC_resetLeft_clicked();
@@ -1082,17 +1075,16 @@ void DJIonboardSDK::on_tmr_follow_send() {
 }
 
 void DJIonboardSDK::initSDK() {
-  port    = new QSerialPort(this);
-  driver  = new QHardDriver(port);
-  api     = new CoreAPI(driver);
-  key     = new QByteArray;
-  flight  = new Flight(api);
-  control = new Control(api);
-  follow  = new Follow(api);
-  vrc     = new VirtualRC(api);
-  cam     = new Camera(api);
-  hp      = new HotPoint(api);
-  mfio    = new MFIO(api);
+  port   = new QSerialPort(this);
+  driver = new QHardDriver(port);
+  api    = new CoreAPI(driver);
+  key    = new QByteArray;
+  flight = new Flight(api);
+  follow = new Follow(api);
+  vrc    = new VirtualRC(api);
+  cam    = new Camera(api);
+  hp     = new HotPoint(api);
+  mfio   = new MFIO(api);
 
   ui->widget_wp->setAPI(api);
   ui->widget_test->setAPI(api);
