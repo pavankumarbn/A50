@@ -25,9 +25,11 @@ HotPoint::HotPoint(CoreAPI *ControlAPI) {
 void HotPoint::initData() {
   hotPointData.version = 0;
 
+  /*! @todo find a method to replace these
   hotPointData.height    = api->getBroadcastData().pos.altitude;
   hotPointData.longitude = api->getBroadcastData().pos.longitude;
   hotPointData.latitude  = api->getBroadcastData().pos.latitude;
+  */
 
   hotPointData.radius     = 10;
   hotPointData.yawRate    = 15;

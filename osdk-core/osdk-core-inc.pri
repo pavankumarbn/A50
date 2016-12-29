@@ -1,5 +1,5 @@
 HEADERS += \
-    $$PWD/inc/DJI_MOC.h \
+    $$PWD/inc/DJI_MOS.h \
     $$PWD/inc/DJI_API.h \
     $$PWD/inc/DJI_App.h \
     $$PWD/inc/DJI_Camera.h \

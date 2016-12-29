@@ -594,7 +594,7 @@ void DJIonboardSDK::on_btn_coreSet_clicked() {
     data[14] = 0;
     data[15] = 0;
   }
-  api->setBroadcastFreq(data);
+  //! @todo replace   api->setBroadcastFreq(data);
 }
 
 void DJIonboardSDK::on_btn_vrc_down_pressed() {
@@ -755,16 +755,21 @@ void DJIonboardSDK::on_cb_camera_send_clicked(bool checked) {
 
 void DJIonboardSDK::upDateTime() {
   if (api->getSDKVersion() == versionM100_23) {
-    ui->le_coreTimeStamp->setText(QString::number(api->getTime().time));
+    ui->le_coreTimeStamp->setText(
+        QString::number(/*! @todo replace api->getTime().time*/ 0));
   } else {
-    ui->le_coreTimeStamp->setText(QString::number(api->getTime().time));
-    ui->le_coreNanoStamp->setText(QString::number(api->getTime().nanoTime));
-    ui->le_coreSyncFlag->setText(QString::number(api->getTime().syncFlag));
+    ui->le_coreTimeStamp->setText(
+        QString::number(/*! @todo replace api->getTime().time*/ 0));
+    ui->le_coreNanoStamp->setText(
+        QString::number(/*! @todo replace api->getTime().nanoTime*/ 0));
+    ui->le_coreSyncFlag->setText(
+        QString::number(/*! @todo replace api->getTime().syncFlag*/ 0));
   }
 }
 
 void DJIonboardSDK::upDateCapacity() {
-  ui->le_coreCapacity->setText(QString::number(api->getBatteryCapacity()));
+  ui->le_coreCapacity->setText(
+      QString::number(/*! @todo replace api->getBatteryCapacity()*/ 0));
 }
 
 void DJIonboardSDK::on_btn_coreRead_clicked() {
@@ -775,12 +780,13 @@ void DJIonboardSDK::on_btn_coreRead_clicked() {
 }
 
 void DJIonboardSDK::upDateFlightStatus() {
-  ui->le_coreFlightStatus->setText(QString::number((api->getFlightStatus())));
+  ui->le_coreFlightStatus->setText(
+      QString::number((/*! @todo replace api->getFlightStatus()*/ 0)));
 }
 
 void DJIonboardSDK::updateControlDevice() {
   ui->le_coreControlDevice->setText(
-      QString::number((api->getCtrlInfo().deviceStatus)));
+      QString::number((/*! @todo replace api->getCtrlInfo().deviceStatus*/ 0)));
 }
 
 void DJIonboardSDK::on_tmr_Broadcast() {
@@ -815,95 +821,106 @@ void DJIonboardSDK::on_tmr_Broadcast() {
 }
 
 void DJIonboardSDK::updateCameraYaw() {
-  ui->le_cameraYaw->setText(QString::number(cam->getYaw()));
-  if (cam->isYawLimit())
+  ui->le_cameraYaw->setText(
+      QString::number(/*! @todo replace cam->getYaw()*/ 0));
+  if (/*! @todo replace cam->isYawLimit()*/ 0)
     ui->cb_cameraYawLimit->setChecked(true);
   else
     ui->cb_cameraYawLimit->setChecked(false);
 }
 
 void DJIonboardSDK::updateCameraRoll() {
-  ui->le_cameraRoll->setText(QString::number(cam->getRoll()));
-  if (cam->isRollLimit())
+  ui->le_cameraRoll->setText(
+      QString::number(/*! @todo replace cam->getRoll()*/ 0));
+  if (/*! @todo replace cam->isRollLimit()*/ 0)
     ui->cb_cameraRollLimit->setChecked(true);
   else
     ui->cb_cameraRollLimit->setChecked(false);
 }
 
 void DJIonboardSDK::updateCameraPitch() {
-  ui->le_cameraPitch->setText(QString::number(cam->getPitch()));
-  if (cam->isPitchLimit())
+  ui->le_cameraPitch->setText(
+      QString::number(/*! @todo replace cam->getPitch()*/ 0));
+  if (/*! @todo replace cam->isPitchLimit()*/ 0)
     ui->cb_cameraPitchLimit->setChecked(true);
   else
     ui->cb_cameraPitchLimit->setChecked(false);
 }
 
 void DJIonboardSDK::updateVirturalRCData() {
-  ui->le_vrcYaw->setText(QString::number(vrc->getRCData().yaw));
-  ui->le_vrcRoll->setText(QString::number(vrc->getRCData().roll));
-  ui->le_vrcPitch->setText(QString::number(vrc->getRCData().pitch));
-  ui->le_vrcThrottle->setText(QString::number(vrc->getRCData().throttle));
-  ui->le_vrcMode->setText(QString::number(vrc->getRCData().mode));
-  ui->le_vrcGear->setText(QString::number(vrc->getRCData().gear));
+  //! @todo replace
+  //! ui->le_vrcYaw->setText(QString::number(vrc->getRCData().yaw));
+  //  ui->le_vrcRoll->setText(QString::number(vrc->getRCData().roll));
+  //  ui->le_vrcPitch->setText(QString::number(vrc->getRCData().pitch));
+  //  ui->le_vrcThrottle->setText(QString::number(vrc->getRCData().throttle));
+  //  ui->le_vrcMode->setText(QString::number(vrc->getRCData().mode));
+  //  ui->le_vrcGear->setText(QString::number(vrc->getRCData().gear));
 }
 
 void DJIonboardSDK::updateFlightAcc() {
-  ui->le_Flight_accx->setText(QString::number(flight->getAcceleration().x));
-  ui->le_Flight_accy->setText(QString::number(flight->getAcceleration().y));
-  ui->le_Flight_accz->setText(QString::number(flight->getAcceleration().z));
+  //! @todo replace
+  //! ui->le_Flight_accx->setText(QString::number(flight->getAcceleration().x));
+  //  ui->le_Flight_accy->setText(QString::number(flight->getAcceleration().y));
+  //  ui->le_Flight_accz->setText(QString::number(flight->getAcceleration().z));
 }
 
 void DJIonboardSDK::updateFlightPal() {
-  ui->le_Flight_palx->setText(QString::number(flight->getYawRate().x));
-  ui->le_Flight_paly->setText(QString::number(flight->getYawRate().y));
-  ui->le_Flight_palz->setText(QString::number(flight->getYawRate().z));
+  //! @todo replace
+  //! ui->le_Flight_palx->setText(QString::number(flight->getYawRate().x));
+  //  ui->le_Flight_paly->setText(QString::number(flight->getYawRate().y));
+  //  ui->le_Flight_palz->setText(QString::number(flight->getYawRate().z));
 }
 
 void DJIonboardSDK::updateFlightMagnet() {
-  ui->le_Flight_magx->setText(QString::number(flight->getMagnet().x));
-  ui->le_Flight_magy->setText(QString::number(flight->getMagnet().y));
-  ui->le_Flight_magz->setText(QString::number(flight->getMagnet().z));
+  //! @todo replace
+  //! ui->le_Flight_magx->setText(QString::number(flight->getMagnet().x));
+  //  ui->le_Flight_magy->setText(QString::number(flight->getMagnet().y));
+  //  ui->le_Flight_magz->setText(QString::number(flight->getMagnet().z));
 }
 
 void DJIonboardSDK::updateFlightQuaternion() {
-  ui->le_Flight_Q0->setText(QString::number(flight->getQuaternion().q0));
-  ui->le_Flight_Q1->setText(QString::number(flight->getQuaternion().q1));
-  ui->le_Flight_Q2->setText(QString::number(flight->getQuaternion().q2));
-  ui->le_Flight_Q3->setText(QString::number(flight->getQuaternion().q3));
+  //! @todo replace
+  //! ui->le_Flight_Q0->setText(QString::number(flight->getQuaternion().q0));
+  //  ui->le_Flight_Q1->setText(QString::number(flight->getQuaternion().q1));
+  //  ui->le_Flight_Q2->setText(QString::number(flight->getQuaternion().q2));
+  //  ui->le_Flight_Q3->setText(QString::number(flight->getQuaternion().q3));
 }
 
 void DJIonboardSDK::updateFlightVelocity() {
-  ui->le_Flight_Vx->setText(QString::number(flight->getVelocity().x));
-  ui->le_Flight_Vy->setText(QString::number(flight->getVelocity().y));
-  ui->le_Flight_Vz->setText(QString::number(flight->getVelocity().z));
-  ui->le_Flight_VS->setText(QString::number(flight->getVelocity().sensorID));
-  ui->le_Flight_VH->setText(QString::number(flight->getVelocity().health));
+  //! @todo replace
+  //! ui->le_Flight_Vx->setText(QString::number(flight->getVelocity().x));
+  //  ui->le_Flight_Vy->setText(QString::number(flight->getVelocity().y));
+  //  ui->le_Flight_Vz->setText(QString::number(flight->getVelocity().z));
+  //  ui->le_Flight_VS->setText(QString::number(flight->getVelocity().sensorID));
+  //  ui->le_Flight_VH->setText(QString::number(flight->getVelocity().health));
 }
 
 void DJIonboardSDK::updateFlightPosition() {
-  ui->le_Flight_PosH->setText(QString::number(flight->getPosition().height));
-  ui->le_Flight_PosLa->setText(QString::number(flight->getPosition().latitude));
-  ui->le_Flight_PosLo->setText(
-      QString::number(flight->getPosition().longitude));
-  ui->le_Flight_PosAl->setText(QString::number(flight->getPosition().altitude));
-  ui->le_Flight_PosHealth->setText(
-      QString::number(flight->getPosition().health));
+  //! @todo replace
+  //! ui->le_Flight_PosH->setText(QString::number(flight->getPosition().height));
+  //  ui->le_Flight_PosLa->setText(QString::number(flight->getPosition().latitude));
+  //  ui->le_Flight_PosLo->setText(
+  //      QString::number(flight->getPosition().longitude));
+  //  ui->le_Flight_PosAl->setText(QString::number(flight->getPosition().altitude));
+  //  ui->le_Flight_PosHealth->setText(
+  //      QString::number(flight->getPosition().health));
 }
 
 void DJIonboardSDK::updateGPS() {
-  ui->le_gps_date->setText(QString::number(api->getBroadcastData().gps.date));
-  ui->le_gps_time->setText(QString::number(api->getBroadcastData().gps.time));
-  ui->le_gps_longitude->setText(
-      QString::number(api->getBroadcastData().gps.longitude));
-  ui->le_gps_latitude->setText(
-      QString::number(api->getBroadcastData().gps.latitude));
-  ui->le_gps_hmsl->setText(QString::number(api->getBroadcastData().gps.Hmsl));
-  ui->le_gps_VN->setText(
-      QString::number(api->getBroadcastData().gps.velocityNorth));
-  ui->le_gps_VE->setText(
-      QString::number(api->getBroadcastData().gps.velocityEast));
-  ui->le_gps_VD->setText(
-      QString::number(api->getBroadcastData().gps.velocityGround));
+  //! @todo replace
+  //! ui->le_gps_date->setText(QString::number(api->getBroadcastData().gps.date));
+  //  ui->le_gps_time->setText(QString::number(api->getBroadcastData().gps.time));
+  //  ui->le_gps_longitude->setText(
+  //      QString::number(api->getBroadcastData().gps.longitude));
+  //  ui->le_gps_latitude->setText(
+  //      QString::number(api->getBroadcastData().gps.latitude));
+  //  ui->le_gps_hmsl->setText(QString::number(api->getBroadcastData().gps.Hmsl));
+  //  ui->le_gps_VN->setText(
+  //      QString::number(api->getBroadcastData().gps.velocityNorth));
+  //  ui->le_gps_VE->setText(
+  //      QString::number(api->getBroadcastData().gps.velocityEast));
+  //  ui->le_gps_VD->setText(
+  //      QString::number(api->getBroadcastData().gps.velocityGround));
   // ui->le_gps_hdop->setText(QString::number(api->getBroadcastData().gps.Hdop));
   // ui->le_gps_pdop->setText(QString::number(api->getBroadcastData().gps.Pdop));
   /*
@@ -919,21 +936,22 @@ void DJIonboardSDK::updateGPS() {
 }
 
 void DJIonboardSDK::updateRTK() {
-  ui->le_rtk_date->setText(QString::number(api->getBroadcastData().rtk.date));
-  ui->le_rtk_time->setText(QString::number(api->getBroadcastData().rtk.time));
-  ui->le_rtk_longitude->setText(
-      QString::number(api->getBroadcastData().rtk.longitude));
-  ui->le_rtk_latitude->setText(
-      QString::number(api->getBroadcastData().rtk.latitude));
-  ui->le_rtk_hmsl->setText(QString::number(api->getBroadcastData().rtk.Hmsl));
+  //! @todo replace
+  //! ui->le_rtk_date->setText(QString::number(api->getBroadcastData().rtk.date));
+  //  ui->le_rtk_time->setText(QString::number(api->getBroadcastData().rtk.time));
+  //  ui->le_rtk_longitude->setText(
+  //      QString::number(api->getBroadcastData().rtk.longitude));
+  //  ui->le_rtk_latitude->setText(
+  //      QString::number(api->getBroadcastData().rtk.latitude));
+  //  ui->le_rtk_hmsl->setText(QString::number(api->getBroadcastData().rtk.Hmsl));
   // ui->le_rtk_longitude_2->setText(QString::number(api->getBroadcastData().rtk.longitudeS));
   // ui->le_rtk_latitude_2->setText(QString::number(api->getBroadcastData().rtk.latitudeS));
   // ui->le_rtk_hmsl_2->setText(QString::number(api->getBroadcastData().rtk.HmslS));
   // ui->le_rtk_VN->setText(QString::number(api->getBroadcastData().rtk.velocityNorth));
   // ui->le_rtk_VE->setText(QString::number(api->getBroadcastData().rtk.velocityEast));
-  ui->le_rtk_VD->setText(
-      QString::number(api->getBroadcastData().rtk.velocityGround));
-  ui->le_rtk_yaw->setText(QString::number(api->getBroadcastData().rtk.yaw));
+  //  ui->le_rtk_VD->setText(
+  //      QString::number(api->getBroadcastData().rtk.velocityGround));
+  //  ui->le_rtk_yaw->setText(QString::number(api->getBroadcastData().rtk.yaw));
   // ui->le_rtk_SVNS->setText(QString::number(api->getBroadcastData().rtk.SVNS));
   // ui->le_rtk_SVNP->setText(QString::number(api->getBroadcastData().rtk.SVNP));
   /*
@@ -986,11 +1004,12 @@ void DJIonboardSDK::on_btn_hp_setPal_clicked() {
 }
 
 void DJIonboardSDK::on_btn_hotPoint_current_clicked() {
-  ui->le_hp_lo->setText(
-      QString::number(flight->getPosition().longitude / DEG2RAD));
-  ui->le_hp_la->setText(
-      QString::number(flight->getPosition().latitude / DEG2RAD));
-  ui->le_hp_al->setText(QString::number(flight->getPosition().altitude));
+  ui->le_hp_lo->setText(QString::number(
+      /*! @todo replace flight->getPosition().longitude*/ 0 / DEG2RAD));
+  ui->le_hp_la->setText(QString::number(
+      /*! @todo replace flight->getPosition().latitude*/ 0 / DEG2RAD));
+  ui->le_hp_al->setText(
+      QString::number(/*! @todo replace flight->getPosition().altitude*/ 0));
 }
 
 void DJIonboardSDK::on_cb_mission_hp_clicked(bool checked) {
@@ -1068,10 +1087,11 @@ void DJIonboardSDK::on_btn_follow_start_clicked() {
 }
 
 void DJIonboardSDK::on_tmr_follow_send() {
-  follow->updateTarget(
-      ui->le_follow_la->text().toDouble() + flight->getPosition().latitude,
-      ui->le_follow_lo->text().toDouble() + flight->getPosition().longitude,
-      ui->le_follow_hi->text().toInt(), ui->le_follow_an->text().toInt());
+  //! @todo replace
+  //  follow->updateTarget(
+  //      ui->le_follow_la->text().toDouble() + flight->getPosition().latitude,
+  //      ui->le_follow_lo->text().toDouble() + flight->getPosition().longitude,
+  //      ui->le_follow_hi->text().toInt(), ui->le_follow_an->text().toInt());
 }
 
 void DJIonboardSDK::initSDK() {

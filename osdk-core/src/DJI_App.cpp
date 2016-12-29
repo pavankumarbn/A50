@@ -141,9 +141,9 @@ void CoreAPI::unpackData(Header *protocolHeader) {
   serialDevice->freeMSG();
 
   /**
-   * Set broadcast frame status
-   * @todo Implement proper notification mechanism
-   */
+ * Set broadcast frame status
+ * @todo Implement proper notification mechanism
+ */
   setBroadcastFrameStatus(true);
 }
 

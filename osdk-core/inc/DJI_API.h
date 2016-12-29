@@ -221,7 +221,7 @@ class CoreAPI {
   void notifyCaller(Header *protocolHeader);
   void notifyNonBlockingCaller(Header *protocolHeader);
 
-  //@{
+  //!@{
   /**
    * @remark
    * void send() - core overloaded function which can be invoked in three
@@ -244,9 +244,9 @@ class CoreAPI {
             /**@note Better interface entrance*/
             UserData userData = 0);
 
-  /**@note Main interface*/
+  /** @note Main interface*/
   void send(Command *parameter);
-  //@}
+  //!@}
 
   /// Activation Control
   /**
@@ -280,23 +280,6 @@ class CoreAPI {
 
   //! @note move to DJI_FLIGHT.h class Control in V3.2.20
  private:
-  void setControl(bool enable, CallBack callback = 0, UserData userData = 0);
-
-  /// Blocking API Control
-  /**
-  * @remark
-  * Blocks until ACK frame arrives or timeout occurs
-  *
-  * @brief
-  * Obtain control
-  *
-  * @return ACK from flight controller
-  *
-  * @todo
-  * Implement high resolution timer to catch ACK timeout
-  */
-  unsigned short setControl(bool enable, int timeout);
-
  public:
   /// Activation Control
   /**
@@ -310,58 +293,6 @@ class CoreAPI {
   //! @todo move to MOS
   void sendToMobile(uint8_t *data, uint8_t len, CallBack callback = 0,
                     UserData userData = 0);
-
-  /**
-   * @drief
-   * Set broadcast frequency.
-   *
-   * @remark
-   * We offer 12 frequency channels to customize:\n\n
-   * 0 - Timestamp\n
-   * 1 - Attitude Quaterniouns\n
-   * 2 - Acceleration\n
-   * 3 - Velocity (Ground Frame)\n
-   * 4 - Angular Velocity (Body Frame)\n
-   * 5 - Position\n
-   * 6 - Magnetometer\n
-   * 7 - RC Channels Data\n
-   * 8 - Gimbal Data\n
-   * 9 - Flight Status\n
-   * 10 - Battery Level\n
-   * 11 - Control Information\n
-   */
-  //! @todo move to DJI_Data.h class DataBroadcast;
-  void setBroadcastFreq(uint8_t *dataLenIs16, CallBack callback = 0,
-                        UserData userData = 0);
-  //! @todo move to DJI_Data.h class DataBroadcast;
-  unsigned short setBroadcastFreq(uint8_t *dataLenIs16, int timeout);
-
-  /**
-   * Reset all broadcast frequencies to their default values
-   */
-  //! @todo move to DJI_Data.h class DataBroadcast;
-  void setBroadcastFreqDefaults();
-
-  /**
-   * Blocking API Control
-   *
-   * @brief
-   * Set broadcast frequencies to their default values and block until
-   * ACK arrives from flight controller
-   *
-   * @return ACK from flight controller
-   *
-   * @todo
-   * Implement high resolution timer to catch ACK timeout
-   */
-  //! @todo move to DJI_Data.h class DataBroadcast;
-  unsigned short setBroadcastFreqDefaults(int timeout);
-
-  /*
-   * Set all broadcast frequencies to zero. Only ACK data will stay on the line.
-   */
-  //! @todo move to DJI_Data.h class DataBroadcast;
-  void setBroadcastFreqToZero();
 
   /**
    * Let user know when ACK and Broadcast messages processed
@@ -407,6 +338,7 @@ class CoreAPI {
    */
   HardDriver *getDriver() const;
 
+  //! @todo outof CoreAPI
   SimpleACK getSimpleACK() const;
   /**
    * Get SDK version
@@ -488,7 +420,7 @@ class CoreAPI {
   /// WayPoint Mission Control
   bool getWayPointData() const;
 
-  // FollowMe mission Control
+  /// FollowMe mission Control
   bool getFollowData() const;
 
   /// HotPoint Mission Control
@@ -560,51 +492,9 @@ class CoreAPI {
   ACKSession *allocACK(unsigned short session_id, unsigned short size);
   CMDSession CMDSessionTab[SESSION_TABLE_NUM];
   ACKSession ACKSessionTab[SESSION_TABLE_NUM - 1];
-  //} //! @todo unify
-  /**Get broadcasted data values from flight controller.*/
-  // {
-
- public:
-  /// Activation Control
-  /**
-   * @brief
-   * Is your aircraft already activated ?
-   */
-  void setActivation(bool isActivated);
-  BroadcastData getBroadcastData() const;
-
-  /**
-   * Get timestamp from flight controller.
-   *
-   * @note
-   * Make sure you are using appropriate timestamp broadcast frequency. See
-   * setBroadcastFreq\n
-   * function for more details.
-   */
-  TimeStampData getTime() const;
-
-  /**
-   * Get flight status at any time during a flight mission.
-   */
-  FlightStatus getFlightStatus() const;
-  CtrlInfoData getCtrlInfo() const;
-
-  /**
-   * Get battery capacity.
-   *
-   * @note
-   * Flight missions will not perform if battery capacity is under %50. If
-   * battery capacity
-   * drops below %50 during a flight mission, aircraft will automatically "go
-   * home".
-   *
-   */
-  BatteryData getBatteryCapacity() const;
 
  private:
   void unpackData(Header *protocolHeader);
-  BroadcastData broadcastData;
-  // }  ! @todo remove
   void broadcast(Header *protocolHeader);
 
   MMU *mmu;
@@ -634,6 +524,25 @@ class CoreAPI {
   bool hotPointData;
   bool wayPointData;
   bool followData;
+
+ private:
+  //! @note Old APIs move out of CoreAPI. all functions have replacement API,
+  //! @sa Porting OSDK from 3.1 to 3.2
+  void setActivation(bool isActivated);
+  BroadcastData getBroadcastData() const;
+  BatteryData getBatteryCapacity() const;
+  CtrlInfoData getCtrlInfo() const;
+  FlightStatus getFlightStatus() const;
+  TimeStampData getTime() const;
+  BroadcastData broadcastData;
+  void setBroadcastFreq(uint8_t *dataLenIs16, CallBack callback = 0,
+                        UserData userData = 0);
+  unsigned short setBroadcastFreq(uint8_t *dataLenIs16, int timeout);
+  void setBroadcastFreqDefaults();
+  unsigned short setBroadcastFreqDefaults(int timeout);
+  void setBroadcastFreqToZero();
+  void setControl(bool enable, CallBack callback = 0, UserData userData = 0);
+  unsigned short setControl(bool enable, int timeout);
 
 #ifdef API_BUFFER_DATA
  public:

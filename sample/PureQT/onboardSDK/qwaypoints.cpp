@@ -79,15 +79,20 @@ void QWaypoints::initWayPoint() {
 void QWaypoints::wpAddPoint() {
   int number = waypointData->rowCount();
   waypointData->setItem(number, 0, new QStandardItem(QString::number(number)));
-  waypointData->setItem(number, 1,
-                        new QStandardItem(QString::number(
-                            api->getBroadcastData().pos.latitude / DEG2RAD)));
-  waypointData->setItem(number, 2,
-                        new QStandardItem(QString::number(
-                            api->getBroadcastData().pos.longitude / DEG2RAD)));
+  waypointData->setItem(
+      number, 1,
+      new QStandardItem(QString::number(
+          /*! @todo replace api->getBroadcastData().pos.latitude*/ 0 /
+          DEG2RAD)));
+  waypointData->setItem(
+      number, 2,
+      new QStandardItem(QString::number(
+          /*! @todo replace api->getBroadcastData().pos.longitude*/ 0 /
+          DEG2RAD)));
   waypointData->setItem(
       number, 3,
-      new QStandardItem(QString::number(api->getBroadcastData().pos.altitude)));
+      new QStandardItem(QString::number(
+          /*! @todo replace api->getBroadcastData().pos.altitude*/ 0)));
   waypointData->setItem(number, 4, new QStandardItem("not available now"));
   waypointData->setItem(number, 5, new QStandardItem("0"));
   waypointData->setItem(number, 6, new QStandardItem("0"));
@@ -185,11 +190,12 @@ void QWaypoints::on_btn_waypoint_removeAction_clicked() {
 }
 
 void QWaypoints::on_btn_waypoint_viewPoint_clicked() {
-  ui->le_wp_la->setText(
-      QString::number(api->getBroadcastData().pos.latitude / DEG2RAD));
-  ui->le_wp_lo->setText(
-      QString::number(api->getBroadcastData().pos.longitude / DEG2RAD));
-  ui->le_wp_al->setText(QString::number(api->getBroadcastData().pos.altitude));
+  ui->le_wp_la->setText(QString::number(
+      /*! @todo replaceapi->getBroadcastData().pos.latitude*/ 0 / DEG2RAD));
+  ui->le_wp_lo->setText(QString::number(
+      /*! @todo replace api->getBroadcastData().pos.longitude*/ 0 / DEG2RAD));
+  ui->le_wp_al->setText(QString::number(
+      /*! @todo replace api->getBroadcastData().pos.altitude*/ 0));
 }
 
 void QWaypoints::on_btn_wp_ivset_clicked() {

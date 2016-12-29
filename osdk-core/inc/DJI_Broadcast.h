@@ -60,7 +60,7 @@ class DataBroadcast {
  private:
   void unpackData(Header* protocolHeader);
 
-  inline void unpackOne(FLAG flag, void* data, uint8_t* buf, size_t size);
+  inline void unpackOne(FLAG flag, void* data, uint8_t*& buf, size_t size);
 
  private:
   // clang-format off

@@ -25,7 +25,6 @@ SOURCES += \
     $$PWD/src/DJI_Control.cpp
 
 HEADERS += \
-    $$PWD/inc/DJI_MOC.h \
     $$PWD/inc/DJI_API.h \
     $$PWD/inc/DJI_App.h \
     $$PWD/inc/DJI_Camera.h \
@@ -54,6 +53,7 @@ HEADERS += \
     $$PWD/inc/DJI_Status.h \
     $$PWD/inc/DJI_Broadcast.h \
     $$PWD/inc/dbauto.h \
-    $$PWD/inc/DJI_Control.h
+    $$PWD/inc/DJI_Control.h \
+    $$PWD/inc/DJI_MOS.h
 
 INCLUDEPATH += $$PWD/inc

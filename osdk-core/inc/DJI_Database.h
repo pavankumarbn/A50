@@ -45,12 +45,12 @@ typedef enum UID {
 #pragma pack(1)
 
 typedef struct TimeStamp {
-  uint32_t time_ms;
+  uint32_t time_2p5ms;
   uint32_t time_ns;
 } TimeStamp;
 
 typedef struct SyncStamp {
-  uint32_t time;  //! @note relative sync time
+  uint32_t time_2p5ms;  //! @note relative sync time
   uint16_t tag;
   uint8_t flag;
 } SyncStamp;
@@ -231,9 +231,10 @@ struct Structure {
 };
 
 typedef struct DataClauseInfo {
-  uint32_t uid;
-  size8_t size;
-  uint16_t freq;  //! @note max freq in Hz
+  const uint32_t uid;
+  const size8_t size;
+  const uint16_t maxfreq;  //! @note max freq in Hz
+  uint16_t freq;
   UserData userMethod;
   //  char brief[64];
 } DataClauseInfo;

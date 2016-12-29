@@ -21,13 +21,14 @@ Follow::Follow(CoreAPI *ControlAPI) {
 }
 
 void Follow::resetData() {
-  followData.mode             = MODE_RELATIVE;
-  followData.yaw              = YAW_TOTARGET;
+  followData.mode = MODE_RELATIVE;
+  followData.yaw  = YAW_TOTARGET;
+  /*! @todo find a way to replace this method
   followData.target.latitude  = api->getBroadcastData().pos.latitude;
   followData.target.longitude = api->getBroadcastData().pos.longitude;
-  followData.target.height    = api->getBroadcastData().pos.altitude;
-  followData.target.angle     = 0;
-  followData.sensitivity      = 1;
+  followData.target.height    = api->getBroadcastData().pos.altitude;*/
+  followData.target.angle = 0;
+  followData.sensitivity  = 1;
 }
 
 void Follow::start(FollowData *Data, CallBack callback, UserData userData) {

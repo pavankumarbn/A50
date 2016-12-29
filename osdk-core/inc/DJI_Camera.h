@@ -34,13 +34,14 @@ typedef struct GimbalSpeedData {
 } GimbalSpeedData;
 
 class Camera {
+  //! @todo refactory decoupling from broadcastdata
  public:
   enum CAMERA_CODE {
-    CODE_GIMBAL_SPEED = 0x1A,
-    CODE_GIMBAL_ANGLE = 0x1B,
-    CODE_CAMERA_SHOT = 0x20,
+    CODE_GIMBAL_SPEED       = 0x1A,
+    CODE_GIMBAL_ANGLE       = 0x1B,
+    CODE_CAMERA_SHOT        = 0x20,
     CODE_CAMERA_VIDEO_START = 0x21,
-    CODE_CAMERA_VIDEO_STOP = 0x22
+    CODE_CAMERA_VIDEO_STOP  = 0x22
   };
 
  public:
@@ -53,6 +54,7 @@ class Camera {
   void setGimbalAngle(GimbalAngleData *data);
   void setGimbalSpeed(GimbalSpeedData *data);
 
+  /*! @note decoupling from core API in 3.2.20
   GimbalData getGimbal() const;
   float32_t getYaw() const;
   float32_t getRoll() const;
@@ -60,6 +62,7 @@ class Camera {
   bool isYawLimit() const;
   bool isRollLimit() const;
   bool isPitchLimit() const;
+  */
 
  public:  //! @note Access method
   CoreAPI *getApi() const;

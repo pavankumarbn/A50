@@ -72,9 +72,9 @@ void DataBroadcast::unpackData(Header *protocolHeader) {
 }
 
 void DataBroadcast::unpackOne(DataBroadcast::FLAG flag, void *data,
-                              uint8_t *buf, size_t size) {
+                              uint8_t *&buf, size_t size) {
   if (flag & passFlag) {
     memcpy((uint8_t *)data, (uint8_t *)buf, size);
-    data = ((uint8_t *)data) + size;
+    buf += size;
   }
 }

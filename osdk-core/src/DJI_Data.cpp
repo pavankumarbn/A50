@@ -34,7 +34,7 @@ void DataSubscribe::subscribe(uint8_t id, uint16_t freq, uint8_t flag,
     memcpy(buffer + sizeof(SubscribeData), (uint8_t *)uid,
            sizeof(uint32_t) * clauseNumber);
     API_LOG(api->getDriver(), STATUS_LOG, "0x%x",
-            *(uint32_t*)(buffer + sizeof(SubscribeData)));
+            *(uint32_t *)(buffer + sizeof(SubscribeData)));
     api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
               CODE_SUBSCRIBE_ADD_PACKAGE, buffer, size, 500, 1,
               addPackageCallback, this);
@@ -72,6 +72,21 @@ void DataSubscribe::resetCallback(CoreAPI *API, Header *header, UserData THIS) {
 void DataSubscribe::removeCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
   API_LOG(API->getDriver(), STATUS_LOG, "entered");
+}
+
+void DataSubscribe::decodeCallback(CoreAPI *API, Header *header,
+                                   UserData THIS) {
+  //! @todo implement
+  DataSubscribe *This = (DataSubscribe *)THIS;
+  uint8_t pkg         = This->getPackageNumber(header);
+  if (pkg < maxPakcageNumber) {
+    API_LOG(API->getDriver(), STATUS_LOG, "Length %d %d", header->length,
+            sizeof(header));
+    This->package[pkg]->unpack();
+  } else {
+    API_LOG(API->getDriver(), ERROR_LOG,
+            "Segmentation fault, unexcepted package value %d", pkg);
+  }
 }
 
 void DataSubscribe::setAPI(CoreAPI *value) {

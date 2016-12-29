@@ -1,4 +1,4 @@
-#include "DJI_MOC.h"
+#include "DJI_MOS.h"
 
 using namespace DJI;
 using namespace DJI::onboardSDK;

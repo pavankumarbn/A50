@@ -12,6 +12,7 @@ namespace onboardSDK {
 
 class DataSubscribe {
  public:
+  class Package;
   //  class DataClause {
   //   public:
   //    void* getPtr() const;
@@ -91,15 +92,19 @@ class DataSubscribe {
   static void addPackageCallback(CoreAPI* API, Header* header, UserData THIS);
   static void resetCallback(CoreAPI* API, Header* header, UserData THIS);
   static void removeCallback(CoreAPI* API, Header* header, UserData THIS);
+  static void decodeCallback(CoreAPI* API, Header* header, UserData THIS);
 
   static const int maxPakcageNumber = 5;
 
  private:
-  void verifyAuthorty();
-  void verifyVersion();
+  uint8_t getPackageNumber(Header* header) {
+    uint8_t* pdata = ((uint8_t*)header) + sizeof(Header);
+    return *(pdata + 2);
+  }
 
  private:
   CoreAPI* api;
+  Package* package[maxPakcageNumber];
 };
 
 class DataPublish {
@@ -111,7 +116,12 @@ class DataPublish {
 };
 
 //! @todo implement
-class PackageBase {
+class DataSubscribe::Package {
+ public:
+  void unpack() {
+    //!@todo implement
+  }
+
  public:
   typedef void* PackageBuffer;
   typedef void (*Callback)(DataSubscribe*, PackageBuffer, UserData);
@@ -129,9 +139,6 @@ class PackageBase {
   size8_t clauseNumber;
   uint32_t* clauseUID;
 };
-
-template <uint32_t UID>
-class Package : public PackageBase {};
 
 }  // onboardSDK
 }  // DJI

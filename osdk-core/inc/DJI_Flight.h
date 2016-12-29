@@ -135,28 +135,28 @@ class Flight {
 
   //! @note all feedback data please use DataBroadcast or Datasubscribe these
   //! featuer will be delete later
-  QuaternionData getQuaternion() const;
+  //  QuaternionData getQuaternion() const;
 
   EulerAngle getEulerAngle() const;
 
-  PositionData getPosition() const;
-  VelocityData getVelocity() const;
+  //  PositionData getPosition() const;
+  //  VelocityData getVelocity() const;
   //! @warning The return type for getAcceleration and getYawrate will change to
   //! Vector3fData in a future release
-  CommonData getAcceleration() const;
-  CommonData getYawRate() const;
+  //  CommonData getAcceleration() const;
+  //  CommonData getYawRate() const;
 
   //! @warning old interface. Will be replaced by MagData getMagData() in the
   //! next release.
-  MagnetData getMagnet() const;
+  //  MagnetData getMagnet() const;
 
-  Device getControlDevice() const;
-  Status getStatus() const;
-  Mode getControlMode() const;
+  //  Device getControlDevice() const;
+  //  Status getStatus() const;
+  //  Mode getControlMode() const;
 
-  Angle getYaw() const;
-  Angle getRoll() const;
-  Angle getPitch() const;
+  //  Angle getYaw() const;
+  //  Angle getRoll() const;
+  //  Angle getPitch() const;
 
  public:  //! @note callbacks
   static void armCallback(CoreAPI *api, Header *protoclHeader,

@@ -20,7 +20,7 @@ using namespace DJI::onboardSDK;
 Flight::Flight(DJI::onboardSDK::CoreAPI *ControlAPI) {
   api = ControlAPI;
 #ifdef USE_SIMULATION  //! @note This functionality is not supported in this
-                       //! release.
+  //! release.
   simulating = 0;
 #endif  // USE_SIMULATION
 }
@@ -30,7 +30,7 @@ CoreAPI *Flight::getApi() const { return api; }
 void Flight::setApi(CoreAPI *value) { api = value; }
 
 #ifdef USE_SIMULATION  //! @note This functionality is not supported in this
-                       //! release.
+//! release.
 bool Flight::isSimulating() const { return simulating; }
 void Flight::setSimulating(bool value) { simulating = value; }
 #endif  // USE_SIMULATION
@@ -118,6 +118,7 @@ void Flight::setFlight(FlightData *data) {
             sizeof(FlightData));
 }
 
+/*! @todo find a way to replace these method
 QuaternionData Flight::getQuaternion() const {
 #ifdef USE_SIMULATION
   if (simulating) {
@@ -189,6 +190,7 @@ Angle Flight::getPitch() const {
 #endif  // USE_SIMULATION
     return toEulerAngle(api->getBroadcastData().q).pitch;
 }
+*/
 
 void Flight::armCallback(CoreAPI *api, Header *protocolHeader,
                          UserData userData __UNUSED) {
