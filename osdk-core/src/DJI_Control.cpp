@@ -1,6 +1,8 @@
 #include "DJI_Control.h"
 #include "DJI_HardDriver.h"
 
+#include <string.h>
+
 using namespace DJI;
 using namespace DJI::onboardSDK;
 
