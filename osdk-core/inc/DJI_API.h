@@ -278,8 +278,6 @@ class CoreAPI {
   */
   unsigned short activate(ActivateData *data, int timeout);
 
-  //! @note move to DJI_FLIGHT.h class Control in V3.2.20
- private:
  public:
   /// Activation Control
   /**

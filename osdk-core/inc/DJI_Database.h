@@ -225,12 +225,15 @@ typedef struct SDKInfo {
 
 #pragma pack()
 
+typedef void (*UnpackedCallback)(CoreAPI*, uint8_t*, UserData);
+
 typedef struct DataClauseInfo {
   const uint32_t uid;
   const size8_t size;
   const uint16_t maxfreq;  //! @note max freq in Hz
   uint16_t freq;
-  UserData userMethod;
+  UnpackedCallback callback;
+  UserData userData;
   //  char brief[64];
 } DataClauseInfo;
 
@@ -242,39 +245,55 @@ extern const DataClauseInfo DataBase[];
 extern const uint32_t DBVersion;
 extern const size_t toaltalClauseNumber;
 
+template <uint32_t UID>
+struct Structure {
+  typedef void type;
+  static const uint32_t offset = 0xFFFFFFFF;
+};
+
+template <uint32_t UID>
+typename Structure<UID>::type getData(CoreAPI* api, uint8_t* buffer) {
+  if (Structure<UID>::offset < toaltalClauseNumber) {
+    if (DataBase[Structure<UID>::offset].callback)
+      DataBase[Structure<UID>::offset].callback(
+          api, buffer, DataBase[Structure<UID>::offset].userData);
+  }
+  return *reinterpret_cast<Structure<UID>::type*>(buffer);
+}
+
 //! @note static linkage
 // clang-format off
-template <> struct Structure<UID_Quaternion               > {  typedef Quaternion      type; };
-template <> struct Structure<UID_ACCELERATION_GROUND      > {  typedef Vector3f        type; };
-template <> struct Structure<UID_ACCELERATION_BODY        > {  typedef Vector3f        type; };
-template <> struct Structure<UID_ACCELERATION_RAW         > {  typedef Vector3f        type; };
-template <> struct Structure<UID_VELOCITY                 > {  typedef Velocity        type; };
-template <> struct Structure<UID_PALSTANCE_FUSIONED       > {  typedef Vector3f        type; };
-template <> struct Structure<UID_PALSTANCE_RAW            > {  typedef Vector3f        type; };
-template <> struct Structure<UID_ALTITUDE_FUSIONED        > {  typedef float32_t       type; };
-template <> struct Structure<UID_ALTITUDE_BAROMETER       > {  typedef float32_t       type; };
-template <> struct Structure<UID_HEIGHT_HOMEPOOINT        > {  typedef float32_t       type; };
-template <> struct Structure<UID_HEIGHT_ULTRASONIC        > {  typedef float32_t       type; };
-template <> struct Structure<UID_GPS_DATE                 > {  typedef uint32_t        type; };
-template <> struct Structure<UID_GPS_TIME                 > {  typedef uint32_t        type; };
-template <> struct Structure<UID_GPS_POSITION             > {  typedef Vector3d        type; };
-template <> struct Structure<UID_GPS_VELOCITY             > {  typedef Vector3f        type; };
-template <> struct Structure<UID_GPS_DETAILS              > {  typedef GPSDetail       type; };
-template <> struct Structure<UID_RTK_POSITION             > {  typedef PositionData    type; };
-template <> struct Structure<UID_RTK_VELOCITY             > {  typedef Vector3f        type; };
-template <> struct Structure<UID_RTK_YAW                  > {  typedef int16_t         type; };
-template <> struct Structure<UID_RTK_POSITION_INFO        > {  typedef uint8_t         type; };
-template <> struct Structure<UID_RTK_YAW_INFO             > {  typedef uint8_t         type; };
-template <> struct Structure<UID_COMPASS                  > {  typedef Mag             type; };
-template <> struct Structure<UID_RC                       > {  typedef RC              type; };
-template <> struct Structure<UID_GIMBAL_ANGLES            > {  typedef Vector3f        type; };
-template <> struct Structure<UID_GIMBAL_STATUS            > {  typedef GimbalStatus    type; };
-template <> struct Structure<UID_STATUS_FLIGHT            > {  typedef uint8_t         type; };
-template <> struct Structure<UID_STATUS_DISPLAYMODE       > {  typedef uint8_t         type; };
-template <> struct Structure<UID_STATUS_LANDINGGEAR       > {  typedef uint8_t         type; };
-template <> struct Structure<UID_STATUS_MOTOR_START_ERROR > {  typedef uint16_t        type; };
-template <> struct Structure<UID_BATTERY_INFO             > {  typedef Battery         type; };
-template <> struct Structure<UID_CONTROL_DEVICE           > {  typedef SDKInfo         type; };
+template <> struct Structure<UID_Quaternion               > {  typedef Quaternion      type; static const uint32_t offset = 0 ;};
+template <> struct Structure<UID_ACCELERATION_GROUND      > {  typedef Vector3f        type; static const uint32_t offset = 1 ;};
+template <> struct Structure<UID_ACCELERATION_BODY        > {  typedef Vector3f        type; static const uint32_t offset = 2 ;};
+template <> struct Structure<UID_ACCELERATION_RAW         > {  typedef Vector3f        type; static const uint32_t offset = 3 ;};
+template <> struct Structure<UID_VELOCITY                 > {  typedef Velocity        type; static const uint32_t offset = 4 ;};
+template <> struct Structure<UID_PALSTANCE_FUSIONED       > {  typedef Vector3f        type; static const uint32_t offset = 5 ;};
+template <> struct Structure<UID_PALSTANCE_RAW            > {  typedef Vector3f        type; static const uint32_t offset = 6 ;};
+template <> struct Structure<UID_ALTITUDE_FUSIONED        > {  typedef float32_t       type; static const uint32_t offset = 7 ;};
+template <> struct Structure<UID_ALTITUDE_BAROMETER       > {  typedef float32_t       type; static const uint32_t offset = 8 ;};
+template <> struct Structure<UID_HEIGHT_HOMEPOOINT        > {  typedef float32_t       type; static const uint32_t offset = 9 ;};
+template <> struct Structure<UID_HEIGHT_ULTRASONIC        > {  typedef float32_t       type; static const uint32_t offset = 10;};
+template <> struct Structure<UID_GPS_DATE                 > {  typedef uint32_t        type; static const uint32_t offset = 11;};
+template <> struct Structure<UID_GPS_TIME                 > {  typedef uint32_t        type; static const uint32_t offset = 12;};
+template <> struct Structure<UID_GPS_POSITION             > {  typedef Vector3d        type; static const uint32_t offset = 13;};
+template <> struct Structure<UID_GPS_VELOCITY             > {  typedef Vector3f        type; static const uint32_t offset = 14;};
+template <> struct Structure<UID_GPS_DETAILS              > {  typedef GPSDetail       type; static const uint32_t offset = 15;};
+template <> struct Structure<UID_RTK_POSITION             > {  typedef PositionData    type; static const uint32_t offset = 16;};
+template <> struct Structure<UID_RTK_VELOCITY             > {  typedef Vector3f        type; static const uint32_t offset = 17;};
+template <> struct Structure<UID_RTK_YAW                  > {  typedef int16_t         type; static const uint32_t offset = 18;};
+template <> struct Structure<UID_RTK_POSITION_INFO        > {  typedef uint8_t         type; static const uint32_t offset = 19;};
+template <> struct Structure<UID_RTK_YAW_INFO             > {  typedef uint8_t         type; static const uint32_t offset = 20;};
+template <> struct Structure<UID_COMPASS                  > {  typedef Mag             type; static const uint32_t offset = 21;};
+template <> struct Structure<UID_RC                       > {  typedef RC              type; static const uint32_t offset = 22;};
+template <> struct Structure<UID_GIMBAL_ANGLES            > {  typedef Vector3f        type; static const uint32_t offset = 23;};
+template <> struct Structure<UID_GIMBAL_STATUS            > {  typedef GimbalStatus    type; static const uint32_t offset = 24;};
+template <> struct Structure<UID_STATUS_FLIGHT            > {  typedef uint8_t         type; static const uint32_t offset = 25;};
+template <> struct Structure<UID_STATUS_DISPLAYMODE       > {  typedef uint8_t         type; static const uint32_t offset = 26;};
+template <> struct Structure<UID_STATUS_LANDINGGEAR       > {  typedef uint8_t         type; static const uint32_t offset = 27;};
+template <> struct Structure<UID_STATUS_MOTOR_START_ERROR > {  typedef uint16_t        type; static const uint32_t offset = 28;};
+template <> struct Structure<UID_BATTERY_INFO             > {  typedef Battery         type; static const uint32_t offset = 29;};
+template <> struct Structure<UID_CONTROL_DEVICE           > {  typedef SDKInfo         type; static const uint32_t offset = 30;};
 // clang-format on
 
 }  // namespace Data

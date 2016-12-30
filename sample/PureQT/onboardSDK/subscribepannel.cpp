@@ -66,13 +66,13 @@ SubscribePannel::SubscribePannel(QWidget *parent)
       }
       if (j == 1 && i == 0) t->setText(QString("Total"));
       if (j > 1 && i > 1) t->setCheckState(Qt::Unchecked);
-      if (j > 1 && i == 0) t->setText(QString("Package%1").arg(j - 1));
+      if (j > 1 && i == 0) t->setText(QString("Package%1").arg(j - 2));
 
       ui->tableWidget->setItem(i, j, t);
     }
 
   //! @note init package column
-  for (int i = 1; i <= subscribe->maxPakcageNumber; ++i) {
+  for (int i = 0; i < subscribe->maxPakcageNumber; ++i) {
     ui->cb_pkg->addItem(QString::number(i));
   }
   //! @note init rows
@@ -89,21 +89,33 @@ void SubscribePannel::on_btn_reset_clicked() { subscribe->reset(); }
 void SubscribePannel::on_btn_subscribe_clicked() {
   uint8_t pkg = ui->cb_pkg->currentIndex() + 1;
   int size    = 0;
-  uint32_t uidlst[30];
+  uint32_t uidlst[40];
+  DataSubscribe::Package *p = new DataSubscribe::Package(subscribe);
+  subscribe->setPackage(p);
+  p->setPackageID(ui->cb_pkg->currentIndex());
+  p->setFreq(ui->le_freq->text().toInt());
   for (int i = 2; i < Data::toaltalClauseNumber + 2; ++i) {
     if (ui->tableWidget->item(i, pkg + 1)) {
       if (ui->tableWidget->item(i, pkg + 1)->checkState() == Qt::Checked) {
-        uidlst[size++] = Data::DataBase[i - 2].uid;
+        uidlst[size++] = i - 2;
       }
     } else {
       qDebug() << "?" << i << pkg + 1;
+      return;
     }
   }
-  qDebug() << size << uidlst;
-  subscribe->subscribe(pkg, ui->le_freq->text().toInt(), 0, size, uidlst);
+  qDebug() << size;
+  p->allocClauseOffset(size);
+  for (int i = 0; i < size; ++i)
+    if (!p->add(uidlst[i])) {
+      API_LOG(subscribe->getApi()->getDriver(), ERROR_LOG,
+              "fail to add data %d", i);
+      return;
+    }
+  p->start();
 }
 
 void SubscribePannel::on_btn_remove_clicked() {
-  uint8_t pkg = ui->cb_pkg->currentIndex() + 1;
+  uint8_t pkg = ui->cb_pkg->currentIndex();
   subscribe->remove(pkg);
 }

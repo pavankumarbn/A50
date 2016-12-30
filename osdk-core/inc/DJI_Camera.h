@@ -18,6 +18,7 @@ namespace DJI {
 namespace onboardSDK {
 //! Camera class for controlling camera and gimbal-related functions available
 //! through open protocol
+#pragma pack(1)
 typedef struct GimbalAngleData {
   int16_t yaw;
   int16_t roll;
@@ -32,6 +33,7 @@ typedef struct GimbalSpeedData {
   int16_t pitch;
   uint8_t reserved;  // always 0x80;
 } GimbalSpeedData;
+#pragma pack()
 
 class Camera {
   //! @todo refactory decoupling from broadcastdata

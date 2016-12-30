@@ -13,19 +13,11 @@ namespace onboardSDK {
 class DataSubscribe {
  public:
   class Package;
-  //  class DataClause {
-  //   public:
-  //    void* getPtr() const;
-  //    void setPtr(void* value);
-
-  //    void* ptr;
-
-  //   public:
-  //    DataClause(void* PTR) : ptr(PTR) {}
-  //  };
+  friend class Package;
 
  public:
-  DataSubscribe(CoreAPI* API = 0) : api(API) {}
+  DataSubscribe(CoreAPI* API = 0);
+  CoreAPI* getApi() const;
   void setAPI(CoreAPI* value);
 
  private:
@@ -77,6 +69,15 @@ class DataSubscribe {
 #pragma pack()
 
  public:
+  bool setPackage(Package* pkg);
+  Package* getPackage(size_t id) {
+    if (id < maxPakcageNumber)
+      return package[id];
+    else
+      return 0;
+  }
+
+ public:
   void verify(CallBack callback = 0, UserData userData = 0);
   void subscribe(uint8_t id, uint16_t freq, uint8_t flag, uint8_t clauseNumber,
                  uint32_t* uid);
@@ -94,13 +95,17 @@ class DataSubscribe {
   static void removeCallback(CoreAPI* API, Header* header, UserData THIS);
   static void decodeCallback(CoreAPI* API, Header* header, UserData THIS);
 
-  static const int maxPakcageNumber = 5;
+  uint8_t decodeAck(Header* protocolHeader);
+  uint8_t* decodeAckDetails(Header* protocolHeader);
 
  private:
   uint8_t getPackageNumber(Header* header) {
     uint8_t* pdata = ((uint8_t*)header) + sizeof(Header);
     return *(pdata + 2);
   }
+
+ public:
+  static const int maxPakcageNumber = 5;
 
  private:
   CoreAPI* api;
@@ -118,26 +123,64 @@ class DataPublish {
 //! @todo implement
 class DataSubscribe::Package {
  public:
-  void unpack() {
-    //!@todo implement
-  }
-
- public:
-  typedef void* PackageBuffer;
+  typedef uint8_t* PackageBuffer;
   typedef void (*Callback)(DataSubscribe*, PackageBuffer, UserData);
-
   typedef struct CallbackHandler {
     Callback callback;
     UserData data;
   } CallbackHandler;
 
+ public:
+  Package(DataSubscribe* API = 0);
+
+  bool add(uint16_t offset);
+  bool add(Data::UID uid);
+  //! @note note called automatically in constructor function, because
+  //! size not decided, need finish adding Dataclauses then call this
+  //! function to finish initializing.
+
+ public:
+  bool start();
+  void stop();
+  void pause();
+  void resume();
+
  private:
-  void* memoryPoll;
+  void unpack() {
+    //!@todo implement
+  }
+
+ public:
+  void allocClauseOffset(size_t allocSize);
+  uint32_t* getClauseOffset() const;
+  void setClauseOffset(uint32_t* value);
+
+  size_t getClauseNumber() const;
+  void setClauseNumber(const size_t& value);
+
+  size8_t getPackageID() const;
+  void setPackageID(const size8_t& value);
+
+  uint16_t getFreq() const;
+  void setFreq(const uint16_t& value);
+
+  bool getSendStamp() const;
+  void setSendStamp(bool value);
+
+ private:
+  uint16_t freq;
+  bool sendStamp;
+
+  DataSubscribe* subscribe;
+  PackageBuffer memoryPoll;
   CallbackHandler unpackHandler;
   size16_t size;
-  size8_t number;
-  size8_t clauseNumber;
-  uint32_t* clauseUID;
+  size8_t packageID;
+  size_t clauseInited;
+  size_t clauseNumber;
+  uint32_t* clauseOffset;
+
+  friend class DataSubscribe;
 };
 
 }  // onboardSDK

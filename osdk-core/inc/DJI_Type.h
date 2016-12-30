@@ -55,7 +55,7 @@
 
 //! This is the default status printing mechanism
 #define API_LOG(driver, title, fmt, ...)                                 \
-  if ((title)) {                                                         \
+  if ((title) && (driver)) {                                             \
     int len = (sprintf(DJI::onboardSDK::buffer, "\n%s %s,line %d: " fmt, \
                        (title) ? (title) : "NONE", __func__, __LINE__,   \
                        ##__VA_ARGS__));                                  \
