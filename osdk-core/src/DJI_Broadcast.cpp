@@ -35,7 +35,7 @@ Data::Status              DataBroadcast::getStaus()              const {  api->g
 Data::Battery             DataBroadcast::getBatteryInfo()        const {  api->getDriver()->lockMSG(); Data::Battery             ans = battery;    api->getDriver()->freeMSG();  return ans;}
 Data::SDKInfo             DataBroadcast::getSDKInfo()            const {  api->getDriver()->lockMSG(); Data::SDKInfo             ans = info;       api->getDriver()->freeMSG();  return ans;}
 
-CoreAPI *DataBroadcast::getApi() const { return api; }
+CoreAPI *DataBroadcast::getAPI() const { return api; }
 
 void DataBroadcast::setAPI(CoreAPI *value) {
     api = value;

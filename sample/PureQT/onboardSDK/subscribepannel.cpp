@@ -40,7 +40,7 @@ SubscribePannel::SubscribePannel(QWidget *parent)
             case 7  :t->setText(INLINE_NAME(ALTITUDE_FUSIONED         ));  break;
             case 8  :t->setText(INLINE_NAME(ALTITUDE_BAROMETER        ));  break;
             case 9  :t->setText(INLINE_NAME(HEIGHT_HOMEPOOINT         ));  break;
-            case 10 :t->setText(INLINE_NAME(HEIGHT_ULTRASONIC         ));  break;
+            case 10 :t->setText(INLINE_NAME(HEIGHT_FUSION             ));  break;
             case 11 :t->setText(INLINE_NAME(GPS_DATE                  ));  break;
             case 12 :t->setText(INLINE_NAME(GPS_TIME                  ));  break;
             case 13 :t->setText(INLINE_NAME(GPS_POSITION              ));  break;
@@ -91,8 +91,8 @@ void SubscribePannel::on_btn_subscribe_clicked() {
   int size    = 0;
   uint32_t uidlst[40];
   DataSubscribe::Package *p = new DataSubscribe::Package(subscribe);
-  subscribe->setPackage(p);
   p->setPackageID(ui->cb_pkg->currentIndex());
+  subscribe->setPackage(p);
   p->setFreq(ui->le_freq->text().toInt());
   for (int i = 2; i < Data::toaltalClauseNumber + 2; ++i) {
     if (ui->tableWidget->item(i, pkg + 1)) {
@@ -108,7 +108,7 @@ void SubscribePannel::on_btn_subscribe_clicked() {
   p->allocClauseOffset(size);
   for (int i = 0; i < size; ++i)
     if (!p->add(uidlst[i])) {
-      API_LOG(subscribe->getApi()->getDriver(), ERROR_LOG,
+      API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
               "fail to add data %d", i);
       return;
     }

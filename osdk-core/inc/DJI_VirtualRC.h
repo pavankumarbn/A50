@@ -112,8 +112,8 @@ class VirtualRC {
   static VirtualRCData toVirtualRCData(RadioData &rData);
 
  public:
-  CoreAPI *getApi() const;
-  void setApi(CoreAPI *value);
+  CoreAPI *getAPI() const;
+  void setAPI(CoreAPI *value);
 
  private:
   CoreAPI *api;

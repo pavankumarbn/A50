@@ -253,6 +253,10 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
           testCallback.callback(this, protocolHeader, testCallback.userData);
       } break;
       case CODE_SUBSCRIBE: {
+        API_LOG(serialDevice, DEBUG_LOG, "Decodce callback subscribe");
+        if (subscribeCallback.callback)
+          subscribeCallback.callback(this, protocolHeader,
+                                     subscribeCallback.userData);
       } break;
       default:
         API_LOG(serialDevice, STATUS_LOG, "Unknown BROADCAST command code\n");

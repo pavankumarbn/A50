@@ -8,7 +8,7 @@ using namespace DJI::onboardSDK;
 
 Control::Control(CoreAPI *API) : api(API) {}
 
-CoreAPI *Control::getApi() const { return api; }
+CoreAPI *Control::getAPI() const { return api; }
 
 void Control::obtain(CallBack callback, UserData userData) {
   unsigned char data = 1;

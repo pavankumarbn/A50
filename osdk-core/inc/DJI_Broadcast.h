@@ -34,7 +34,7 @@ class DataBroadcast {
   Data::SDKInfo             getSDKInfo()            const;
   // clang-format on
 
-  CoreAPI* getApi() const;
+  CoreAPI* getAPI() const;
   void setAPI(CoreAPI* value);
 
  private:

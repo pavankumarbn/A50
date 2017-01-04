@@ -19,7 +19,7 @@ typedef enum UID {
   UID_ALTITUDE_FUSIONED        = 0x11e9c81a,
   UID_ALTITUDE_BAROMETER       = 0x27396a39,
   UID_HEIGHT_HOMEPOOINT        = 0x252c164b,
-  UID_HEIGHT_ULTRASONIC        = 0x87cf419d,
+  UID_HEIGHT_FUSION            = 0x87cf419d,
   UID_GPS_DATE                 = 0x598f79bc,
   UID_GPS_TIME                 = 0xd48912c9,
   UID_GPS_POSITION             = 0x0c949e94,
@@ -273,7 +273,7 @@ template <> struct Structure<UID_PALSTANCE_RAW            > {  typedef Vector3f 
 template <> struct Structure<UID_ALTITUDE_FUSIONED        > {  typedef float32_t       type; static const uint32_t offset = 7 ;};
 template <> struct Structure<UID_ALTITUDE_BAROMETER       > {  typedef float32_t       type; static const uint32_t offset = 8 ;};
 template <> struct Structure<UID_HEIGHT_HOMEPOOINT        > {  typedef float32_t       type; static const uint32_t offset = 9 ;};
-template <> struct Structure<UID_HEIGHT_ULTRASONIC        > {  typedef float32_t       type; static const uint32_t offset = 10;};
+template <> struct Structure<UID_HEIGHT_FUSION        > {  typedef float32_t       type; static const uint32_t offset = 10;};
 template <> struct Structure<UID_GPS_DATE                 > {  typedef uint32_t        type; static const uint32_t offset = 11;};
 template <> struct Structure<UID_GPS_TIME                 > {  typedef uint32_t        type; static const uint32_t offset = 12;};
 template <> struct Structure<UID_GPS_POSITION             > {  typedef Vector3d        type; static const uint32_t offset = 13;};

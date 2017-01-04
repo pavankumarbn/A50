@@ -342,26 +342,19 @@ class CoreAPI {
    * Get SDK version
    */
   Version getSDKVersion() const;
-  void setBroadcastCallback(CallBackHandler callback) {
-    broadcastCallback = callback;
-  }
+
+  void setBroadcastCallback(CallBackHandler callback);
+  void setSubscribeCallback(CallBackHandler callback);
   void setFromMobileCallback(CallBackHandler FromMobileEntrance);
 
   void setBroadcastCallback(CallBack handler, UserData userData = 0);
+  void setSubscribeCallback(CallBack handler, UserData UserData = 0);
   void setFromMobileCallback(CallBack handler, UserData userData = 0);
 
-  void setMisssionCallback(CallBackHandler callback) {
-    missionCallback = callback;
-  }
-  void setHotPointCallback(CallBackHandler callback) {
-    hotPointCallback = callback;
-  }
-  void setWayPointCallback(CallBackHandler callback) {
-    wayPointCallback = callback;
-  }
-  void setFollowCallback(CallBackHandler callback) {
-    followCallback = callback;
-  }
+  void setMisssionCallback(CallBackHandler callback);
+  void setHotPointCallback(CallBackHandler callback);
+  void setWayPointCallback(CallBackHandler callback);
+  void setFollowCallback(CallBackHandler callback);
   void setWayPointEventCallback(CallBackHandler callback);
 
   void setMisssionCallback(CallBack handler, UserData userData = 0);
@@ -455,6 +448,7 @@ class CoreAPI {
   CallBackHandler fromMobileCallback;
 
   CallBackHandler broadcastCallback;
+  CallBackHandler subscribeCallback;
   CallBackHandler hotPointCallback;
   CallBackHandler wayPointCallback;
   CallBackHandler wayPointEventCallback;

@@ -73,8 +73,8 @@ void VirtualRC::neutralVRCSticks() {
   sendData();
 }
 
-CoreAPI *VirtualRC::getApi() const { return api; }
-void VirtualRC::setApi(CoreAPI *value) { api = value; }
+CoreAPI *VirtualRC::getAPI() const { return api; }
+void VirtualRC::setAPI(CoreAPI *value) { api = value; }
 
 // VirtualRCData VirtualRC::getVRCData() const { return vrcData; }
 void VirtualRC::setVRCData(const VirtualRCData &value) { vrcData = value; }

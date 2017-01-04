@@ -17,7 +17,7 @@ class DataSubscribe {
 
  public:
   DataSubscribe(CoreAPI* API = 0);
-  CoreAPI* getApi() const;
+  CoreAPI* getAPI() const;
   void setAPI(CoreAPI* value);
 
  private:
@@ -70,12 +70,7 @@ class DataSubscribe {
 
  public:
   bool setPackage(Package* pkg);
-  Package* getPackage(size_t id) {
-    if (id < maxPakcageNumber)
-      return package[id];
-    else
-      return 0;
-  }
+  Package* getPackage(size_t id);
 
  public:
   void verify(CallBack callback = 0, UserData userData = 0);
@@ -99,10 +94,7 @@ class DataSubscribe {
   uint8_t* decodeAckDetails(Header* protocolHeader);
 
  private:
-  uint8_t getPackageNumber(Header* header) {
-    uint8_t* pdata = ((uint8_t*)header) + sizeof(Header);
-    return *(pdata + 2);
-  }
+  uint8_t getPackageNumber(Header* header);
 
  public:
   static const int maxPakcageNumber = 5;
@@ -146,23 +138,20 @@ class DataSubscribe::Package {
   void resume();
 
  private:
-  void unpack() {
-    //!@todo implement
-  }
+  void unpack(Header* header);
 
  public:
   void allocClauseOffset(size_t allocSize);
-  uint32_t* getClauseOffset() const;
-  void setClauseOffset(uint32_t* value);
-
-  size_t getClauseNumber() const;
-  void setClauseNumber(const size_t& value);
 
   size8_t getPackageID() const;
-  void setPackageID(const size8_t& value);
-
   uint16_t getFreq() const;
+  size_t getClauseNumber() const;
+  uint32_t* getClauseOffset() const;
+
+  void setPackageID(const size8_t& value);
   void setFreq(const uint16_t& value);
+  void setClauseNumber(const size_t& value);
+  void setClauseOffset(uint32_t* value);
 
   bool getSendStamp() const;
   void setSendStamp(bool value);

@@ -92,7 +92,7 @@ class Control {
 
  public:
   Control(CoreAPI *API = 0);
-  CoreAPI *getApi() const;
+  CoreAPI *getAPI() const;
   void setAPI(CoreAPI *value) { api = value; }
 
   void obtain(CallBack callback = 0, UserData userData = 0);

@@ -88,9 +88,10 @@ void DataSubscribe::decodeCallback(CoreAPI *API, Header *header,
   DataSubscribe *This = (DataSubscribe *)THIS;
   uint8_t pkg         = This->getPackageNumber(header);
   if (pkg < maxPakcageNumber) {
-    API_LOG(API->getDriver(), STATUS_LOG, "Length %d %d", header->length,
-            sizeof(header));
-    This->package[pkg]->unpack();
+    API_LOG(API->getDriver(), STATUS_LOG, "Length %d %d %d", header->length,
+            sizeof(Header), pkg);
+    Package *p = This->package[pkg];
+    if (p) p->unpack(header);
   } else {
     API_LOG(API->getDriver(), ERROR_LOG,
             "Segmentation fault, unexcepted package value %d", pkg);
@@ -109,16 +110,21 @@ uint8_t *DataSubscribe::decodeAckDetails(Header *protocolHeader) {
   return pdata;
 }
 
-DataSubscribe::DataSubscribe(CoreAPI *API) : api(API) {
-  if (api) verify();
+uint8_t DataSubscribe::getPackageNumber(Header *header) {
+  uint8_t *pdata = ((uint8_t *)header) + sizeof(Header);
+  return *(pdata + 2);
 }
 
-CoreAPI *DataSubscribe::getApi() const { return api; }
+DataSubscribe::DataSubscribe(CoreAPI *API) {
+  for (int i = 0; i < maxPakcageNumber; ++i) package[i] = 0;
+  if (API) setAPI(API);
+}
+
+CoreAPI *DataSubscribe::getAPI() const { return api; }
 
 void DataSubscribe::setAPI(CoreAPI *value) {
   api = value;
-  verify();
-  //! @todo regist Callback
+  api->setSubscribeCallback(decodeCallback, this);
 }
 
 bool DataSubscribe::setPackage(DataSubscribe::Package *pkg) {
@@ -134,6 +140,13 @@ bool DataSubscribe::setPackage(DataSubscribe::Package *pkg) {
     API_LOG(api->getDriver(), ERROR_LOG, "package out of range");
     return false;
   }
+}
+
+DataSubscribe::Package *DataSubscribe::getPackage(size_t id) {
+  if (id < maxPakcageNumber)
+    return package[id];
+  else
+    return 0;
 }
 
 DataSubscribe::Package::Package(DataSubscribe *API)
@@ -157,11 +170,11 @@ bool DataSubscribe::Package::add(uint16_t offset) {
       clauseOffset[clauseInited++] = offset;
       return true;
     }
-    API_LOG(subscribe->getApi()->getDriver(), ERROR_LOG,
+    API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
             "too much data to subscribe.");
     return false;
   }
-  API_LOG(subscribe->getApi()->getDriver(), ERROR_LOG,
+  API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
           "database offset overflow.");
   return false;
 }
@@ -171,7 +184,7 @@ bool DataSubscribe::Package::add(Data::UID uid) {
     if (Data::DataBase[i].uid == uid) {
       return add(i);
     }
-  API_LOG(subscribe->getApi()->getDriver(), ERROR_LOG, "UID not found");
+  API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG, "UID not found");
   return false;
 }
 
@@ -185,6 +198,14 @@ bool DataSubscribe::Package::start() {
 }
 
 void DataSubscribe::Package::stop() { subscribe->remove(packageID); }
+
+void DataSubscribe::Package::unpack(Header *header) {
+  //!@todo implement
+  uint8_t *data = ((uint8_t *)header) + sizeof(Header) + 2;
+  API_LOG(subscribe->getAPI()->getDriver(), STATUS_LOG,
+          "%d unpacking %d %d 0x%x 0x%x.", size, header->length - 17,
+          *((uint8_t *)data + 1), *((uint32_t *)data), *((uint32_t *)data + 1));
+}
 
 void DataSubscribe::Package::allocClauseOffset(size_t allocSize) {
   if (allocSize == 0) return;

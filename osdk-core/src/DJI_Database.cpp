@@ -18,7 +18,7 @@ DJI::onboardSDK::Data::DataBase[] =
     {Data::UID_ALTITUDE_FUSIONED       , sizeof(Structure<UID_ALTITUDE_FUSIONED        >::type), 200, 0, 0, 0},
     {Data::UID_ALTITUDE_BAROMETER      , sizeof(Structure<UID_ALTITUDE_BAROMETER       >::type), 200, 0, 0, 0},
     {Data::UID_HEIGHT_HOMEPOOINT       , sizeof(Structure<UID_HEIGHT_HOMEPOOINT        >::type), 1  , 0, 0, 0},
-    {Data::UID_HEIGHT_ULTRASONIC       , sizeof(Structure<UID_HEIGHT_ULTRASONIC        >::type), 100, 0, 0, 0},
+    {Data::UID_HEIGHT_FUSION       , sizeof(Structure<UID_HEIGHT_FUSION        >::type), 100, 0, 0, 0},
     {Data::UID_GPS_DATE                , sizeof(Structure<UID_GPS_DATE                 >::type), 50 , 0, 0, 0},
     {Data::UID_GPS_TIME                , sizeof(Structure<UID_GPS_TIME                 >::type), 50 , 0, 0, 0},
     {Data::UID_GPS_POSITION            , sizeof(Structure<UID_GPS_POSITION             >::type), 50 , 0, 0, 0},

@@ -171,8 +171,8 @@ class Flight {
   static QuaternionData toQuaternion(EulerianAngle eulerAngleData);
 
  public:  //! @note Access method
-  CoreAPI *getApi() const;
-  void setApi(CoreAPI *value);
+  CoreAPI *getAPI() const;
+  void setAPI(CoreAPI *value);
 
  private:
   CoreAPI *api;

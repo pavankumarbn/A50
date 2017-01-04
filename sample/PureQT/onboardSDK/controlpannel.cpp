@@ -67,7 +67,7 @@ void ControlPannel::on_btn_flight_runCommand_clicked() {
       c = DJI::onboardSDK::Control::COMMAND_LANDING_GEAR_DOWN;
       break;
     default:
-      API_LOG(controler->getApi()->getDriver(), ERROR_LOG, "Unknown command %d",
+      API_LOG(controler->getAPI()->getDriver(), ERROR_LOG, "Unknown command %d",
               ui->cb_command->currentIndex());
       break;
   }

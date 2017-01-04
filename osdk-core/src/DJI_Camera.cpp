@@ -62,6 +62,6 @@ bool Camera::isPitchLimit() const
   return false;
 }
 */
-CoreAPI *Camera::getApi() const { return api; }
+CoreAPI *Camera::getAPI() const { return api; }
 
-void Camera::setApi(CoreAPI *value) { api = value; }
+void Camera::setAPI(CoreAPI *value) { api = value; }

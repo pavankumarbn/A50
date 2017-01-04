@@ -61,6 +61,10 @@ void CoreAPI::init(HardDriver *sDevice, MMU *mmuPtr,
   followCallback.userData        = 0;
   missionCallback.callback       = 0;
   missionCallback.userData       = 0;
+  testCallback.callback          = 0;
+  testCallback.userData          = 0;
+  subscribeCallback.callback     = 0;
+  subscribeCallback.userData     = 0;
 
   recvCallback.callback = userRecvCallback.callback;
   recvCallback.userData = userRecvCallback.userData;
@@ -509,6 +513,31 @@ void CoreAPI::setFromMobileCallback(CallBackHandler FromMobileEntrance) {
   fromMobileCallback = FromMobileEntrance;
 }
 
+void CoreAPI::setMisssionCallback(CallBackHandler callback) {
+  missionCallback = callback;
+}
+
+void CoreAPI::setHotPointCallback(CallBackHandler callback) {
+  hotPointCallback = callback;
+}
+
+void CoreAPI::setWayPointCallback(CallBackHandler callback) {
+  wayPointCallback = callback;
+}
+
+void CoreAPI::setFollowCallback(CallBackHandler callback) {
+  followCallback = callback;
+}
+
+void CoreAPI::setSubscribeCallback(CallBack handler, UserData UserData) {
+  subscribeCallback.callback = handler;
+  subscribeCallback.userData = UserData;
+}
+
+void CoreAPI::setSubscribeCallback(CallBackHandler callback) {
+  subscribeCallback = callback;
+}
+
 ActivateData CoreAPI::getAccountData() const { return accountData; }
 
 void CoreAPI::setAccountData(const ActivateData &value) { accountData = value; }
@@ -688,6 +717,10 @@ void CoreAPI::setFrequencyCallback(CoreAPI *api __UNUSED,
 }
 
 Version CoreAPI::getSDKVersion() const { return versionData.version; }
+
+void CoreAPI::setBroadcastCallback(CallBackHandler callback) {
+  broadcastCallback = callback;
+}
 
 SDKFilter CoreAPI::getFilter() const { return filter; }
 

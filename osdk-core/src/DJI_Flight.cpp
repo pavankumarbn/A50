@@ -25,9 +25,9 @@ Flight::Flight(DJI::onboardSDK::CoreAPI *ControlAPI) {
 #endif  // USE_SIMULATION
 }
 
-CoreAPI *Flight::getApi() const { return api; }
+CoreAPI *Flight::getAPI() const { return api; }
 
-void Flight::setApi(CoreAPI *value) { api = value; }
+void Flight::setAPI(CoreAPI *value) { api = value; }
 
 #ifdef USE_SIMULATION  //! @note This functionality is not supported in this
 //! release.
