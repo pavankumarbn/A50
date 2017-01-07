@@ -1,4 +1,5 @@
 #include "DJI_Data.h"
+#include "DJI_Package.h"
 
 using namespace DJI;
 using namespace DJI::onboardSDK;
@@ -37,7 +38,7 @@ void DataSubscribe::subscribe(uint8_t id, uint16_t freq, uint8_t flag,
             *(uint32_t *)(buffer + sizeof(SubscribeData)));
     api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
               CODE_SUBSCRIBE_ADD_PACKAGE, buffer, size, 500, 1,
-              addPackageCallback, this);
+              addPackageCallback, package[id]);
   }
 }
 
@@ -64,8 +65,14 @@ void DataSubscribe::verifyCallback(CoreAPI *API, Header *header,
 
 void DataSubscribe::addPackageCallback(CoreAPI *API, Header *header,
                                        UserData THIS) {
-  DataSubscribe *This = (DataSubscribe *)THIS;
-  This->decodeAck(header);
+  DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
+  if (This->getSubscribe()->decodeAck(header) == RESULT_SUCESS) {
+    size_t tmp    = This->getClauseNumber();
+    uint16_t freq = This->getFreq();
+    for (int i = 0; i < tmp; ++i) {
+      Data::DataBase[This->getClauseOffset()[i]].freq = freq;
+    }
+  }
   //  API->decodeAckDetails(pdata);
 }
 
@@ -82,16 +89,30 @@ void DataSubscribe::removeCallback(CoreAPI *API, Header *header,
   //  API->decodeAckDetails(pdata);
 }
 
+#include <QDebug>
+
 void DataSubscribe::decodeCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
-  //! @todo implement
   DataSubscribe *This = (DataSubscribe *)THIS;
   uint8_t pkg         = This->getPackageNumber(header);
   if (pkg < maxPakcageNumber) {
-    API_LOG(API->getDriver(), STATUS_LOG, "Length %d %d %d", header->length,
-            sizeof(Header), pkg);
+    API_LOG(API->getDriver(), STATUS_LOG, "Length %d %d %d %d", header->length,
+            sizeof(Header), pkg, API->getDriver()->getTimeStamp());
     Package *p = This->package[pkg];
-    if (p) p->unpack(header);
+    if (p)
+      p->unpack(header);
+    else {
+      API_LOG(API->getDriver(), ERROR_LOG,
+              "Unknown subsciption package %d, removing...", pkg);
+      if (DEBUG_LOG) {
+        uint8_t *data = ((uint8_t *)header) + sizeof(Header) + 2;
+        data++;
+
+        API_LOG(This->getAPI()->getDriver(), STATUS_LOG, "Time: %d %d",
+                *((uint32_t *)data), *((uint32_t *)data + 1));
+      }
+      This->remove(pkg);
+    }
   } else {
     API_LOG(API->getDriver(), ERROR_LOG,
             "Segmentation fault, unexcepted package value %d", pkg);
@@ -100,7 +121,7 @@ void DataSubscribe::decodeCallback(CoreAPI *API, Header *header,
 
 uint8_t DataSubscribe::decodeAck(Header *protocolHeader) {
   uint8_t *pdata = ((uint8_t *)protocolHeader) + sizeof(Header);
-  API_LOG(api->getDriver(), STATUS_LOG, "entered %x %d", *pdata,
+  API_LOG(api->getDriver(), STATUS_LOG, "ACK %x %d", *pdata,
           protocolHeader->length - sizeof(Header));
   return *pdata;
 }
@@ -127,12 +148,18 @@ void DataSubscribe::setAPI(CoreAPI *value) {
   api->setSubscribeCallback(decodeCallback, this);
 }
 
-bool DataSubscribe::setPackage(DataSubscribe::Package *pkg) {
+bool DataSubscribe::setPackage(DataSubscribe::Package *pkg, bool removeOld) {
   if (pkg->getPackageID() < maxPakcageNumber) {
     if (package[pkg->getPackageID()] != 0) {
-      API_LOG(api->getDriver(), STATUS_LOG,
-              "package already exist, remove the old one.")
-      remove(pkg->getPackageID());
+      if (removeOld) {
+        API_LOG(api->getDriver(), STATUS_LOG,
+                "package already exist, remove the old one.")
+        remove(pkg->getPackageID());
+      } else {
+        API_LOG(api->getDriver(), DEBUG_LOG, "package %d, already used",
+                pkg->getPackageID());
+        return false;
+      }
     }
     package[pkg->getPackageID()] = pkg;
     return true;
@@ -140,103 +167,4 @@ bool DataSubscribe::setPackage(DataSubscribe::Package *pkg) {
     API_LOG(api->getDriver(), ERROR_LOG, "package out of range");
     return false;
   }
-}
-
-DataSubscribe::Package *DataSubscribe::getPackage(size_t id) {
-  if (id < maxPakcageNumber)
-    return package[id];
-  else
-    return 0;
-}
-
-DataSubscribe::Package::Package(DataSubscribe *API)
-    : subscribe(API),
-      freq(0),
-      sendStamp(false),
-      memoryPoll(0),
-      size(0),
-      packageID(0),
-      clauseInited(0),
-      clauseNumber(0),
-      clauseOffset(0) {
-  unpackHandler.callback = 0;
-  unpackHandler.data     = 0;
-}
-
-bool DataSubscribe::Package::add(uint16_t offset) {
-  if (offset < Data::toaltalClauseNumber) {
-    if (clauseInited < clauseNumber) {
-      size += Data::DataBase[offset].size;
-      clauseOffset[clauseInited++] = offset;
-      return true;
-    }
-    API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
-            "too much data to subscribe.");
-    return false;
-  }
-  API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
-          "database offset overflow.");
-  return false;
-}
-
-bool DataSubscribe::Package::add(Data::UID uid) {
-  for (int i = 0; i < Data::toaltalClauseNumber; ++i)
-    if (Data::DataBase[i].uid == uid) {
-      return add(i);
-    }
-  API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG, "UID not found");
-  return false;
-}
-
-bool DataSubscribe::Package::start() {
-  if (clauseInited != clauseNumber) return false;
-  uint32_t lst[40];
-  for (int i = 0; i < clauseNumber; ++i)
-    lst[i]   = Data::DataBase[clauseOffset[i]].uid;
-  subscribe->subscribe(packageID, freq, sendStamp ? 1 : 0, clauseNumber, lst);
-  return true;
-}
-
-void DataSubscribe::Package::stop() { subscribe->remove(packageID); }
-
-void DataSubscribe::Package::unpack(Header *header) {
-  //!@todo implement
-  uint8_t *data = ((uint8_t *)header) + sizeof(Header) + 2;
-  API_LOG(subscribe->getAPI()->getDriver(), STATUS_LOG,
-          "%d unpacking %d %d 0x%x 0x%x.", size, header->length - 17,
-          *((uint8_t *)data + 1), *((uint32_t *)data), *((uint32_t *)data + 1));
-}
-
-void DataSubscribe::Package::allocClauseOffset(size_t allocSize) {
-  if (allocSize == 0) return;
-  setClauseOffset(new uint32_t[allocSize]);
-  setClauseNumber(allocSize);
-}
-
-size8_t DataSubscribe::Package::getPackageID() const { return packageID; }
-
-void DataSubscribe::Package::setPackageID(const size8_t &value) {
-  packageID = value;
-}
-
-bool DataSubscribe::Package::getSendStamp() const { return sendStamp; }
-
-void DataSubscribe::Package::setSendStamp(bool value) { sendStamp = value; }
-
-uint16_t DataSubscribe::Package::getFreq() const { return freq; }
-
-void DataSubscribe::Package::setFreq(const uint16_t &value) { freq = value; }
-
-uint32_t *DataSubscribe::Package::getClauseOffset() const {
-  return clauseOffset;
-}
-
-void DataSubscribe::Package::setClauseOffset(uint32_t *value) {
-  clauseOffset = value;
-}
-
-size_t DataSubscribe::Package::getClauseNumber() const { return clauseNumber; }
-
-void DataSubscribe::Package::setClauseNumber(const size_t &value) {
-  clauseNumber = value;
 }

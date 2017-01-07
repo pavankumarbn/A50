@@ -2,8 +2,8 @@
 #define SUBSCRIBEPANNEL_H
 
 #include <QWidget>
-#include "DJI_Data.h"
 #include "DJI_Database.h"
+#include "DJI_Package.h"
 
 namespace Ui {
 class SubscribePannel;

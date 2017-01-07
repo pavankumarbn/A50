@@ -142,7 +142,7 @@ unsigned char rj_sbox(unsigned char x) {
   unsigned char y, sb;
 
   sb = y = gf_mulinv(x);
-  y = (y << 1) | (y >> 7);
+  y      = (y << 1) | (y >> 7);
   sb ^= y;
   y = (y << 1) | (y >> 7);
   sb ^= y;
@@ -158,9 +158,9 @@ unsigned char rj_sbox(unsigned char x) {
 unsigned char rj_sbox_inv(unsigned char x) {
   unsigned char y, sb;
 
-  y = x ^ 0x63;
+  y  = x ^ 0x63;
   sb = y = (y << 1) | (y >> 7);
-  y = (y << 2) | (y >> 6);
+  y      = (y << 2) | (y >> 6);
   sb ^= y;
   y = (y << 3) | (y >> 5);
   sb ^= y;
@@ -208,22 +208,22 @@ void aes_addRoundKey_cpy(unsigned char *buf, unsigned char *key,
 void aes_shiftRows(unsigned char *buf) {
   register unsigned char i, j; /* to make it potentially parallelable :) */
 
-  i = buf[1];
-  buf[1] = buf[5];
-  buf[5] = buf[9];
-  buf[9] = buf[13];
+  i       = buf[1];
+  buf[1]  = buf[5];
+  buf[5]  = buf[9];
+  buf[9]  = buf[13];
   buf[13] = i;
-  i = buf[10];
+  i       = buf[10];
   buf[10] = buf[2];
-  buf[2] = i;
-  j = buf[3];
-  buf[3] = buf[15];
+  buf[2]  = i;
+  j       = buf[3];
+  buf[3]  = buf[15];
   buf[15] = buf[11];
   buf[11] = buf[7];
-  buf[7] = j;
-  j = buf[14];
+  buf[7]  = j;
+  j       = buf[14];
   buf[14] = buf[6];
-  buf[6] = j;
+  buf[6]  = j;
 
 } /* aes_shiftRows */
 
@@ -231,21 +231,21 @@ void aes_shiftRows(unsigned char *buf) {
 void aes_shiftRows_inv(unsigned char *buf) {
   register unsigned char i, j; /* same as above :) */
 
-  i = buf[1];
-  buf[1] = buf[13];
+  i       = buf[1];
+  buf[1]  = buf[13];
   buf[13] = buf[9];
-  buf[9] = buf[5];
-  buf[5] = i;
-  i = buf[2];
-  buf[2] = buf[10];
+  buf[9]  = buf[5];
+  buf[5]  = i;
+  i       = buf[2];
+  buf[2]  = buf[10];
   buf[10] = i;
-  j = buf[3];
-  buf[3] = buf[7];
-  buf[7] = buf[11];
+  j       = buf[3];
+  buf[3]  = buf[7];
+  buf[7]  = buf[11];
   buf[11] = buf[15];
   buf[15] = j;
-  j = buf[6];
-  buf[6] = buf[14];
+  j       = buf[6];
+  buf[6]  = buf[14];
   buf[14] = j;
 
 } /* aes_shiftRows_inv */
@@ -348,7 +348,7 @@ void aes256_init(aes256_context *ctx, unsigned char *k) {
 void aes256_done(aes256_context *ctx) {
   register unsigned char i;
 
-  for (i = 0; i < sizeof(ctx->key); i++)
+  for (i        = 0; i < sizeof(ctx->key); i++)
     ctx->key[i] = ctx->enckey[i] = ctx->deckey[i] = 0;
 } /* aes256_done */
 
@@ -558,11 +558,10 @@ void encodeData(SDKFilter *p_filter, Header *p_head,
   unsigned char *data_ptr;
 
   if (p_head->enc == 0) return;
-  if (p_head->length == sizeof(Header)) return;
-  if (p_head->length <= sizeof(Header) + _SDK_CRC_DATA_SIZE) return;
+  if (p_head->length <= CoreAPI::PackageMin) return;
 
   data_ptr = (unsigned char *)p_head + sizeof(Header);
-  data_len = p_head->length - _SDK_CRC_DATA_SIZE - sizeof(Header);
+  data_len = p_head->length - CoreAPI::PackageMin;
   loop_blk = data_len / 16;
   data_idx = 0;
 
@@ -620,7 +619,7 @@ void sdk_stream_shift_data_lambda(SDKFilter *p_filter) {
 
 //! @note push data to filter buffer
 void CoreAPI::storeData(SDKFilter *p_filter, unsigned char in_data) {
-  if (p_filter->recvIndex < _SDK_MAX_RECV_SIZE) {
+  if (p_filter->recvIndex < CoreAPI::maxRecv) {
     p_filter->recvBuf[p_filter->recvIndex] = in_data;
     p_filter->recvIndex++;
   } else {
@@ -654,12 +653,12 @@ void CoreAPI::storeData(SDKFilter *p_filter, unsigned char in_data) {
 // the re-use data will loop later
 
 void sdk_stream_update_reuse_part_lambda(SDKFilter *p_filter) {
-  unsigned char *p_buf = p_filter->recvBuf;
+  unsigned char *p_buf         = p_filter->recvBuf;
   unsigned short bytes_to_move = p_filter->recvIndex - sizeof(Header);
-  unsigned char *p_src = p_buf + sizeof(Header);
+  unsigned char *p_src         = p_buf + sizeof(Header);
 
   unsigned short n_dest_index = p_filter->reuseIndex - bytes_to_move;
-  unsigned char *p_dest = p_buf + n_dest_index;
+  unsigned char *p_dest       = p_buf + n_dest_index;
 
   memmove(p_dest, p_src, bytes_to_move);
 
@@ -683,8 +682,8 @@ void DJI::onboardSDK::CoreAPI::verifyData(SDKFilter *p_filter) {
 void DJI::onboardSDK::CoreAPI::verifyHead(SDKFilter *p_filter) {
   Header *p_head = (Header *)(p_filter->recvBuf);
 
-  if ((p_head->sof == _SDK_SOF) && (p_head->version == 0) &&
-      (p_head->length < _SDK_MAX_RECV_SIZE) && (p_head->reversed0 == 0) &&
+  if ((p_head->sof == CoreAPI::SOF) && (p_head->version == 0) &&
+      (p_head->length < CoreAPI::maxRecv) && (p_head->reversed0 == 0) &&
       (p_head->reversed1 == 0) &&
       (_SDK_CALC_CRC_HEAD(p_head, sizeof(Header)) == 0)) {
     // check if this head is a ack or simple package
@@ -718,7 +717,7 @@ void DJI::onboardSDK::CoreAPI::streamHandler(SDKFilter *p_filter,
 
 void DJI::onboardSDK::CoreAPI::byteHandler(const uint8_t in_data) {
   filter.reuseCount = 0;
-  filter.reuseIndex = _SDK_MAX_RECV_SIZE;
+  filter.reuseIndex = CoreAPI::maxRecv;
 
   streamHandler(&filter, in_data);
 
@@ -745,7 +744,7 @@ void DJI::onboardSDK::CoreAPI::byteHandler(const uint8_t in_data) {
     * the command tail part move to buffer right
     * */
   if (filter.reuseCount != 0) {
-    while (filter.reuseIndex < _SDK_MAX_RECV_SIZE) {
+    while (filter.reuseIndex < CoreAPI::maxRecv) {
       /*! @note because reuse_index maybe re-located, so reuse_index must
        * be
        *  always point to un-used index
@@ -757,28 +756,27 @@ void DJI::onboardSDK::CoreAPI::byteHandler(const uint8_t in_data) {
   }
 }
 
-// Implement stream handler here
+//! @todo Implement stream handler here
 void CoreAPI::byteStreamHandler(uint8_t *buffer __UNUSED,
                                 size_t size __UNUSED) {}
 
 void calculateCRC(void *p_data) {
-  Header *p_head = (Header *)p_data;
+  Header *p_head        = (Header *)p_data;
   unsigned char *p_byte = (unsigned char *)p_data;
-  unsigned int index_of_crc2;
+  unsigned int index_of_crc32;
 
-  if (p_head->sof != _SDK_SOF) return;
+  if (p_head->sof != CoreAPI::SOF) return;
   if (p_head->version != 0) return;
-  if (p_head->length > _SDK_MAX_RECV_SIZE) return;
-  if (p_head->length > sizeof(Header) &&
-      p_head->length < _SDK_FULL_DATA_SIZE_MIN)
+  if (p_head->length > CoreAPI::maxRecv) return;
+  if (p_head->length > sizeof(Header) && p_head->length < CoreAPI::PackageMin)
     return;
 
-  p_head->crc = sdk_stream_crc16_calc(p_byte, _SDK_HEAD_DATA_LEN);
+  p_head->crc = sdk_stream_crc16_calc(p_byte, CoreAPI::CRCHeadLen);
 
-  if (p_head->length >= _SDK_FULL_DATA_SIZE_MIN) {
-    index_of_crc2 = p_head->length - _SDK_CRC_DATA_SIZE;
-    _SDK_U32_SET(p_byte + index_of_crc2,
-                 sdk_stream_crc32_calc(p_byte, index_of_crc2));
+  if (p_head->length >= CoreAPI::PackageMin) {
+    index_of_crc32 = p_head->length - CoreAPI::CRCData;
+    _SDK_U32_SET(p_byte + index_of_crc32,
+                 sdk_stream_crc32_calc(p_byte, index_of_crc32));
   }
 }
 
@@ -816,25 +814,25 @@ unsigned short DJI::onboardSDK::CoreAPI::encrypt(
   if (w_len == 0 || psrc == 0)
     data_len = (unsigned short)sizeof(Header);
   else
-    data_len = (unsigned short)sizeof(Header) + _SDK_CRC_DATA_SIZE + w_len;
+    data_len = (unsigned short)sizeof(Header) + CoreAPI::CRCData + w_len;
 
   if (is_enc) data_len = data_len + (16 - w_len % 16);
 
   API_LOG(serialDevice, DEBUG_LOG, "data len: %d\n", data_len);
 
-  p_head->sof = _SDK_SOF;
-  p_head->length = data_len;
-  p_head->version = 0;
+  p_head->sof       = CoreAPI::SOF;
+  p_head->length    = data_len;
+  p_head->version   = 0;
   p_head->sessionID = session_id;
-  p_head->isAck = is_ack ? 1 : 0;
+  p_head->isAck     = is_ack ? 1 : 0;
   p_head->reversed0 = 0;
 
-  p_head->padding = is_enc ? (16 - w_len % 16) : 0;
-  p_head->enc = is_enc ? 1 : 0;
+  p_head->padding   = is_enc ? (16 - w_len % 16) : 0;
+  p_head->enc       = is_enc ? 1 : 0;
   p_head->reversed1 = 0;
 
   p_head->sequenceNumber = seq_num;
-  p_head->crc = 0;
+  p_head->crc            = 0;
 
   if (psrc && w_len) memcpy(pdest + sizeof(Header), psrc, w_len);
   encodeData(&filter, p_head, aes256_encrypt_ecb);

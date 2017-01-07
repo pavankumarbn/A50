@@ -196,10 +196,10 @@ void Waypoints::idleVelocityCallback(CoreAPI *api, Header *protocolHeader,
   Waypoints *wp = (Waypoints *)wpapi;
   WayPointVelocityACK ack;
 
-  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack))
+  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(ack))
     memcpy((unsigned char *)&ack,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
   else {
     API_LOG(api->getDriver(), ERROR_LOG,
             "ACK is exception, session id %d,sequence %d\n",
@@ -217,10 +217,10 @@ void Waypoints::readInitDataCallback(CoreAPI *api, Header *protocolHeader,
   Waypoints *wp = (Waypoints *)wpapi;
   WayPointInitACK ack;
 
-  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack))
+  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(ack))
     memcpy((unsigned char *)&ack,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
   else {
     API_LOG(api->getDriver(), ERROR_LOG,
             "ACK is exception, session id %d,sequence %d\n",
@@ -238,10 +238,10 @@ void Waypoints::uploadIndexDataCallback(CoreAPI *api, Header *protocolHeader,
                                         UserData wpapi __UNUSED) {
   WayPointDataACK ack;
 
-  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack))
+  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(ack))
     memcpy((unsigned char *)&ack,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
   else {
     API_LOG(api->getDriver(), ERROR_LOG,
             "ACK is exception, session id %d,sequence %d\n",

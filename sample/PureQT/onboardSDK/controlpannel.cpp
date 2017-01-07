@@ -88,10 +88,10 @@ void ControlPannel::setControlCallback(CoreAPI *This, Header *header,
   unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
   unsigned char data      = 0x1;
 
-  if (header->length - EXC_DATA_SIZE <= 2) {
+  if (header->length - CoreAPI::PackageMin <= 2) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)header) + sizeof(Header),
-           (header->length - EXC_DATA_SIZE));
+           (header->length - CoreAPI::PackageMin));
   } else {
     API_LOG(This->getDriver(), ERROR_LOG,
             "ACK is exception,seesion id %d,sequence %d\n", header->sessionID,

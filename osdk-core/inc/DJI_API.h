@@ -438,6 +438,14 @@ class CoreAPI {
    * when interacting with a Data Transparent Transmission App
    */
 
+ public:
+  static const uint8_t SOF    = 0xAA;
+  static const int maxRecv    = BUFFER_SIZE;
+  static const int CRCHead    = sizeof(uint16_t);
+  static const int CRCData    = sizeof(uint32_t);
+  static const int CRCHeadLen = sizeof(Header) - CRCHead;
+  static const int PackageMin = sizeof(Header) + CRCData;
+
  private:
   uint32_t ackFrameStatus;
   bool broadcastFrameStatus;

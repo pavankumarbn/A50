@@ -68,12 +68,15 @@ void CoreAPI::appHandler(Header *protocolHeader) {
           data     = CMDSessionTab[protocolHeader->sessionID].userData;
           freeSession(&CMDSessionTab[protocolHeader->sessionID]);
           serialDevice->freeMemory();
-
           if (callBack) {
             //! Non-blocking callback thread
             if (nonBlockingCBThreadEnable == true) {
               notifyNonBlockingCaller(protocolHeader);
             } else if (nonBlockingCBThreadEnable == false) {
+              API_LOG(
+                  serialDevice, STATUS_LOG, "Ping %d",
+                  serialDevice->getTimeStamp() -
+                      CMDSessionTab[protocolHeader->sessionID].preTimestamp);
               callBack(this, protocolHeader, data);
             }
           } else {
@@ -153,7 +156,7 @@ void CoreAPI::allocateACK(Header *protocolHeader) {
   if (protocolHeader->length <= MAX_ACK_SIZE) {
     memcpy(missionACKUnion.raw_ack_array,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
   } else {
     //! @note throw not supported in STM32
     // throw std::runtime_error("Unknown ACK");

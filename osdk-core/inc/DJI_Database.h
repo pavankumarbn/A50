@@ -229,9 +229,10 @@ typedef void (*UnpackedCallback)(CoreAPI*, uint8_t*, UserData);
 
 typedef struct DataClauseInfo {
   const uint32_t uid;
-  const size8_t size;
+  const size_t size;
   const uint16_t maxfreq;  //! @note max freq in Hz
   uint16_t freq;
+  uint8_t* latest;
   UnpackedCallback callback;
   UserData userData;
   //  char brief[64];
@@ -241,7 +242,7 @@ typedef struct DataClauseInfo {
 //! @note cpp03 standard not support
 //! static constant vector annouced in
 //! a class
-extern const DataClauseInfo DataBase[];
+extern DataClauseInfo DataBase[];
 extern const uint32_t DBVersion;
 extern const size_t toaltalClauseNumber;
 
@@ -273,7 +274,7 @@ template <> struct Structure<UID_PALSTANCE_RAW            > {  typedef Vector3f 
 template <> struct Structure<UID_ALTITUDE_FUSIONED        > {  typedef float32_t       type; static const uint32_t offset = 7 ;};
 template <> struct Structure<UID_ALTITUDE_BAROMETER       > {  typedef float32_t       type; static const uint32_t offset = 8 ;};
 template <> struct Structure<UID_HEIGHT_HOMEPOOINT        > {  typedef float32_t       type; static const uint32_t offset = 9 ;};
-template <> struct Structure<UID_HEIGHT_FUSION        > {  typedef float32_t       type; static const uint32_t offset = 10;};
+template <> struct Structure<UID_HEIGHT_FUSION            > {  typedef float32_t       type; static const uint32_t offset = 10;};
 template <> struct Structure<UID_GPS_DATE                 > {  typedef uint32_t        type; static const uint32_t offset = 11;};
 template <> struct Structure<UID_GPS_TIME                 > {  typedef uint32_t        type; static const uint32_t offset = 12;};
 template <> struct Structure<UID_GPS_POSITION             > {  typedef Vector3d        type; static const uint32_t offset = 13;};

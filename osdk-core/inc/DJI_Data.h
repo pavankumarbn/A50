@@ -69,10 +69,10 @@ class DataSubscribe {
 #pragma pack()
 
  public:
-  bool setPackage(Package* pkg);
+  bool setPackage(Package* pkg, bool removeOld = true);
   Package* getPackage(size_t id);
 
- public:
+ public:  //! @todo private
   void verify(CallBack callback = 0, UserData userData = 0);
   void subscribe(uint8_t id, uint16_t freq, uint8_t flag, uint8_t clauseNumber,
                  uint32_t* uid);
@@ -81,9 +81,10 @@ class DataSubscribe {
   void changeFreq(uint8_t packageID, uint16_t freq);
   void pause(uint8_t packageID);
   void resume(uint8_t packageID);
-  //  void getInfo();
 
- public:
+  //! @todo implement  void getInfo();
+
+ private:  //! @todo private
   static void verifyCallback(CoreAPI* API, Header* header, UserData THIS);
   static void addPackageCallback(CoreAPI* API, Header* header, UserData THIS);
   static void resetCallback(CoreAPI* API, Header* header, UserData THIS);
@@ -110,66 +111,6 @@ class DataPublish {
   DataPublish();
 
  private:
-};
-
-//! @todo implement
-class DataSubscribe::Package {
- public:
-  typedef uint8_t* PackageBuffer;
-  typedef void (*Callback)(DataSubscribe*, PackageBuffer, UserData);
-  typedef struct CallbackHandler {
-    Callback callback;
-    UserData data;
-  } CallbackHandler;
-
- public:
-  Package(DataSubscribe* API = 0);
-
-  bool add(uint16_t offset);
-  bool add(Data::UID uid);
-  //! @note note called automatically in constructor function, because
-  //! size not decided, need finish adding Dataclauses then call this
-  //! function to finish initializing.
-
- public:
-  bool start();
-  void stop();
-  void pause();
-  void resume();
-
- private:
-  void unpack(Header* header);
-
- public:
-  void allocClauseOffset(size_t allocSize);
-
-  size8_t getPackageID() const;
-  uint16_t getFreq() const;
-  size_t getClauseNumber() const;
-  uint32_t* getClauseOffset() const;
-
-  void setPackageID(const size8_t& value);
-  void setFreq(const uint16_t& value);
-  void setClauseNumber(const size_t& value);
-  void setClauseOffset(uint32_t* value);
-
-  bool getSendStamp() const;
-  void setSendStamp(bool value);
-
- private:
-  uint16_t freq;
-  bool sendStamp;
-
-  DataSubscribe* subscribe;
-  PackageBuffer memoryPoll;
-  CallbackHandler unpackHandler;
-  size16_t size;
-  size8_t packageID;
-  size_t clauseInited;
-  size_t clauseNumber;
-  uint32_t* clauseOffset;
-
-  friend class DataSubscribe;
 };
 
 }  // onboardSDK

@@ -13,16 +13,18 @@
 #define DJI_CONFIG_H
 
 #include <stdint.h>
-#define MEMORY_SIZE 1024 // unit is byte
+#define MEMORY_SIZE 1024  // unit is byte
 #define BUFFER_SIZE 1024
 #define ACK_SIZE 10
 
-//! @note The static memory flag means DJI onboardSDK library will not alloc memory from heap.
+//! @note The static memory flag means DJI onboardSDK library will not alloc
+//! memory from heap.
 //! @todo Not supported in this release.
 
 //#define STATIC_MEMORY
 
-//! Uncomment these macros to access various messages from the API. 
+//! @note Uncomment these macros to access various messages from the Core
+//! library's API_LOG macro.
 
 //#define API_MISSION_DATA
 //#define API_TRACE_DATA
@@ -36,8 +38,8 @@
 //#define USE_ENCRYPT
 
 //! @todo Not supported in this release.
-//#define USE_SIMULATION
+#define USE_SIMULATION
 
 #include <DJI_Version.h>
 
-#endif // DJI_CONFIG_H
+#endif  // DJI_CONFIG_H

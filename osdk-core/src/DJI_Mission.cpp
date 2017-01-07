@@ -98,10 +98,10 @@ bool CoreAPI::decodeMissionStatus(uint8_t ack) {
 void missionCallback(CoreAPI *api, Header *protocolHeader,
                      UserData userdata __UNUSED) {
   MissionACK ack;
-  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack)) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(ack)) {
     memcpy((unsigned char *)&ack,
            (unsigned char *)protocolHeader + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
     if (!api->decodeMissionStatus(ack))
       API_LOG(api->getDriver(), ERROR_LOG, "Decode ACK error 0x%X\n", ack);
   } else {

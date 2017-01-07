@@ -161,6 +161,7 @@ void DJI::onboardSDK::CoreAPI::broadcast(Header *protocolHeader) {
   }
 }
 #endif
+
 void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
   unsigned char buf[100] = {0, 0};
 

@@ -583,7 +583,7 @@ void CoreAPI::setDriver(HardDriver *sDevice) { serialDevice = sDevice; }
 void CoreAPI::getDroneVersionCallback(CoreAPI *api, Header *protocolHeader,
                                       UserData userData __UNUSED) {
   unsigned char *ptemp = ((unsigned char *)protocolHeader) + sizeof(Header);
-  size_t ack_length    = protocolHeader->length - EXC_DATA_SIZE;
+  size_t ack_length    = protocolHeader->length - CoreAPI::PackageMin;
 
   if (ack_length > 1) {
     api->versionData.version_ack = ptemp[0] + (ptemp[1] << 8);
@@ -620,10 +620,10 @@ void CoreAPI::getDroneVersionCallback(CoreAPI *api, Header *protocolHeader,
 void CoreAPI::activateCallback(CoreAPI *api, Header *protocolHeader,
                                UserData userData __UNUSED) {
   unsigned short ack_data;
-  if (protocolHeader->length - EXC_DATA_SIZE <= 2) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= 2) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
     switch (ack_data) {
       case ACK_ACTIVE_SUCCESS:
         API_LOG(api->serialDevice, STATUS_LOG, "Activated successfully\n");
@@ -677,10 +677,10 @@ void CoreAPI::activateCallback(CoreAPI *api, Header *protocolHeader,
 void CoreAPI::sendToMobileCallback(CoreAPI *api, Header *protocolHeader,
                                    UserData userData __UNUSED) {
   unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
-  if (protocolHeader->length - EXC_DATA_SIZE <= 2) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= 2) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
     if (!api->decodeACKStatus(ack_data)) {
       API_LOG(api->serialDevice, ERROR_LOG, "While calling this function");
     }
@@ -696,10 +696,10 @@ void CoreAPI::setFrequencyCallback(CoreAPI *api __UNUSED,
                                    UserData userData __UNUSED) {
   unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
 
-  if (protocolHeader->length - EXC_DATA_SIZE <= 2) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= 2) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
   }
   switch (ack_data) {
     case 0x0000:
@@ -737,10 +737,10 @@ void CoreAPI::setControlCallback(CoreAPI *api, Header *protocolHeader,
   unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
   unsigned char data      = 0x1;
 
-  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack_data)) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(ack_data)) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
   } else {
     API_LOG(api->serialDevice, ERROR_LOG,
             "ACK is exception, session id %d,sequence %d\n",

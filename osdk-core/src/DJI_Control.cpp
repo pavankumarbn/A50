@@ -75,10 +75,10 @@ void Control::setControlCallback(CoreAPI *api, Header *protocolHeader,
   unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
   unsigned char data      = 0x1;
 
-  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(ack_data)) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(ack_data)) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
   } else {
     API_LOG(api->getDriver(), ERROR_LOG,
             "ACK is exception, session id %d,sequence %d\n",
@@ -127,10 +127,10 @@ void Control::setControlCallback(CoreAPI *api, Header *protocolHeader,
 void Control::commandCallback(CoreAPI *api, Header *protocolHeader,
                               UserData userData) {
   unsigned short ack_data;
-  if (protocolHeader->length - EXC_DATA_SIZE <= 2) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= 2) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
     switch (ack_data) {
       case ERROR_COMMAND_NONE:
         API_LOG(api->getDriver(), STATUS_LOG, "successful,%d\n", ack_data);

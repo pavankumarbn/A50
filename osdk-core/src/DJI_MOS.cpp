@@ -8,7 +8,7 @@ void MOS::parseFromMobileCallback(CoreAPI *api, Header *protocolHeader,
   MOS *This = (MOS *)userData;
   uint16_t mobile_data_id;
 
-  if (protocolHeader->length - EXC_DATA_SIZE <= 4) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= 4) {
     mobile_data_id = *((unsigned char *)protocolHeader + sizeof(Header) + 2);
 
     switch (mobile_data_id) {

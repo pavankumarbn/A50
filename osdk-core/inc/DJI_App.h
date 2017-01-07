@@ -22,15 +22,13 @@
 //----------------------------------------------------------------------
 // App layer function
 //----------------------------------------------------------------------
-typedef struct
-{
+typedef struct {
   unsigned short sequence_number;
   unsigned char session_id : 5;
   unsigned char need_encrypt : 1;
   unsigned char reserve : 2;
 } req_id_t;
 
-#define EXC_DATA_SIZE (16u)
 #define SET_CMD_SIZE (2u)
 
 //----------------------------------------------------------------------
@@ -43,5 +41,4 @@ typedef struct
 #define STATUS_CMD_EXE_FAIL 0x0004
 #define STATUS_CMD_EXE_SUCCESS 0x0005
 
-
-#endif // DJI_APP_H
+#endif  // DJI_APP_H

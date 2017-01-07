@@ -22,7 +22,8 @@ SOURCES += \
     $$PWD/src/DJI_Assistant.cpp \
     $$PWD/src/DJI_Database.cpp \
     $$PWD/src/DJI_Broadcast.cpp \
-    $$PWD/src/DJI_Control.cpp
+    $$PWD/src/DJI_Control.cpp \
+    $$PWD/src/DJI_Package.cpp
 
 HEADERS += \
     $$PWD/inc/DJI_API.h \
@@ -54,6 +55,7 @@ HEADERS += \
     $$PWD/inc/DJI_Broadcast.h \
     $$PWD/inc/dbauto.h \
     $$PWD/inc/DJI_Control.h \
-    $$PWD/inc/DJI_MOS.h
+    $$PWD/inc/DJI_MOS.h \
+    $$PWD/inc/DJI_Package.h
 
 INCLUDEPATH += $$PWD/inc

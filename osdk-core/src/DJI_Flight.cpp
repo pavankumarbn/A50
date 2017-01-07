@@ -195,10 +195,10 @@ Angle Flight::getPitch() const {
 void Flight::armCallback(CoreAPI *api, Header *protocolHeader,
                          UserData userData __UNUSED) {
   unsigned short ack_data;
-  if (protocolHeader->length - EXC_DATA_SIZE <= 2) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= 2) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
     switch (ack_data) {
       case ACK_ARM_SUCCESS:
         API_LOG(api->getDriver(), STATUS_LOG, "Success,0x000%x\n", ack_data);
@@ -226,10 +226,10 @@ void Flight::armCallback(CoreAPI *api, Header *protocolHeader,
 void Flight::taskCallback(CoreAPI *api, Header *protocolHeader,
                           UserData userData __UNUSED) {
   unsigned short ack_data;
-  if (protocolHeader->length - EXC_DATA_SIZE <= 2) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= 2) {
     memcpy((unsigned char *)&ack_data,
            ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
     API_LOG(api->getDriver(), STATUS_LOG, "Task running successfully,%d\n",
             ack_data);
   } else {

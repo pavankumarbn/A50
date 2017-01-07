@@ -214,10 +214,10 @@ HotPointData HotPoint::getData() const { return hotPointData; }
 void HotPoint::startCallback(CoreAPI *api, Header *protocolHeader,
                              UserData userdata __UNUSED) {
   HotPointStartACK ack;
-  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(HotPointStartACK)) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(HotPointStartACK)) {
     memcpy((unsigned char *)&ack,
            (unsigned char *)protocolHeader + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
     API_LOG(api->getDriver(), STATUS_LOG,
             "Start ACK has Max radius %f, ACK 0x%X", ack.maxRadius, ack.ack);
     if (!api->decodeMissionStatus(ack.ack))
@@ -233,10 +233,10 @@ void HotPoint::readCallback(CoreAPI *api, Header *protocolHeader,
                             UserData userdata) {
   HotPoint *hp = (HotPoint *)userdata;
   HotPointReadACK ack;
-  if (protocolHeader->length - EXC_DATA_SIZE <= sizeof(HotPointReadACK)) {
+  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(HotPointReadACK)) {
     memcpy((unsigned char *)&ack,
            (unsigned char *)protocolHeader + sizeof(Header),
-           (protocolHeader->length - EXC_DATA_SIZE));
+           (protocolHeader->length - CoreAPI::PackageMin));
     if (!api->decodeMissionStatus(ack.ack))
       API_LOG(api->getDriver(), ERROR_LOG, "Decode ACK error 0x%X", ack.ack);
     hp->hotPointData = ack.data;
