@@ -107,8 +107,6 @@ void DataSubscribe::removeCallback(CoreAPI *API, Header *header,
   }
 }
 
-#include <QDebug>
-
 void DataSubscribe::decodeCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
   DataSubscribe *This = (DataSubscribe *)THIS;
