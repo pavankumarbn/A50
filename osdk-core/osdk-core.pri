@@ -24,7 +24,8 @@ SOURCES += \
     $$PWD/src/DJI_Broadcast.cpp \
     $$PWD/src/DJI_Control.cpp \
     $$PWD/src/DJI_Package.cpp \
-    $$PWD/src/DJI_MOC.cpp
+    $$PWD/src/DJI_MOC.cpp \
+    $$PWD/src/DJI_Filter.cpp
 
 HEADERS += \
     $$PWD/inc/DJI_API.h \
@@ -58,6 +59,7 @@ HEADERS += \
     $$PWD/inc/DJI_Control.h \
     $$PWD/inc/DJI_MOS.h \
     $$PWD/inc/DJI_Package.h \
-    $$PWD/inc/DJI_MOC.h
+    $$PWD/inc/DJI_MOC.h \
+    $$PWD/inc/DJI_Filter.h
 
 INCLUDEPATH += $$PWD/inc

@@ -41,10 +41,7 @@ namespace DJI {
 namespace onboardSDK {
 class HardDriver;
 class CoreAPI;
-class Flight;
-class Camera;
-class VirtualRC;
-class HotPoint;
+class Filter;
 
 //! @todo sort enum and move to a new file
 
@@ -185,7 +182,6 @@ enum MISSION_TYPE {
  */
 
 class CoreAPI {
-  //  friend class HardDriver;
  public:
   CoreAPI(HardDriver *Driver = 0, Version SDKVersion = 0,
           bool userCallbackThread = false, CallBack userRecvCallback = 0,
