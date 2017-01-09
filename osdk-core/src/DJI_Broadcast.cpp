@@ -131,12 +131,13 @@ void DataBroadcast::setBroadcastFreqToZero() {
 }
 
 void DataBroadcast::setBroadcastCallback(CallBackHandler callback) {
-  broadcastCallback = callback;
+  handler = callback;
 }
 
-void DataBroadcast::setBroadcastCallback(CallBack handler, UserData userData) {
-  broadcastCallback.callback = userCallback;
-  broadcastCallback.userData = userData;
+void DataBroadcast::setBroadcastCallback(CallBack userCallback,
+                                         UserData userData) {
+  handler.callback = userCallback;
+  handler.userData = userData;
 }
 
 void DataBroadcast::setFrequencyCallback(CoreAPI *api, Header *protocolHeader,

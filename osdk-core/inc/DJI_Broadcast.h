@@ -52,7 +52,7 @@ class DataBroadcast {
   void setBroadcastFreqToZero();
 
   void setBroadcastCallback(CallBackHandler callback);
-  void setBroadcastCallback(CallBack handler, UserData userData = 0);
+  void setBroadcastCallback(CallBack userCallback, UserData userData = 0);
 
  public:
   static void callbackData(DJI::onboardSDK::CoreAPI* api, Header* header,
