@@ -23,6 +23,8 @@ class SubscribePannel : public QWidget {
   void on_btn_reset_clicked();
   void on_btn_subscribe_clicked();
   void on_btn_remove_clicked();
+  void on_btn_pause_clicked();
+  void on_btn_resume_clicked();
 
  private:
   Ui::SubscribePannel *ui;

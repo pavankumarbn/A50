@@ -50,7 +50,7 @@ class DataSubscribe {
     RESULT_SOUCE_DEVICE_OFFLINE     = 0x25,
     RESULT_PAUSED                   = 0x48,
     RESULT_RESUMED                  = 0x49,
-    RESULT_INTERNAL_ERROR_0X4A      = 0x4a,
+    RESULT_INTERNAL_ERROR_0X4A      = 0x4A,
     RESULT_INTERNAL_ERROR_0X50      = 0x50,
     RESULT_VERSION_VERSION_TOO_FAR  = 0x51,
     RESULT_INTERNAL_ERROR_0XFF      = 0xFF
@@ -72,24 +72,35 @@ class DataSubscribe {
   bool setPackage(Package* pkg, bool removeOld = true);
   Package* getPackage(size_t id);
 
- public:  //! @todo private
+ public:
+  //! @note basic functions
   void verify(CallBack callback = 0, UserData userData = 0);
+  void reset(CallBack callback = 0, UserData userData = 0);
+  //! @todo implement  void getInfo();
+
+ public:
+  //! @note subscribe functions
+
+ private:
+  //! @note package management functions
+
+ private:
+  //! @note direct API portal to Flight controller
   void subscribe(uint8_t id, uint16_t freq, uint8_t flag, uint8_t clauseNumber,
                  uint32_t* uid);
-  void reset(CallBack callback = 0, UserData userData = 0);
   void remove(uint8_t packageID);
   void changeFreq(uint8_t packageID, uint16_t freq);
   void pause(uint8_t packageID);
   void resume(uint8_t packageID);
 
-  //! @todo implement  void getInfo();
-
- private:  //! @todo private
+ private:
   static void verifyCallback(CoreAPI* API, Header* header, UserData THIS);
   static void addPackageCallback(CoreAPI* API, Header* header, UserData THIS);
   static void resetCallback(CoreAPI* API, Header* header, UserData THIS);
   static void removeCallback(CoreAPI* API, Header* header, UserData THIS);
   static void decodeCallback(CoreAPI* API, Header* header, UserData THIS);
+  static void pauseCallback(CoreAPI* API, Header* header, UserData THIS);
+  static void resumeCallback(CoreAPI* API, Header* header, UserData THIS);
 
   uint8_t decodeAck(Header* protocolHeader);
   uint8_t* decodeAckDetails(Header* protocolHeader);

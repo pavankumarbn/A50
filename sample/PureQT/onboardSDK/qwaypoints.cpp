@@ -323,7 +323,7 @@ void QWaypoints::on_waypoint_data_changed(const QModelIndex &topLeft __UNUSED,
                                           const QModelIndex &bottomRight
                                               __UNUSED,
                                           const QVector<int> &roles __UNUSED) {
-  //! @todo waypoint data modify
+  //! @todolater waypoint data modify
   //    API_LOG(api->getDriver(), STATUS_LOG, "c: %d r: %d %s",
   //    bottomRight.column(),
   //          bottomRight.row(), topLeft.data().toByteArray().data());

@@ -89,7 +89,8 @@ void CoreAPI::unpackData(Header *protocolHeader) {
   //! @warning Change to const (+change interface for passData) in next
   //! release
   uint16_t DATA_FLAG = 0x0001;
-  //! @todo better algorithm
+  //! @attention better algorithm implemented by class DataSubscribe or class
+  //! DataBroadcast
 
   if (versionData.version != versionM100_23)
     passData(*enableFlag, DATA_FLAG, &broadcastData.timeStamp, pdata,

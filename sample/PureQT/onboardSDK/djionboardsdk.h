@@ -208,7 +208,7 @@ class DJIonboardSDK : public QMainWindow {
   void on_btn_gps_read_clicked();
   void on_btn_rtk_read_clicked();
 
-  //! @todo sort
+  //! @todo decoupling pannels
 
  private:
 #ifdef GROUNDSTATION

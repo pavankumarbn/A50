@@ -254,16 +254,6 @@ unsigned short CoreAPI::activate(ActivateData *data, int timeout) {
   return ack_data;
 }
 
-void CoreAPI::sendToMobile(uint8_t *data, uint8_t len, CallBack callback,
-                           UserData userData) {
-  if (len > 100) {
-    API_LOG(serialDevice, ERROR_LOG, "Too much data to send");
-    return;
-  }
-  send(0, 0, SET_ACTIVATION, CODE_TOMOBILE, data, len, 500, 1,
-       callback ? callback : CoreAPI::sendToMobileCallback, userData);
-}
-
 void CoreAPI::setBroadcastFreq(uint8_t *dataLenIs16, CallBack callback,
                                UserData userData) {
   //! @note see also enum BROADCAST_FREQ in DJI_API.h
@@ -666,23 +656,6 @@ void CoreAPI::activateCallback(CoreAPI *api, Header *protocolHeader,
           API_LOG(api->serialDevice, ERROR_LOG, "While calling this function");
         }
         break;
-    }
-  } else {
-    API_LOG(api->serialDevice, ERROR_LOG,
-            "ACK is exception, session id %d,sequence %d\n",
-            protocolHeader->sessionID, protocolHeader->sequenceNumber);
-  }
-}
-
-void CoreAPI::sendToMobileCallback(CoreAPI *api, Header *protocolHeader,
-                                   UserData userData __UNUSED) {
-  unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
-  if (protocolHeader->length - CoreAPI::PackageMin <= 2) {
-    memcpy((unsigned char *)&ack_data,
-           ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - CoreAPI::PackageMin));
-    if (!api->decodeACKStatus(ack_data)) {
-      API_LOG(api->serialDevice, ERROR_LOG, "While calling this function");
     }
   } else {
     API_LOG(api->serialDevice, ERROR_LOG,

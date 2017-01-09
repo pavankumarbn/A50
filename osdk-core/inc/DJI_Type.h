@@ -11,6 +11,9 @@
  * */
 
 /*! @attention
+ *  most broadcast data definitions abandoned in this file
+ *  @todo remove unecessary definitions
+ *  @todo separaty this file
  *  Do not modify any definition in this file
  *  if you are unsure about what are you doing.
  *  DJI will not provide any support for changes made to this file.
@@ -18,8 +21,6 @@
 
 #ifndef DJI_TYPE
 #define DJI_TYPE
-
-//! @todo separaty this file
 
 #include <stdio.h>
 #include <exception>
@@ -461,7 +462,7 @@ typedef struct CtrlInfoData {
 } CtrlInfoData;
 
 typedef struct TimeStampData {
-  //! @todo type modify
+  //! @attention abandoned
   uint32_t time;
   uint32_t nanoTime;
   uint8_t syncFlag;

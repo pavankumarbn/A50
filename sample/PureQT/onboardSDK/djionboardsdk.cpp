@@ -13,6 +13,8 @@
 
 #include <QDebug>
 
+#include "DJI_MOC.h"
+
 #define DEG2RAD 0.01745329252
 
 void DJIonboardSDK::initFollow() {
@@ -1171,10 +1173,11 @@ void DJIonboardSDK::on_cb_core_mechine_activated(int index) {
 }
 
 void DJIonboardSDK::on_btn_mobile_clicked() {
-  if (ui->le_mobile->text().length() < 100)
-    api->sendToMobile((uint8_t *)ui->le_mobile->text().toLatin1().data(),
-                      ui->le_mobile->text().length());
-  else
+  if (ui->le_mobile->text().length() < 100) {
+    MOC moc(api);
+    moc.sendToMobile((uint8_t *)ui->le_mobile->text().toLatin1().data(),
+                     ui->le_mobile->text().length());
+  } else
     API_LOG(api->getDriver(), ERROR_LOG, "too much data for mobile sending.\n");
 }
 

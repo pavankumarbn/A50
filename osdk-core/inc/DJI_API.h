@@ -288,10 +288,6 @@ class CoreAPI {
   /// Activation Control
   void setAccountData(const ActivateData &value);
 
-  //! @todo move to MOS
-  void sendToMobile(uint8_t *data, uint8_t len, CallBack callback = 0,
-                    UserData userData = 0);
-
   /**
    * Let user know when ACK and Broadcast messages processed
    */
@@ -370,8 +366,7 @@ class CoreAPI {
   //! @todo move to Controlh
   static void setControlCallback(CoreAPI *api, Header *protocolHeader,
                                  UserData userData = 0);
-  static void sendToMobileCallback(CoreAPI *api, Header *protocolHeader,
-                                   UserData userData = 0);
+
   static void setFrequencyCallback(CoreAPI *api, Header *protocolHeader,
                                    UserData userData = 0);
 

@@ -16,9 +16,7 @@ class MOS {
    * Default MOS Protocol Parser. Calls other callback functions based on data
    */
  public:
-  MOS(CoreAPI *API = 0) : api(API) {
-    api->setFollowCallback(parseFromMobileCallback, this);
-  }
+  MOS(CoreAPI *API = 0);
   //! Mobile Data Transparent Transmission Input Servicing
   static void parseFromMobileCallback(CoreAPI *api, Header *protocolHeader,
                                       UserData userData);
@@ -26,103 +24,65 @@ class MOS {
   /**
    * Mobile Callback handler functions
    */
-  void setObtainControlMobileCallback(CallBackHandler callback) {
-    obtainControlMobileCallback = callback;
-  }
-  void setReleaseControlMobileCallback(CallBackHandler callback) {
-    releaseControlMobileCallback = callback;
-  }
-  void setActivateMobileCallback(CallBackHandler callback) {
-    activateMobileCallback = callback;
-  }
-  void setArmMobileCallback(CallBackHandler callback) {
-    armMobileCallback = callback;
-  }
-  void setDisArmMobileCallback(CallBackHandler callback) {
-    disArmMobileCallback = callback;
-  }
-  void setTakeOffMobileCallback(CallBackHandler callback) {
-    takeOffMobileCallback = callback;
-  }
-  void setLandingMobileCallback(CallBackHandler callback) {
-    landingMobileCallback = callback;
-  }
-  void setGoHomeMobileCallback(CallBackHandler callback) {
-    goHomeMobileCallback = callback;
-  }
-  void setTakePhotoMobileCallback(CallBackHandler callback) {
-    takePhotoMobileCallback = callback;
-  }
-  void setStartVideoMobileCallback(CallBackHandler callback) {
-    startVideoMobileCallback = callback;
-  }
-  void setStopVideoMobileCallback(CallBackHandler callback) {
-    stopVideoMobileCallback = callback;
-  }
+  void setObtainControlMobileCallback(CallBackHandler callback);
+  void setReleaseControlMobileCallback(CallBackHandler callback);
+  void setActivateMobileCallback(CallBackHandler callback);
+  void setArmMobileCallback(CallBackHandler callback);
+  void setDisArmMobileCallback(CallBackHandler callback);
+  void setTakeOffMobileCallback(CallBackHandler callback);
+  void setLandingMobileCallback(CallBackHandler callback);
+  void setGoHomeMobileCallback(CallBackHandler callback);
+  void setTakePhotoMobileCallback(CallBackHandler callback);
+  void setStartVideoMobileCallback(CallBackHandler callback);
+  void setStopVideoMobileCallback(CallBackHandler callback);
 
   /** Core functions - setters */
-  void setObtainControlMobileCMD(bool userInput) {
-    obtainControlMobileCMD = userInput;
-  }
-  void setReleaseControlMobileCMD(bool userInput) {
-    releaseControlMobileCMD = userInput;
-  }
-  void setActivateMobileCMD(bool userInput) { activateMobileCMD = userInput; }
-  void setArmMobileCMD(bool userInput) { armMobileCMD = userInput; }
-  void setDisArmMobileCMD(bool userInput) { disArmMobileCMD = userInput; }
-  void setTakeOffMobileCMD(bool userInput) { takeOffMobileCMD = userInput; }
-  void setLandingMobileCMD(bool userInput) { landingMobileCMD = userInput; }
-  void setGoHomeMobileCMD(bool userInput) { goHomeMobileCMD = userInput; }
-  void setTakePhotoMobileCMD(bool userInput) { takePhotoMobileCMD = userInput; }
-  void setStartVideoMobileCMD(bool userInput) {
-    startVideoMobileCMD = userInput;
-  }
-  void setStopVideoMobileCMD(bool userInput) { stopVideoMobileCMD = userInput; }
+  void setObtainControlMobileCMD(bool userInput);
+  void setReleaseControlMobileCMD(bool userInput);
+  void setActivateMobileCMD(bool userInput);
+  void setArmMobileCMD(bool userInput);
+  void setDisArmMobileCMD(bool userInput);
+  void setTakeOffMobileCMD(bool userInput);
+  void setLandingMobileCMD(bool userInput);
+  void setGoHomeMobileCMD(bool userInput);
+  void setTakePhotoMobileCMD(bool userInput);
+  void setStartVideoMobileCMD(bool userInput);
+  void setStopVideoMobileCMD(bool userInput);
 
   /** Custom missions - setters */
-  void setDrawCirMobileCMD(bool userInput) { drawCirMobileCMD = userInput; }
-  void setDrawSqrMobileCMD(bool userInput) { drawSqrMobileCMD = userInput; }
-  void setAttiCtrlMobileCMD(bool userInput) { attiCtrlMobileCMD = userInput; }
-  void setGimbalCtrlMobileCMD(bool userInput) {
-    gimbalCtrlMobileCMD = userInput;
-  }
-  void setWayPointTestMobileCMD(bool userInput) {
-    wayPointTestMobileCMD = userInput;
-  }
-  void setLocalNavTestMobileCMD(bool userInput) {
-    localNavTestMobileCMD = userInput;
-  }
-  void setGlobalNavTestMobileCMD(bool userInput) {
-    globalNavTestMobileCMD = userInput;
-  }
-  void setVRCTestMobileCMD(bool userInput) { VRCTestMobileCMD = userInput; }
-  void setLocalMissionPlanCMD(bool userInput) {
-    localMissionPlanCMD = userInput;
-  }
+  void setDrawCirMobileCMD(bool userInput);
+  void setDrawSqrMobileCMD(bool userInput);
+  void setAttiCtrlMobileCMD(bool userInput);
+  void setGimbalCtrlMobileCMD(bool userInput);
+  void setWayPointTestMobileCMD(bool userInput);
+  void setLocalNavTestMobileCMD(bool userInput);
+  void setGlobalNavTestMobileCMD(bool userInput);
+  void setVRCTestMobileCMD(bool userInput);
+  void setLocalMissionPlanCMD(bool userInput);
   /** Core functions - getters */
-  bool getObtainControlMobileCMD() { return obtainControlMobileCMD; }
-  bool getReleaseControlMobileCMD() { return releaseControlMobileCMD; }
-  bool getActivateMobileCMD() { return activateMobileCMD; }
-  bool getArmMobileCMD() { return armMobileCMD; }
-  bool getDisArmMobileCMD() { return disArmMobileCMD; }
-  bool getTakeOffMobileCMD() { return takeOffMobileCMD; }
-  bool getLandingMobileCMD() { return landingMobileCMD; }
-  bool getGoHomeMobileCMD() { return goHomeMobileCMD; }
-  bool getTakePhotoMobileCMD() { return takePhotoMobileCMD; }
-  bool getStartVideoMobileCMD() { return startVideoMobileCMD; }
+  bool getObtainControlMobileCMD();
+  bool getReleaseControlMobileCMD();
+  bool getActivateMobileCMD();
+  bool getArmMobileCMD();
+  bool getDisArmMobileCMD();
+  bool getTakeOffMobileCMD();
+  bool getLandingMobileCMD();
+  bool getGoHomeMobileCMD();
+  bool getTakePhotoMobileCMD();
+  bool getStartVideoMobileCMD();
 
-  bool getStopVideoMobileCMD() { return stopVideoMobileCMD; }
+  bool getStopVideoMobileCMD();
 
   /** Custom missions - getters */
-  bool getDrawCirMobileCMD() { return drawCirMobileCMD; }
-  bool getDrawSqrMobileCMD() { return drawSqrMobileCMD; }
-  bool getAttiCtrlMobileCMD() { return attiCtrlMobileCMD; }
-  bool getGimbalCtrlMobileCMD() { return gimbalCtrlMobileCMD; }
-  bool getWayPointTestMobileCMD() { return wayPointTestMobileCMD; }
-  bool getLocalNavTestMobileCMD() { return localNavTestMobileCMD; }
-  bool getGlobalNavTestMobileCMD() { return globalNavTestMobileCMD; }
-  bool getVRCTestMobileCMD() { return VRCTestMobileCMD; }
-  bool getLocalMissionPlanCMD() { return localMissionPlanCMD; }
+  bool getDrawCirMobileCMD();
+  bool getDrawSqrMobileCMD();
+  bool getAttiCtrlMobileCMD();
+  bool getGimbalCtrlMobileCMD();
+  bool getWayPointTestMobileCMD();
+  bool getLocalNavTestMobileCMD();
+  bool getGlobalNavTestMobileCMD();
+  bool getVRCTestMobileCMD();
+  bool getLocalMissionPlanCMD();
 
  private:
   CoreAPI *api;

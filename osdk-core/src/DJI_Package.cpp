@@ -74,14 +74,15 @@ bool DataSubscribe::Package::start() {
 }
 
 void DataSubscribe::Package::stop() {
-  for (int i = 0; i < clauseNumber; ++i) {
-    Data::DataBase[clauseOffset[i]].freq = 0;
-  }
   subscribe->remove(packageID);
 }
 
+void DataSubscribe::Package::pause() { subscribe->pause(packageID); }
+
+void DataSubscribe::Package::resume() { subscribe->resume(packageID); }
+
 void DataSubscribe::Package::unpack(Header *header) {
-  uint8_t *data = ((uint8_t *)header) + sizeof(Header) + 2;
+    uint8_t *data = ((uint8_t *)header) + sizeof(Header) + 2;
   API_LOG(subscribe->getAPI()->getDriver(), DEBUG_LOG,
           "%d unpacking %d %d 0x%x 0x%x.", size,
           header->length - CoreAPI::PackageMin - 3, *((uint8_t *)data + 1),

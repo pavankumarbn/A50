@@ -119,5 +119,15 @@ void SubscribePannel::on_btn_subscribe_clicked() {
 
 void SubscribePannel::on_btn_remove_clicked() {
   uint8_t pkg = ui->cb_pkg->currentIndex();
-  subscribe->remove(pkg);
+  subscribe->getPackage(pkg)->stop();
+}
+
+void SubscribePannel::on_btn_pause_clicked() {
+  uint8_t pkg = ui->cb_pkg->currentIndex();
+  subscribe->getPackage(pkg)->pause();
+}
+
+void SubscribePannel::on_btn_resume_clicked() {
+  uint8_t pkg = ui->cb_pkg->currentIndex();
+  subscribe->getPackage(pkg)->resume();
 }

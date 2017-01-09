@@ -53,11 +53,26 @@ void DataSubscribe::remove(uint8_t packageID) {
   uint8_t data = packageID;
   api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
             CODE_SUBSCRIBE_REMOVE_PACKAGE, &data, sizeof(data), 500, 1,
-            removeCallback, this);
+            removeCallback, package[packageID]);
+}
+
+void DataSubscribe::pause(uint8_t packageID) {
+  uint16_t data = packageID;
+  api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
+            CODE_SUBSCRIBE_PAUSE_RESUME, &data, sizeof(data), 500, 1,
+            pauseCallback, package[packageID]);
+}
+
+void DataSubscribe::resume(uint8_t packageID) {
+  uint16_t data = packageID | 0x0100;
+  api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
+            CODE_SUBSCRIBE_PAUSE_RESUME, &data, sizeof(data), 500, 1,
+            resumeCallback, package[packageID]);
 }
 
 void DataSubscribe::verifyCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
+  //! @todo implement
   DataSubscribe *This = (DataSubscribe *)THIS;
   This->decodeAck(header);
   //  API->decodeAckDetails(pdata);
@@ -84,9 +99,12 @@ void DataSubscribe::resetCallback(CoreAPI *API, Header *header, UserData THIS) {
 
 void DataSubscribe::removeCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
-  DataSubscribe *This = (DataSubscribe *)THIS;
-  This->decodeAck(header);
+  DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
+  This->getSubscribe()->decodeAck(header);
   //  API->decodeAckDetails(pdata);
+  for (int i = 0; i < This->clauseNumber; ++i) {
+    Data::DataBase[This->clauseOffset[i]].freq = 0;
+  }
 }
 
 #include <QDebug>
@@ -117,6 +135,19 @@ void DataSubscribe::decodeCallback(CoreAPI *API, Header *header,
     API_LOG(API->getDriver(), ERROR_LOG,
             "Segmentation fault, unexcepted package value %d", pkg);
   }
+}
+
+void DataSubscribe::pauseCallback(CoreAPI *API, Header *header, UserData THIS) {
+  //! @todo implement
+  DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
+  This->getSubscribe()->decodeAck(header);
+}
+
+void DataSubscribe::resumeCallback(CoreAPI *API, Header *header,
+                                   UserData THIS) {
+  //! @todo implement
+  DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
+  This->getSubscribe()->decodeAck(header);
 }
 
 uint8_t DataSubscribe::decodeAck(Header *protocolHeader) {

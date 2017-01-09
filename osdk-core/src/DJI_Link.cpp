@@ -73,6 +73,7 @@ void CoreAPI::appHandler(Header *protocolHeader) {
             if (nonBlockingCBThreadEnable == true) {
               notifyNonBlockingCaller(protocolHeader);
             } else if (nonBlockingCBThreadEnable == false) {
+              //! @note typical ping is 7-25 ms
               API_LOG(
                   serialDevice, STATUS_LOG, "Ping %d",
                   serialDevice->getTimeStamp() -
@@ -279,7 +280,7 @@ uint32_t DJI::onboardSDK::CoreAPI::getACKFrameStatus() {
   return ackFrameStatus;
 }
 
-//! @todo remove, new API at DJU_Sync.cpp
+//! @todo remove, new API at DJI_Sync.h
 void CoreAPI::setSyncFreq(uint32_t freqInHz) {
   SyncCmdData data;
   data.freq = freqInHz;

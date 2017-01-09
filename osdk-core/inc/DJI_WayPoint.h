@@ -10,26 +10,24 @@
 *
 */
 
-#include "DJI_Mission.h"
 #include <stdexcept>
+#include "DJI_Mission.h"
 
 #ifndef DJI_WAYPOINT_H
 #define DJI_WAYPOINT_H
 
-namespace DJI
-{
-namespace onboardSDK
-{
+namespace DJI {
+namespace onboardSDK {
 
-class Waypoints
-{
-  public:
+class Waypoints {
+ public:
 #ifndef STATIC_MEMORY
   Waypoints(CoreAPI *ControlAPI = 0);
 #else
   WayPoint(WayPointData *list, uint8_t len, CoreAPI *ControlAPI = 0);
-#endif // STATIC_MEMORY
-  void init(WayPointInitData *Info = 0, CallBack callback = 0, UserData userData = 0);
+#endif  // STATIC_MEMORY
+  void init(WayPointInitData *Info = 0, CallBack callback = 0,
+            UserData userData = 0);
   MissionACK init(WayPointInitData *Info, int timer);
   void start(CallBack callback = 0, UserData userData = 0);
   MissionACK start(int timer);
@@ -38,16 +36,20 @@ class Waypoints
   //! @note true for pause, false for resume
   void pause(bool isPause, CallBack callback = 0, UserData userData = 0);
   MissionACK pause(bool isPause, int timer);
-  void readInitData(CallBack callback = 0, UserData userData = 0);//! @todo implement
-  void readIndexData(uint8_t index, CallBack callback = 0, UserData userData = 0); //! @todo implement
+  void readInitData(CallBack callback = 0,
+                    UserData userData = 0);  //! @todo implement
+  void readIndexData(uint8_t index, CallBack callback = 0,
+                     UserData userData = 0);  //! @todo implement
   void readIdleVelocity(CallBack callback = 0, UserData userData = 0);
-  //! @todo uploadAll
-  //void uploadAll(CallBack callback = 0, UserData userData = 0);
-  bool uploadIndexData(WayPointData *data, CallBack callback = 0, UserData userData = 0);
+  //! @todolater uploadAll
+  // void uploadAll(CallBack callback = 0, UserData userData = 0);
+  bool uploadIndexData(WayPointData *data, CallBack callback = 0,
+                       UserData userData = 0);
   WayPointDataACK uploadIndexData(WayPointData *data, int timer);
-  bool uploadIndexData(uint8_t pos, CallBack callback = 0, UserData userData = 0);
+  bool uploadIndexData(uint8_t pos, CallBack callback = 0,
+                       UserData userData = 0);
   void updateIdleVelocity(float32_t meterPreSecond, CallBack callback = 0,
-      UserData userData = 0);
+                          UserData userData = 0);
 
   void setInfo(const WayPointInitData &value);
   void setIndex(WayPointData *value, size_t pos);
@@ -55,23 +57,26 @@ class Waypoints
   WayPointData *getIndex() const;
   WayPointData *getIndex(size_t pos) const;
 
-  public:
-  static void idleVelocityCallback(CoreAPI *api, Header *protocolHeader, UserData wpapi);
-  static void readInitDataCallback(CoreAPI *api, Header *protocolHeader, UserData wpapi);
-  static void uploadIndexDataCallback(CoreAPI *api, Header *protocolHeader, UserData wpapi);
+ public:
+  static void idleVelocityCallback(CoreAPI *api, Header *protocolHeader,
+                                   UserData wpapi);
+  static void readInitDataCallback(CoreAPI *api, Header *protocolHeader,
+                                   UserData wpapi);
+  static void uploadIndexDataCallback(CoreAPI *api, Header *protocolHeader,
+                                      UserData wpapi);
   //! @todo add uploadAllCallback
   //! @todo add readIndexCallback
 
-  private:
+ private:
   CoreAPI *api;
   WayPointInitData info;
   WayPointData *index;
 #ifdef STATIC_MEMORY
   uint8_t maxIndex;
-#endif // STATIC_MEMORY
+#endif  // STATIC_MEMORY
 };
 
-} // namespace onboardSDK
-} // namespace DJI
+}  // namespace onboardSDK
+}  // namespace DJI
 
-#endif // DJI_WAYPOINT_H
+#endif  // DJI_WAYPOINT_H
