@@ -259,7 +259,7 @@ typename Structure<UID>::type getData(CoreAPI* api, uint8_t* buffer) {
       DataBase[Structure<UID>::offset].callback(
           api, buffer, DataBase[Structure<UID>::offset].userData);
   }
-  return *reinterpret_cast<Structure<UID>::type*>(buffer);
+  return *reinterpret_cast<typename Structure<UID>::type*>(buffer);
 }
 
 //! @note static linkage
