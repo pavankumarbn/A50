@@ -130,6 +130,15 @@ void DataBroadcast::setBroadcastFreqToZero() {
   setBroadcastFreq(freq);
 }
 
+void DataBroadcast::setBroadcastCallback(CallBackHandler callback) {
+  broadcastCallback = callback;
+}
+
+void DataBroadcast::setBroadcastCallback(CallBack handler, UserData userData) {
+  broadcastCallback.callback = userCallback;
+  broadcastCallback.userData = userData;
+}
+
 void DataBroadcast::setFrequencyCallback(CoreAPI *api, Header *protocolHeader,
                                          UserData userData) {
   unsigned short ack_data = ACK_COMMON_NO_RESPONSE;

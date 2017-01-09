@@ -20,12 +20,6 @@ class DataBroadcast {
   };
 
  public:
-  static void callbackData(DJI::onboardSDK::CoreAPI* api, Header* header,
-                           UserData data);
-  static void setFrequencyCallback(CoreAPI* api, Header* protocolHeader,
-                                   UserData userData = 0);
-
- public:
   DataBroadcast(CoreAPI* API = 0);
 
   // clang-format off
@@ -56,6 +50,15 @@ class DataBroadcast {
 
   void setBroadcastFreqDefaults();
   void setBroadcastFreqToZero();
+
+  void setBroadcastCallback(CallBackHandler callback);
+  void setBroadcastCallback(CallBack handler, UserData userData = 0);
+
+ public:
+  static void callbackData(DJI::onboardSDK::CoreAPI* api, Header* header,
+                           UserData data);
+  static void setFrequencyCallback(CoreAPI* api, Header* protocolHeader,
+                                   UserData userData = 0);
 
  private:
   // clang-format off
