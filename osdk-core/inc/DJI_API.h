@@ -336,6 +336,7 @@ class CoreAPI {
   void setSubscribeCallback(CallBack handler, UserData UserData = 0);
   void setFromMobileCallback(CallBack handler, UserData userData = 0);
 
+  //! @note mission refactory
   void setMisssionCallback(CallBackHandler callback);
   void setHotPointCallback(CallBackHandler callback);
   void setWayPointCallback(CallBackHandler callback);
@@ -352,9 +353,6 @@ class CoreAPI {
                                UserData userData = 0);
   static void getDroneVersionCallback(CoreAPI *api, Header *protocolHeader,
                                       UserData userData = 0);
-  //! @todo move to Controlh
-  static void setControlCallback(CoreAPI *api, Header *protocolHeader,
-                                 UserData userData = 0);
   /**
    * ACK decoder.
    */
@@ -515,9 +513,6 @@ class CoreAPI {
   FlightStatus getFlightStatus() const;
   TimeStampData getTime() const;
   BroadcastData broadcastData;
-
-  void setControl(bool enable, CallBack callback = 0, UserData userData = 0);
-  unsigned short setControl(bool enable, int timeout);
 
 #ifdef API_BUFFER_DATA
  public:

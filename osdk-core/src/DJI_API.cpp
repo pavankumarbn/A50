@@ -297,32 +297,6 @@ bool CoreAPI::getHotPointData() const { return hotPointData; }
 bool CoreAPI::getWayPointData() const { return wayPointData; }
 bool CoreAPI::getFollowData() const { return followData; }
 
-void CoreAPI::setControl(bool enable, CallBack callback, UserData userData) {
-  unsigned char data = enable ? 1 : 0;
-  send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL, &data, 1, 500,
-       2, callback ? callback : CoreAPI::setControlCallback, userData);
-}
-
-unsigned short CoreAPI::setControl(bool enable, int timeout) {
-  unsigned char data = enable ? 1 : 0;
-  send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL, &data, 1, 500,
-       2, 0, 0);
-
-  // Wait for end of ACK frame to arrive
-  serialDevice->lockACK();
-  serialDevice->wait(timeout);
-  serialDevice->freeACK();
-
-  if (missionACKUnion.simpleACK == ACK_SETCONTROL_ERROR_MODE) {
-    if (versionData.version != versionA3_32)
-      missionACKUnion.simpleACK = ACK_SETCONTROL_NEED_MODE_F;
-    else
-      missionACKUnion.simpleACK = ACK_SETCONTROL_NEED_MODE_P;
-  }
-
-  return missionACKUnion.simpleACK;
-}
-
 HardDriver *CoreAPI::getDriver() const { return serialDevice; }
 
 SimpleACK CoreAPI::getSimpleACK() const { return missionACKUnion.simpleACK; }
@@ -437,58 +411,4 @@ VersionData CoreAPI::getVersionData() const { return versionData; }
 
 void CoreAPI::setTestCallback(const CallBackHandler &value) {
   testCallback = value;
-}
-
-void CoreAPI::setControlCallback(CoreAPI *api, Header *protocolHeader,
-                                 UserData userData __UNUSED) {
-  unsigned short ack_data = ACK_COMMON_NO_RESPONSE;
-  unsigned char data      = 0x1;
-
-  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(ack_data)) {
-    memcpy((unsigned char *)&ack_data,
-           ((unsigned char *)protocolHeader) + sizeof(Header),
-           (protocolHeader->length - CoreAPI::PackageMin));
-  } else {
-    API_LOG(api->serialDevice, ERROR_LOG,
-            "ACK is exception, session id %d,sequence %d\n",
-            protocolHeader->sessionID, protocolHeader->sequenceNumber);
-  }
-
-  switch (ack_data) {
-    case ACK_SETCONTROL_ERROR_MODE:
-      if (api->versionData.version != versionA3_32) {
-        API_LOG(api->serialDevice, STATUS_LOG,
-                "Obtain control failed: switch to F mode\n");
-      } else {
-        API_LOG(api->serialDevice, STATUS_LOG,
-                "Obtain control failed: switch to P mode\n");
-      }
-      break;
-    case ACK_SETCONTROL_RELEASE_SUCCESS:
-      API_LOG(api->serialDevice, STATUS_LOG, "Released control successfully\n");
-      break;
-    case ACK_SETCONTROL_OBTAIN_SUCCESS:
-      API_LOG(api->serialDevice, STATUS_LOG, "Obtained control successfully\n");
-      break;
-    case ACK_SETCONTROL_OBTAIN_RUNNING:
-      API_LOG(api->serialDevice, STATUS_LOG, "Obtain control running\n");
-      api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL,
-                &data, 1, 500, 2, CoreAPI::setControlCallback);
-      break;
-    case ACK_SETCONTROL_RELEASE_RUNNING:
-      API_LOG(api->serialDevice, STATUS_LOG, "Release control running\n");
-      data = 0;
-      api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL,
-                &data, 1, 500, 2, CoreAPI::setControlCallback);
-      break;
-    case ACK_SETCONTROL_IOC:
-      API_LOG(api->serialDevice, STATUS_LOG,
-              "IOC mode opening can not obtain control\n");
-      break;
-    default:
-      if (!api->decodeACKStatus(ack_data)) {
-        API_LOG(api->serialDevice, ERROR_LOG, "While calling this function");
-      }
-      break;
-  }
 }

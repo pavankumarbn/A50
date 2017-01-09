@@ -104,13 +104,13 @@ void Control::setControlCallback(CoreAPI *api, Header *protocolHeader,
     case ACK_SETCONTROL_OBTAIN_RUNNING:
       API_LOG(api->getDriver(), STATUS_LOG, "Obtain control running\n");
       api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL,
-                &data, sizeof(data), 500, 2, CoreAPI::setControlCallback);
+                &data, sizeof(data), 500, 2, Control::setControlCallback);
       break;
     case ACK_SETCONTROL_RELEASE_RUNNING:
       API_LOG(api->getDriver(), STATUS_LOG, "Release control running\n");
       data = 0;
       api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL,
-                &data, sizeof(data), 500, 2, CoreAPI::setControlCallback);
+                &data, sizeof(data), 500, 2, Control::setControlCallback);
       break;
     case ACK_SETCONTROL_IOC:
       API_LOG(api->getDriver(), STATUS_LOG,
