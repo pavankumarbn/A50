@@ -1,4 +1,7 @@
 #include "DJI_MOC.h"
+
+#include <string.h>
+
 #include "DJI_HardDriver.h"
 
 using namespace DJI;
