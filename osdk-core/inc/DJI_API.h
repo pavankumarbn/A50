@@ -170,17 +170,6 @@ enum MISSION_TYPE {
   MISSION_IOC
 };
 
-enum BROADCAST_FREQ {
-  BROADCAST_FREQ_0HZ   = 0,
-  BROADCAST_FREQ_1HZ   = 1,
-  BROADCAST_FREQ_10HZ  = 2,
-  BROADCAST_FREQ_50HZ  = 3,
-  BROADCAST_FREQ_100HZ = 4,
-  BROADCAST_FREQ_HOLD  = 5,
-  BROADCAST_FREQ_200HZ = 6,
-  BROADCAST_FREQ_400HZ = 7,
-};
-
 //! CoreAPI implements core Open Protocol communication between M100/M600/A3 and
 //! your onboard embedded platform.
 /*!\remark
@@ -366,10 +355,6 @@ class CoreAPI {
   //! @todo move to Controlh
   static void setControlCallback(CoreAPI *api, Header *protocolHeader,
                                  UserData userData = 0);
-
-  static void setFrequencyCallback(CoreAPI *api, Header *protocolHeader,
-                                   UserData userData = 0);
-
   /**
    * ACK decoder.
    */
@@ -530,12 +515,7 @@ class CoreAPI {
   FlightStatus getFlightStatus() const;
   TimeStampData getTime() const;
   BroadcastData broadcastData;
-  void setBroadcastFreq(uint8_t *dataLenIs16, CallBack callback = 0,
-                        UserData userData = 0);
-  unsigned short setBroadcastFreq(uint8_t *dataLenIs16, int timeout);
-  void setBroadcastFreqDefaults();
-  unsigned short setBroadcastFreqDefaults(int timeout);
-  void setBroadcastFreqToZero();
+
   void setControl(bool enable, CallBack callback = 0, UserData userData = 0);
   unsigned short setControl(bool enable, int timeout);
 

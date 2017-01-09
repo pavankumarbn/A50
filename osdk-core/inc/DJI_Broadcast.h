@@ -8,8 +8,22 @@ namespace onboardSDK {
 
 class DataBroadcast {
  public:
+  enum FREQ {
+    FREQ_0HZ   = 0,
+    FREQ_1HZ   = 1,
+    FREQ_10HZ  = 2,
+    FREQ_50HZ  = 3,
+    FREQ_100HZ = 4,
+    FREQ_HOLD  = 5,
+    FREQ_200HZ = 6,
+    FREQ_400HZ = 7,
+  };
+
+ public:
   static void callbackData(DJI::onboardSDK::CoreAPI* api, Header* header,
                            UserData data);
+  static void setFrequencyCallback(CoreAPI* api, Header* protocolHeader,
+                                   UserData userData = 0);
 
  public:
   DataBroadcast(CoreAPI* API = 0);
@@ -37,6 +51,12 @@ class DataBroadcast {
   CoreAPI* getAPI() const;
   void setAPI(CoreAPI* value);
 
+  void setBroadcastFreq(uint8_t* dataLenIs16, CallBack callback = 0,
+                        UserData userData = 0);
+
+  void setBroadcastFreqDefaults();
+  void setBroadcastFreqToZero();
+
  private:
   // clang-format off
   typedef enum FLAG {
@@ -57,6 +77,7 @@ class DataBroadcast {
     FLAG_END            = 0X4000
   } FLAG;
   // clang-format on
+
  private:
   void unpackData(Header* protocolHeader);
 
