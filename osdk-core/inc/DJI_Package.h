@@ -9,7 +9,7 @@ namespace onboardSDK {
 class DataSubscribe::Package {
  public:
   typedef uint8_t* PackageBuffer;
-  typedef void (*Callback)(DataSubscribe*, PackageBuffer, UserData);
+  typedef void (*Callback)(Package*, Data::TimeStamp, UserData);
   typedef struct CallbackHandler {
     Callback callback;
     UserData data;
@@ -43,6 +43,7 @@ class DataSubscribe::Package {
   uint32_t* getClauseOffset() const;
   uint32_t* getMemoryOffset() const;
   DataSubscribe* getSubscribe() const;
+  PackageBuffer getMemoryPool() const;
 
   void setSendStamp(bool value);
   void setPackageID(const size8_t& value);
@@ -50,6 +51,8 @@ class DataSubscribe::Package {
   void setClauseNumber(const size_t& value);
   void setClauseOffset(uint32_t* value);
   void setMemoryOffset(uint32_t* value);
+  void setUnpackHandler(const Callback& cb, const UserData& data);
+  void setUnpackHandler(const CallbackHandler& value);
 
  private:
   //! @todo implement and init

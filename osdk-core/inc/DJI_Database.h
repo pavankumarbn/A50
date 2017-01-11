@@ -225,6 +225,7 @@ typedef struct SDKInfo {
 
 #pragma pack()
 
+//! @todo unpacka callback redefine, not start to use yet, maybe remove later
 typedef void (*UnpackedCallback)(CoreAPI*, uint8_t*, UserData);
 
 typedef struct DataClauseInfo {
@@ -232,9 +233,12 @@ typedef struct DataClauseInfo {
   const size_t size;
   const uint16_t maxfreq;  //! @note max freq in Hz
   uint16_t freq;
-  uint8_t* latest;
-  UnpackedCallback callback;
-  UserData userData;
+  void* pkg;
+  uint8_t*
+      latest;  //! @note this pointer save the latest data's memory pool pointer
+  UnpackedCallback
+      callback;  //! @note called while received a package contained this clause
+  UserData userData;  //! @note callback's userData
   //  char brief[64];
 } DataClauseInfo;
 
@@ -255,7 +259,7 @@ struct Structure {
 template <uint32_t UID>
 typename Structure<UID>::type getData(CoreAPI* api, uint8_t* buffer) {
   if (Structure<UID>::offset < toaltalClauseNumber) {
-    if (DataBase[Structure<UID>::offset].callback)
+    if (DataBase[Structure<UID>::offset].callback)  //! @todo remove this design
       DataBase[Structure<UID>::offset].callback(
           api, buffer, DataBase[Structure<UID>::offset].userData);
   }

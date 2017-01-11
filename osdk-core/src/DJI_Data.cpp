@@ -85,10 +85,16 @@ void DataSubscribe::addPackageCallback(CoreAPI *API, Header *header,
     size_t tmp    = This->getClauseNumber();
     uint16_t freq = This->getFreq();
     for (int i = 0; i < tmp; ++i) {
+      Data::DataBase[This->getClauseOffset()[i]].pkg  = This;
       Data::DataBase[This->getClauseOffset()[i]].freq = freq;
+      Data::DataBase[This->getClauseOffset()[i]].latest =
+          This->memoryPool + (This->sendStamp ? 8 : 0) +
+          This->getMemoryOffset()[i];
     }
+  } else {
+    //! @todo error management
+    //  API->decodeAckDetails(pdata);
   }
-  //  API->decodeAckDetails(pdata);
 }
 
 void DataSubscribe::resetCallback(CoreAPI *API, Header *header, UserData THIS) {
@@ -99,11 +105,16 @@ void DataSubscribe::resetCallback(CoreAPI *API, Header *header, UserData THIS) {
 
 void DataSubscribe::removeCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
-  DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
-  This->getSubscribe()->decodeAck(header);
-  //  API->decodeAckDetails(pdata);
-  for (int i = 0; i < This->clauseNumber; ++i) {
-    Data::DataBase[This->clauseOffset[i]].freq = 0;
+  if (THIS) {
+    DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
+    This->getSubscribe()->decodeAck(header);
+    //  API->decodeAckDetails(pdata);
+    for (int i = 0; i < This->clauseNumber; ++i) {
+      Data::DataBase[This->clauseOffset[i]].freq = 0;
+    }
+  } else {
+    API_LOG(API->getDriver(), STATUS_LOG,
+            "unknown package removed successfully.");
   }
 }
 
@@ -112,7 +123,7 @@ void DataSubscribe::decodeCallback(CoreAPI *API, Header *header,
   DataSubscribe *This = (DataSubscribe *)THIS;
   uint8_t pkg         = This->getPackageNumber(header);
   if (pkg < maxPakcageNumber) {
-    API_LOG(API->getDriver(), STATUS_LOG, "Length %d %d %d %d", header->length,
+    API_LOG(API->getDriver(), DEBUG_LOG, "Length %d %d %d %d", header->length,
             sizeof(Header), pkg, API->getDriver()->getTimeStamp());
     Package *p = This->package[pkg];
     if (p)
@@ -120,7 +131,7 @@ void DataSubscribe::decodeCallback(CoreAPI *API, Header *header,
     else {
       API_LOG(API->getDriver(), ERROR_LOG,
               "Unknown subsciption package %d, removing...", pkg);
-      if (DEBUG_LOG) {
+      if (DEBUG_LOG) {  //! @note used for package decode time varing debug
         uint8_t *data = ((uint8_t *)header) + sizeof(Header) + 2;
         data++;
 

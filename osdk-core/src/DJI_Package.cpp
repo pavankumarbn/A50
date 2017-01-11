@@ -3,7 +3,6 @@
 using namespace DJI;
 using namespace DJI::onboardSDK;
 
-
 DataSubscribe::Package *DataSubscribe::getPackage(size_t id) {
   if (id < maxPakcageNumber)
     return package[id];
@@ -23,6 +22,7 @@ DataSubscribe::Package::Package(DataSubscribe *API)
       clauseOffset(0) {
   unpackHandler.callback = 0;
   unpackHandler.data     = 0;
+  //! @todo check initailization
 }
 
 bool DataSubscribe::Package::add(uint16_t offset) {
@@ -73,16 +73,14 @@ bool DataSubscribe::Package::start() {
   return true;
 }
 
-void DataSubscribe::Package::stop() {
-  subscribe->remove(packageID);
-}
+void DataSubscribe::Package::stop() { subscribe->remove(packageID); }
 
 void DataSubscribe::Package::pause() { subscribe->pause(packageID); }
 
 void DataSubscribe::Package::resume() { subscribe->resume(packageID); }
 
 void DataSubscribe::Package::unpack(Header *header) {
-    uint8_t *data = ((uint8_t *)header) + sizeof(Header) + 2;
+  uint8_t *data = ((uint8_t *)header) + sizeof(Header) + 2;
   API_LOG(subscribe->getAPI()->getDriver(), DEBUG_LOG,
           "%d unpacking %d %d 0x%x 0x%x.", size,
           header->length - CoreAPI::PackageMin - 3, *((uint8_t *)data + 1),
@@ -91,10 +89,16 @@ void DataSubscribe::Package::unpack(Header *header) {
   subscribe->getAPI()->getDriver()->lockMSG();
   if (memoryPool)
     memcpy(memoryPool, data, header->length - CoreAPI::PackageMin - 3);
+  else
+    API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
+            "Package do not have a vaild memory pool");
   subscribe->getAPI()->getDriver()->freeMSG();
-  if (sendStamp)
-    API_LOG(subscribe->getAPI()->getDriver(), DEBUG_LOG, "Time: %d %d",
-            *((uint32_t *)memoryPool), *((uint32_t *)memoryPool + 1));
+
+  if (unpackHandler.callback)
+    unpackHandler.callback(
+        this, sendStamp ? *reinterpret_cast<Data::TimeStamp *>(data)
+                        : Data::TimeStamp(),
+        unpackHandler.data);
 }
 
 void DataSubscribe::Package::allocClauseOffset(size_t allocSize) {
@@ -124,6 +128,23 @@ uint32_t *DataSubscribe::Package::getMemoryOffset() const {
 
 void DataSubscribe::Package::setMemoryOffset(uint32_t *value) {
   memoryOffset = value;
+}
+
+void DataSubscribe::Package::setUnpackHandler(const Callback &cb,
+                                              const UserData &data) {
+  Package::CallbackHandler hdl;
+  hdl.callback = cb;
+  hdl.data     = data;
+  setUnpackHandler(hdl);
+}
+
+void DataSubscribe::Package::setUnpackHandler(const CallbackHandler &value) {
+  unpackHandler = value;
+}
+
+DataSubscribe::Package::PackageBuffer DataSubscribe::Package::getMemoryPool()
+    const {
+  return memoryPool;
 }
 
 uint16_t DataSubscribe::Package::getFreq() const { return freq; }

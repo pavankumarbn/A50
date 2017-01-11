@@ -16,7 +16,8 @@ class SubscribePannel : public QWidget {
   explicit SubscribePannel(QWidget *parent = 0);
   ~SubscribePannel();
 
-  void setAPI(DJI::onboardSDK::CoreAPI *API) { subscribe->setAPI(API); }
+  void setAPI(DJI::onboardSDK::CoreAPI *API);
+  void display(uint32_t offset, uint32_t id);
 
  private slots:
   void on_btn_match_clicked();
@@ -25,6 +26,10 @@ class SubscribePannel : public QWidget {
   void on_btn_remove_clicked();
   void on_btn_pause_clicked();
   void on_btn_resume_clicked();
+
+  static void packageUnpackCallback(
+      DJI::onboardSDK::DataSubscribe::Package *pkg,
+      DJI::onboardSDK::Data::TimeStamp time, DJI::UserData THIS);
 
  private:
   Ui::SubscribePannel *ui;

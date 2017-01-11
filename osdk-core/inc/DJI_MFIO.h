@@ -84,63 +84,6 @@ class MFIO {
 #pragma pack()
 };
 
-//! @note not decided how to use
-/*class GPI {
- public:
-  GPI(MFIO* io) : mfio(io) {}
-  void reinit();
-  void updateValue();
-
- private:
-  MFIO* mfio;
-  time_ms time;
-  uint32_t value;
-};
-
-class GPO {
- public:
-  GPO(MFIO* io) : mfio(io) {}
-  void reinit();
-  void uploadValue();
-
- private:
-  MFIO* mfio;
-};
-
-class PWMI {
- public:
-  PWMI(MFIO* io) : mfio(io) {}
-  void reinit();
-  void updateValue();
-
- private:
-  MFIO* mfio;
-  time_ms time;
-  uint32_t value;
-};
-
-class PWMO {
- public:
-  PWMO(MFIO* io) : mfio(io) {}
-  void reinit();
-  void uploadValue();
-
- private:
-  MFIO* mfio;
-};
-
-class ADC {
- public:
-  ADC(MFIO* io) : mfio(io) {}
-  void reinit();
-  void updateValue();
-
- private:
-  MFIO* mfio;
-  time_ms time;
-  uint32_t value;
-};*/
-
 }  // onboardSDK
 }  // DJI
 

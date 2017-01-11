@@ -20,6 +20,25 @@ class DataSubscribe {
   CoreAPI* getAPI() const;
   void setAPI(CoreAPI* value);
 
+ public:
+  template <uint32_t UID>
+  typename Data::Structure<UID>::type getValue() {
+    Data::Structure<UID>::type ans;
+    api->getDriver()->lockMSG();
+    if (Data::DataBase[Data::Structure<UID>::offset].latest != 0) {
+      ans = Data::getData<UID>(
+          api, Data::DataBase[Data::Structure<UID>::offset].latest);
+      api->getDriver()->freeMSG();
+      return ans;
+    } else {
+      API_LOG(api->getDriver(), ERROR_LOG,
+              "0x%X offset %d Value memory not initialized, return default",
+              UID, Data::DataBase[Data::Structure<UID>::offset]);
+    }
+    api->getDriver()->freeMSG();
+    return Data::Structure<UID>::type();
+  }
+
  private:
   typedef enum SUBSCRIBE_CODE {
     CODE_SUBSCRIBE_VERSION_MATCH       = 0x00,
