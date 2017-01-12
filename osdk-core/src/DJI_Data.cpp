@@ -34,7 +34,7 @@ void DataSubscribe::subscribe(uint8_t id, uint16_t freq, uint8_t flag,
     memcpy(buffer, (uint8_t *)&data, sizeof(data));
     memcpy(buffer + sizeof(SubscribeData), (uint8_t *)uid,
            sizeof(uint32_t) * clauseNumber);
-    API_LOG(api->getDriver(), STATUS_LOG, "0x%x",
+    API_LOG(api->getDriver(), DEBUG_LOG, "0x%x",
             *(uint32_t *)(buffer + sizeof(SubscribeData)));
     api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
               CODE_SUBSCRIBE_ADD_PACKAGE, buffer, size, 500, 1,
