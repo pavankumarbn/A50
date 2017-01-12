@@ -180,6 +180,7 @@ void SubscribePannel::display(uint32_t offset, uint32_t id) {
                         .arg(p.y)
                         .arg(p.z));
     } break;
+    //! @todo implement
     // clang-format off
     case Data::Structure<Data::UID_GPS_VELOCITY             >::offset : break;
     case Data::Structure<Data::UID_GPS_DETAILS              >::offset : break;

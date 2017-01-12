@@ -375,8 +375,10 @@ class parser {
 
     if (buf.length() > 0) args.push_back(buf);
 
+    /*! @note debug code
     for (size_t i = 0; i < args.size(); i++)
       std::cout << "\"" << args[i] << "\"" << std::endl;
+    */
 
     return parse(args);
   }
