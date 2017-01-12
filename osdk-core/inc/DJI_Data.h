@@ -133,6 +133,7 @@ class DataSubscribe {
 
  private:
   CoreAPI* api;
+  volatile bool lock;
   Package* package[maxPakcageNumber];
 };
 

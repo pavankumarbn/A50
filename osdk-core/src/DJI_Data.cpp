@@ -10,6 +10,9 @@ using namespace DJI::onboardSDK;
 
 void DataSubscribe::verify(CallBack callback, UserData userData) {
   VersionData data = Data::DBVersion;
+  while (lock)
+    ;
+  lock = true;
   api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE,
             CODE_SUBSCRIBE_VERSION_MATCH, &data, sizeof(data), 500, 2,
             callback ? callback : verifyCallback, userData ? userData : this);
@@ -44,6 +47,9 @@ void DataSubscribe::subscribe(uint8_t id, uint16_t freq, uint8_t flag,
 
 void DataSubscribe::reset(CallBack callback, UserData userData) {
   uint8_t data = 0;
+  while (lock)
+    ;
+  lock = true;
   api->send(2, DJI::onboardSDK::encrypt, SET_SUBSCRIBE, CODE_SUBSCRIBE_RESET,
             &data, 0, 500, 1, callback ? callback : resetCallback,
             userData ? userData : this);
@@ -74,6 +80,7 @@ void DataSubscribe::verifyCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
   //! @todo implement
   DataSubscribe *This = (DataSubscribe *)THIS;
+  This->lock          = false;
   This->decodeAck(header);
   //  API->decodeAckDetails(pdata);
 }
@@ -99,6 +106,7 @@ void DataSubscribe::addPackageCallback(CoreAPI *API, Header *header,
 
 void DataSubscribe::resetCallback(CoreAPI *API, Header *header, UserData THIS) {
   DataSubscribe *This = (DataSubscribe *)THIS;
+  This->lock          = false;
   This->decodeAck(header);
   //  API->decodeAckDetails(pdata);
 }
@@ -179,6 +187,7 @@ uint8_t DataSubscribe::getPackageNumber(Header *header) {
 DataSubscribe::DataSubscribe(CoreAPI *API) {
   for (int i = 0; i < maxPakcageNumber; ++i) package[i] = 0;
   if (API) setAPI(API);
+  lock = false;
 }
 
 CoreAPI *DataSubscribe::getAPI() const { return api; }
