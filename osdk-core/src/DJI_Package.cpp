@@ -59,7 +59,7 @@ bool DataSubscribe::Package::start() {
     if (Data::DataBase[clauseOffset[i]].maxfreq < freq) {
       API_LOG(subscribe->getAPI()->getDriver(), STATUS_LOG,
               "Package clause 0x%X offset %d required a publishing frequency "
-              "upper than the sampling frequency",
+              "upper than the sampling frequency \n",
               Data::DataBase[clauseOffset[i]].uid, clauseOffset[i]);
     }
   }
