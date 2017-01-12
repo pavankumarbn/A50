@@ -28,7 +28,7 @@ void DataSubscribe::subscribe(uint8_t id, uint16_t freq, uint8_t flag,
   size_t size = sizeof(SubscribeData) + sizeof(uint32_t) * clauseNumber;
   if (size > bufferLen) {
     API_LOG(api->getDriver(), ERROR_LOG,
-            "subscribe segementation overflow size %d , max %d", size,
+            "subscribe segementation overflow size %d , max %d\n", size,
             bufferLen);
   } else {
     memcpy(buffer, (uint8_t *)&data, sizeof(data));
