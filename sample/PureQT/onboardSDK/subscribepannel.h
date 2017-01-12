@@ -1,10 +1,10 @@
 #ifndef SUBSCRIBEPANNEL_H
 #define SUBSCRIBEPANNEL_H
 
+#include <QTableWidgetItem>
 #include <QWidget>
 #include "DJI_Database.h"
 #include "DJI_Package.h"
-
 namespace Ui {
 class SubscribePannel;
 }
@@ -26,7 +26,9 @@ class SubscribePannel : public QWidget {
   void on_btn_remove_clicked();
   void on_btn_pause_clicked();
   void on_btn_resume_clicked();
+  void on_tableWidget_itemChanged(QTableWidgetItem *item);
 
+ public:
   static void packageUnpackCallback(
       DJI::onboardSDK::DataSubscribe::Package *pkg,
       DJI::onboardSDK::Data::TimeStamp time, DJI::UserData THIS);

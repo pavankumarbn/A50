@@ -35,7 +35,7 @@ const Version versionM100_23         = (MAKE_VERSION(2, 3, 10, 0));
 const Version versionM100_31         = (MAKE_VERSION(3, 1, 10, 0));
 const Version versionA3_31           = (MAKE_VERSION(3, 1, 100, 0));
 const Version versionA3_32           = (MAKE_VERSION(3, 2, 100, 0));
-const Version version_3_3_00_test    = (MAKE_VERSION(3, 3, 00, 255));
+const Version version_3_3_00_test    = (MAKE_VERSION(3, 2, 15, 255));
 const Version version_3_3_00_release = (MAKE_VERSION(3, 3, 00, 255));
 
 #ifdef SDK_DEV

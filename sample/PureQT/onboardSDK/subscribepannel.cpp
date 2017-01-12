@@ -103,19 +103,84 @@ void SubscribePannel::display(uint32_t offset, uint32_t id) {
                         .arg(ag.y, 0, 'f', 3)
                         .arg(ag.z, 0, 'f', 3));
     } break;
+    case Data::Structure<Data::UID_ACCELERATION_BODY>::offset: {
+      Data::Vector3f ab = subscribe->getValue<Data::UID_ACCELERATION_BODY>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("x: %1\ny: %2\nz: %3")
+                        .arg(ab.x, 0, 'f', 3)
+                        .arg(ab.y, 0, 'f', 3)
+                        .arg(ab.z, 0, 'f', 3));
+    } break;
+    case Data::Structure<Data::UID_ACCELERATION_RAW>::offset: {
+      Data::Vector3f ar = subscribe->getValue<Data::UID_ACCELERATION_RAW>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("x: %1\ny: %2\nz: %3")
+                        .arg(ar.x, 0, 'f', 3)
+                        .arg(ar.y, 0, 'f', 3)
+                        .arg(ar.z, 0, 'f', 3));
+    } break;
+    case Data::Structure<Data::UID_VELOCITY>::offset: {
+      Data::Velocity v = subscribe->getValue<Data::UID_VELOCITY>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("x: %1\ny: %2\nz: %3\nhealth: %4")
+                        .arg(v.data.x, 0, 'f', 3)
+                        .arg(v.data.y, 0, 'f', 3)
+                        .arg(v.data.z, 0, 'f', 3)
+                        .arg(v.info.health));
+    } break;
+    case Data::Structure<Data::UID_PALSTANCE_FUSIONED>::offset: {
+      Data::Vector3f pf = subscribe->getValue<Data::UID_PALSTANCE_FUSIONED>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("x: %1\ny: %2\nz: %3")
+                        .arg(pf.x, 0, 'f', 3)
+                        .arg(pf.y, 0, 'f', 3)
+                        .arg(pf.z, 0, 'f', 3));
+    } break;
+    case Data::Structure<Data::UID_PALSTANCE_RAW>::offset: {
+      Data::Vector3f pr = subscribe->getValue<Data::UID_PALSTANCE_RAW>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("x: %1\ny: %2\nz: %3")
+                        .arg(pr.x, 0, 'f', 3)
+                        .arg(pr.y, 0, 'f', 3)
+                        .arg(pr.z, 0, 'f', 3));
+    } break;
+    case Data::Structure<Data::UID_ALTITUDE_FUSIONED>::offset: {
+      float32_t d = subscribe->getValue<Data::UID_ALTITUDE_FUSIONED>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("%1").arg(d, 0, 'f', 3));
+    } break;
+    case Data::Structure<Data::UID_ALTITUDE_BAROMETER>::offset: {
+      float32_t d = subscribe->getValue<Data::UID_ALTITUDE_BAROMETER>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("%1").arg(d, 0, 'f', 3));
+    } break;
+    case Data::Structure<Data::UID_HEIGHT_HOMEPOOINT>::offset: {
+      float32_t d = subscribe->getValue<Data::UID_HEIGHT_HOMEPOOINT>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("%1").arg(d, 0, 'f', 3));
+    } break;
+    case Data::Structure<Data::UID_HEIGHT_FUSION>::offset: {
+      float32_t d = subscribe->getValue<Data::UID_HEIGHT_FUSION>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("%1").arg(d, 0, 'f', 3));
+    } break;
+    case Data::Structure<Data::UID_GPS_DATE>::offset: {
+      uint32_t d = subscribe->getValue<Data::UID_GPS_DATE>();
+      ui->tableWidget->item(2 + offset, 2 + id)->setText(QString("%1").arg(d));
+    } break;
+    case Data::Structure<Data::UID_GPS_TIME>::offset: {
+      uint32_t d = subscribe->getValue<Data::UID_GPS_TIME>();
+      ui->tableWidget->item(2 + offset, 2 + id)->setText(QString("%1").arg(d));
+    } break;
+    case Data::Structure<Data::UID_GPS_POSITION>::offset: {
+      Data::Vector3d p = subscribe->getValue<Data::UID_GPS_POSITION>();
+      ui->tableWidget->item(2 + offset, 2 + id)
+          ->setText(QString("longitude: %1\n latitude : %2\n hmsl : %3")
+                        .arg(p.x)
+                        .arg(p.y)
+                        .arg(p.z));
+    } break;
     // clang-format off
-    case Data::Structure<Data::UID_ACCELERATION_BODY        >::offset : break;
-    case Data::Structure<Data::UID_ACCELERATION_RAW         >::offset : break;
-    case Data::Structure<Data::UID_VELOCITY                 >::offset : break;
-    case Data::Structure<Data::UID_PALSTANCE_FUSIONED       >::offset : break;
-    case Data::Structure<Data::UID_PALSTANCE_RAW            >::offset : break;
-    case Data::Structure<Data::UID_ALTITUDE_FUSIONED        >::offset : break;
-    case Data::Structure<Data::UID_ALTITUDE_BAROMETER       >::offset : break;
-    case Data::Structure<Data::UID_HEIGHT_HOMEPOOINT        >::offset : break;
-    case Data::Structure<Data::UID_HEIGHT_FUSION            >::offset : break;
-    case Data::Structure<Data::UID_GPS_DATE                 >::offset : break;
-    case Data::Structure<Data::UID_GPS_TIME                 >::offset : break;
-    case Data::Structure<Data::UID_GPS_POSITION             >::offset : break;
     case Data::Structure<Data::UID_GPS_VELOCITY             >::offset : break;
     case Data::Structure<Data::UID_GPS_DETAILS              >::offset : break;
     case Data::Structure<Data::UID_RTK_POSITION             >::offset : break;
@@ -210,4 +275,19 @@ void SubscribePannel::packageUnpackCallback(DataSubscribe::Package *pkg,
       This->display(clauses[i], pkg->getPackageID());
     }
   }
+}
+
+#include <QDebug>
+
+void SubscribePannel::on_tableWidget_itemChanged(QTableWidgetItem *item) {
+  if (item->row() > 1 && item->column() > 1)
+    if (item->checkState() == Qt::Checked) {
+      display(item->row() - 2, item->column() - 2);
+      ui->tableWidget->horizontalHeader()->setSectionResizeMode(
+          QHeaderView::ResizeToContents);
+      ui->tableWidget->verticalHeader()->setSectionResizeMode(
+          QHeaderView::ResizeToContents);
+    } else {
+      item->setText("");
+    }
 }
