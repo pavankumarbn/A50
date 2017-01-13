@@ -79,6 +79,7 @@ void DataSubscribe::resume(uint8_t packageID) {
 void DataSubscribe::verifyCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
   //! @todo implement
+  API_LOG(API->getDriver(),STATUS_LOG,"finishing verify");
   DataSubscribe *This = (DataSubscribe *)THIS;
   This->lock          = false;
   This->decodeAck(header);
@@ -87,11 +88,13 @@ void DataSubscribe::verifyCallback(CoreAPI *API, Header *header,
 
 void DataSubscribe::addPackageCallback(CoreAPI *API, Header *header,
                                        UserData THIS) {
+
   DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
   if (This->getSubscribe()->decodeAck(header) == RESULT_SUCESS) {
+    API_LOG(API->getDriver(),STATUS_LOG,"finishing add %d",This->getPackageID());
     size_t tmp    = This->getClauseNumber();
     uint16_t freq = This->getFreq();
-    for (int i = 0; i < tmp; ++i) {
+    for (size_t i = 0; i < tmp; ++i) {
       Data::DataBase[This->getClauseOffset()[i]].pkg  = This;
       Data::DataBase[This->getClauseOffset()[i]].freq = freq;
       Data::DataBase[This->getClauseOffset()[i]].latest =
@@ -99,12 +102,15 @@ void DataSubscribe::addPackageCallback(CoreAPI *API, Header *header,
           This->getMemoryOffset()[i];
     }
   } else {
+    API_LOG(API->getDriver(),STATUS_LOG,"fail to subscribe package %d",This->getPackageID());
     //! @todo error management
     //  API->decodeAckDetails(pdata);
   }
 }
 
 void DataSubscribe::resetCallback(CoreAPI *API, Header *header, UserData THIS) {
+  API_LOG(API->getDriver(),STATUS_LOG,"finishing reset");
+
   DataSubscribe *This = (DataSubscribe *)THIS;
   This->lock          = false;
   This->decodeAck(header);
@@ -113,6 +119,7 @@ void DataSubscribe::resetCallback(CoreAPI *API, Header *header, UserData THIS) {
 
 void DataSubscribe::removeCallback(CoreAPI *API, Header *header,
                                    UserData THIS) {
+  API_LOG(API->getDriver(),STATUS_LOG,"finishing remove");
   if (THIS) {
     DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
     This->getSubscribe()->decodeAck(header);
