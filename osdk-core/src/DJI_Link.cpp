@@ -28,8 +28,8 @@
 
 using namespace DJI::onboardSDK;
 
-CallBack callBack  = 0;
-void *data         = 0;
+CallBack callBack = 0;
+void *data = 0;
 Header *protHeader = 0;
 
 void CoreAPI::sendData(unsigned char *buf) {
@@ -66,7 +66,7 @@ void CoreAPI::appHandler(Header *protocolHeader) {
                   p2protocolHeader->sessionID);
 
           callBack = CMDSessionTab[protocolHeader->sessionID].handler;
-          data     = CMDSessionTab[protocolHeader->sessionID].userData;
+          data = CMDSessionTab[protocolHeader->sessionID].userData;
           freeSession(&CMDSessionTab[protocolHeader->sessionID]);
           serialDevice->freeMemory();
           if (callBack) {
@@ -104,7 +104,9 @@ void CoreAPI::appHandler(Header *protocolHeader) {
         break;
       case 1:
       //! @todo unnecessary ack in case 1. Maybe add code later
-      //! @todo check algorithm
+      //! @todo check algorithm,
+      //! @attention here real have a bug about self-looping issue.
+      //! @bug not affect OSDK currerently. 2017-1-18
       default:  //! @note session id is 2
         API_LOG(serialDevice, STATUS_LOG, "ACK %d", protocolHeader->sessionID);
 
@@ -285,7 +287,7 @@ uint32_t DJI::onboardSDK::CoreAPI::getACKFrameStatus() {
 void CoreAPI::setSyncFreq(uint32_t freqInHz) {
   SyncCmdData data;
   data.freq = freqInHz;
-  data.tag  = 0;
+  data.tag = 0;
   send(0, 1, SET_SYNC, CODE_SYNC_BROADCAST, &data, sizeof(data));
 }
 
@@ -300,7 +302,7 @@ unsigned short calculateLength(unsigned short size,
 }
 
 int CoreAPI::ackInterface(Ack *parameter) {
-  unsigned short ret      = 0;
+  unsigned short ret = 0;
   ACKSession *ack_session = (ACKSession *)NULL;
 
   if (parameter->length > PRO_PURE_DATA_MAX_SIZE) {
@@ -341,7 +343,7 @@ int CoreAPI::ackInterface(Ack *parameter) {
 }
 
 int CoreAPI::sendInterface(Command *parameter) {
-  unsigned short ret     = 0;
+  unsigned short ret = 0;
   CMDSession *cmdSession = (CMDSession *)NULL;
   if (parameter->length > PRO_PURE_DATA_MAX_SIZE) {
     API_LOG(serialDevice, ERROR_LOG, "ERROR,length=%lu is over-sized\n",
@@ -400,13 +402,13 @@ int CoreAPI::sendInterface(Command *parameter) {
       }
       cmdSession->preSeqNum = seq_num++;
 
-      cmdSession->handler  = parameter->handler;
+      cmdSession->handler = parameter->handler;
       cmdSession->userData = parameter->userData;
       cmdSession->timeout =
           (parameter->timeout > POLL_TICK) ? parameter->timeout : POLL_TICK;
       cmdSession->preTimestamp = serialDevice->getTimeStamp();
-      cmdSession->sent         = 1;
-      cmdSession->retry        = 1;
+      cmdSession->sent = 1;
+      cmdSession->retry = 1;
       API_LOG(serialDevice, DEBUG_LOG, "sending session %d\n",
               cmdSession->sessionID);
       sendData(cmdSession->mmu->pmem);
@@ -438,13 +440,13 @@ int CoreAPI::sendInterface(Command *parameter) {
         return -1;
       }
       cmdSession->preSeqNum = seq_num++;
-      cmdSession->handler   = parameter->handler;
-      cmdSession->userData  = parameter->userData;
+      cmdSession->handler = parameter->handler;
+      cmdSession->userData = parameter->userData;
       cmdSession->timeout =
           (parameter->timeout > POLL_TICK) ? parameter->timeout : POLL_TICK;
       cmdSession->preTimestamp = serialDevice->getTimeStamp();
-      cmdSession->sent         = 1;
-      cmdSession->retry        = parameter->retry;
+      cmdSession->sent = 1;
+      cmdSession->retry = parameter->retry;
       API_LOG(serialDevice, DEBUG_LOG, "Sending session %d\n",
               cmdSession->sessionID);
       sendData(cmdSession->mmu->pmem);

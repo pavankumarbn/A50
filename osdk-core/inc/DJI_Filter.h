@@ -24,22 +24,34 @@ class Filter {
 
   class Poller {
    public:
+    friend class Filter;
+
     typedef uint16_t ID;
     typedef STATUS (*Method)(Filter*, Header*, UserData);
     typedef ERROR (*Service)(Filter*, UserData);
 
    public:
     Poller(ID registerID = 0, Method userMethod = 0, Service userService = 0,
-           UserData data);
+           UserData userData = 0)
+        : id(registerID),
+          method(userMethod),
+          service(userService),
+          data(userData) {}
+
+    template <typename T>
+    T getData() const {
+      return data;
+    }
 
    private:
     const ID id;
     Method method;
     Service thread;
+    UserData data;
   };
 
  public:
-  Filter(CoreAPI* API = 0, ID registerID = 0);
+  Filter(CoreAPI* API = 0);
 
   Order registerFilter(Poller* poller);
 

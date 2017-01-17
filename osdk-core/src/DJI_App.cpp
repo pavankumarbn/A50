@@ -82,9 +82,9 @@ void CoreAPI::unpackData(Header *protocolHeader) {
   unsigned short *enableFlag;
   serialDevice->lockMSG();
   pdata += 2;
-  enableFlag             = (unsigned short *)pdata;
+  enableFlag = (unsigned short *)pdata;
   broadcastData.dataFlag = *enableFlag;
-  size_t len             = MSG_ENABLE_FLAG_LEN;
+  size_t len = MSG_ENABLE_FLAG_LEN;
 
   //! @warning Change to const (+change interface for passData) in next
   //! release
@@ -180,15 +180,16 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
         }
         break;
       case CODE_LOSTCTRL:
+        //! @note abandoned since 2.3, not tested anymore, reuse in the future
         API_LOG(serialDevice, STATUS_LOG, "onboardSDK lost control\n");
         Ack param;
         if (protocolHeader->sessionID > 0) {
           buf[0] = buf[1] = 0;
           param.sessionID = protocolHeader->sessionID;
-          param.seqNum    = protocolHeader->sequenceNumber;
-          param.encrypt   = protocolHeader->enc;
-          param.buf       = buf;
-          param.length    = 2;
+          param.seqNum = protocolHeader->sequenceNumber;
+          param.encrypt = protocolHeader->enc;
+          param.buf = buf;
+          param.length = 2;
           ackInterface(&param);
         }
         break;

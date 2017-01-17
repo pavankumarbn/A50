@@ -2,6 +2,7 @@
 #define DATABROADCAST_H
 
 #include "DJI_Data.h"
+#include "DJI_Filter.h"
 
 namespace DJI {
 namespace onboardSDK {
@@ -9,12 +10,12 @@ namespace onboardSDK {
 class DataBroadcast {
  public:
   enum FREQ {
-    FREQ_0HZ   = 0,
-    FREQ_1HZ   = 1,
-    FREQ_10HZ  = 2,
-    FREQ_50HZ  = 3,
+    FREQ_0HZ = 0,
+    FREQ_1HZ = 1,
+    FREQ_10HZ = 2,
+    FREQ_50HZ = 3,
     FREQ_100HZ = 4,
-    FREQ_HOLD  = 5,
+    FREQ_HOLD = 5,
     FREQ_200HZ = 6,
     FREQ_400HZ = 7,
   };
