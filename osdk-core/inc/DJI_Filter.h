@@ -6,6 +6,8 @@
 namespace DJI {
 namespace onboardSDK {
 
+//! @todo refactory funtionality part, used to replace appHandler's
+//! implementation
 class Filter {
  public:
   typedef uint8_t Order;
