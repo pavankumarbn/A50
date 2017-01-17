@@ -20,6 +20,7 @@ class DataSubscribe::Package {
 
  public:
   virtual bool add(uint16_t offset);
+  //! @todo virtual bool remove(uint16_t offset);
   virtual bool start();
   virtual void stop();
   virtual void pause();

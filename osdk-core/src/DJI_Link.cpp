@@ -46,6 +46,7 @@ void CoreAPI::sendData(unsigned char *buf) {
 }
 
 void CoreAPI::appHandler(Header *protocolHeader) {
+//! @todo Filter replacement
 #ifdef API_TRACE_DATA
   printFrame(serialDevice, protocolHeader, false);
 #endif

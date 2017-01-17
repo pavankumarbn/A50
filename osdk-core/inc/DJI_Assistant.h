@@ -5,6 +5,8 @@
 
 namespace DJI {
 namespace onboardSDK {
+
+//! @todo implement
 class Assistant {
  public:
   typedef enum DataType {

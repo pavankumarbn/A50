@@ -34,7 +34,7 @@ bool DataSubscribe::Package::add(uint16_t offset) {
       return true;
     }
     API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
-            "too much data to subscribe.");
+            "too much data to subscribe, please relloc.");
     return false;
   }
   API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,

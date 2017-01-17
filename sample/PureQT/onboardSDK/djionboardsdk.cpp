@@ -1165,7 +1165,7 @@ void DJIonboardSDK::on_cb_core_mechine_activated(int index) {
       versionIndex = 3;
       break;
     case 6:
-      api->setVersion(version_3_3_00_test);
+      api->setVersion(version_3_2_20_test);
       versionIndex = 3;
       break;
   }

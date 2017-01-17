@@ -47,6 +47,7 @@ void CoreAPI::init(HardDriver *sDevice, MMU *mmuPtr,
   filter.reuseIndex = 0;
   filter.encode     = 0;
 
+  //! @todo replace by Filter
   broadcastCallback.callback     = 0;
   broadcastCallback.userData     = 0;
   fromMobileCallback.callback    = 0;

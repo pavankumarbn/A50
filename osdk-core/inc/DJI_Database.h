@@ -8,6 +8,10 @@ namespace DJI {
 namespace onboardSDK {
 namespace Data {
 
+typedef enum HistoricalUID {
+  UID_INVAILD = 0xFFFFFFFF  //
+} HistoricalUID;
+
 typedef enum UID {
   UID_Quaternion               = 0xa493281f,
   UID_ACCELERATION_GROUND      = 0x8696c85b,
