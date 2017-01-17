@@ -17,7 +17,9 @@ class MOC {
   CoreAPI* getAPI() const;
   void setAPI(CoreAPI* value);
 
- public:
+  //! @todo
+
+public:
   void sendToMobile(uint8_t* data, uint8_t len, CallBack callback = 0,
                     UserData userData = 0);
 

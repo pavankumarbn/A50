@@ -38,16 +38,7 @@ bool DataSubscribe::Package::add(uint16_t offset) {
     return false;
   }
   API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
-          "database offset overflow.");
-  return false;
-}
-
-bool DataSubscribe::Package::add(Data::UID uid) {
-  for (int i = 0; i < Data::toaltalClauseNumber; ++i)
-    if (Data::DataBase[i].uid == uid) {
-      return add(i);
-    }
-  API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG, "UID not found");
+          "database offset overflow. %d", offset);
   return false;
 }
 

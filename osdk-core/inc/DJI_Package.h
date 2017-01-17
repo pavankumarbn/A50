@@ -18,17 +18,12 @@ class DataSubscribe::Package {
  public:
   Package(DataSubscribe* API = 0);
 
-  bool add(uint16_t offset);
-  bool add(Data::UID uid);
-  //! @note note called automatically in constructor function, because
-  //! size not decided, need finish adding Dataclauses then call this
-  //! function to finish initializing.
-
  public:
-  bool start();
-  void stop();
-  void pause();
-  void resume();
+  virtual bool add(uint16_t offset);
+  virtual bool start();
+  virtual void stop();
+  virtual void pause();
+  virtual void resume();
 
  private:
   void unpack(Header* header);
