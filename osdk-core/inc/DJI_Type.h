@@ -55,15 +55,15 @@
 #endif  // WIN32
 
 //! This is the default status printing mechanism
-#define API_LOG(driver, title, fmt, ...)                                 \
-  if ((title) && (driver)) {                                             \
-    int len = (sprintf(DJI::onboardSDK::buffer, "%s %s,line %d: " fmt"\n", \
-                       (title) ? (title) : "NONE", __func__, __LINE__,   \
-                       ##__VA_ARGS__));                                  \
-    if ((len != -1) && (len < 1024))                                     \
-      (driver)->displayLog();                                            \
-    else                                                                 \
-      (driver)->displayLog("ERROR: log printer inner fault\n");          \
+#define API_LOG(driver, title, fmt, ...)                                    \
+  if ((title) && (driver)) {                                                \
+    int len = (sprintf(DJI::onboardSDK::buffer, "%s %s,line %d: " fmt "\n", \
+                       (title) ? (title) : "NONE", __func__, __LINE__,      \
+                       ##__VA_ARGS__));                                     \
+    if ((len != -1) && (len < 1024))                                        \
+      (driver)->displayLog();                                               \
+    else                                                                    \
+      (driver)->displayLog("ERROR: log printer inner fault\n");             \
   }
 
 #ifdef API_TRACE_DATA
