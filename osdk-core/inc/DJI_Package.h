@@ -19,7 +19,8 @@ class DataSubscribe::Package {
   Package(DataSubscribe* API = 0);
 
  public:
-  virtual bool add(uint16_t offset);
+  bool addByUID(uint32_t uid);
+  virtual bool addByOffset(uint16_t offset);
   //! @todo virtual bool remove(uint16_t offset);
   virtual bool start();
   virtual void stop();

@@ -230,7 +230,7 @@ void SubscribePannel::on_btn_subscribe_clicked() {
                   Qt::Checked);
   p->allocClauseOffset(size);
   for (int i = 0; i < size; ++i)
-    if (!p->add(uidlst[i])) {
+    if (!p->addByOffset(uidlst[i])) {
       API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
               "fail to add data %d", i);
       delete p;

@@ -9,7 +9,7 @@ namespace onboardSDK {
 namespace Data {
 
 typedef enum HistoricalUID {
-  UID_INVAILD = 0xFFFFFFFF  //
+  H_UID_INVAILD = 0xFFFFFFFF  //
 } HistoricalUID;
 
 typedef enum UID {
@@ -235,6 +235,7 @@ typedef void (*UnpackedCallback)(CoreAPI*, uint8_t*, UserData);
 typedef struct DataClauseInfo {
   const uint32_t uid;
   const size_t size;
+  const uint32_t offset_check;
   const uint16_t maxfreq;  //! @note max freq in Hz
   uint16_t freq;
   void* pkg;

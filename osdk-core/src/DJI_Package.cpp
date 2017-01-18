@@ -25,7 +25,18 @@ DataSubscribe::Package::Package(DataSubscribe *API)
   //! @todo check initailization
 }
 
-bool DataSubscribe::Package::add(uint16_t offset) {
+bool DataSubscribe::Package::addByUID(uint32_t uid){
+  for(int i = 0 ; i < Data::toaltalClauseNumber;i++)
+    if(Data::DataBase[i].uid == uid){
+      addByOffset(i);
+      return true;
+    }
+  API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
+          "UID not found %d\n",uid);
+  return false;
+}
+
+bool DataSubscribe::Package::addByOffset(uint16_t offset) {
   if (offset < Data::toaltalClauseNumber) {
     if (clauseInited < clauseNumber) {
       memoryOffset[clauseInited]   = size;

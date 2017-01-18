@@ -8,6 +8,8 @@ using namespace DJI::onboardSDK;
 
 // void DataSubscribe::DataClause::setPtr(void *value) { ptr = value; }
 
+bool DataSubscribe::codeCheck = false;
+
 void DataSubscribe::verify(CallBack callback, UserData userData) {
   VersionData data = Data::DBVersion;
   while (lock)
@@ -191,9 +193,24 @@ uint8_t DataSubscribe::getPackageNumber(Header *header) {
   return *(pdata + 2);
 }
 
+void DataSubscribe::checkDataBase()
+{
+  if(!codeCheck){
+    for(int i = 0 ; i < Data::toaltalClauseNumber; ++i)
+      if(Data::DataBase[i].offset_check != i){
+        API_LOG(api->getDriver(),ERROR_LOG,"DataBase Internal Error\n");
+      }
+    API_LOG(api->getDriver(),STATUS_LOG,"Finish checking data base's accessibility\n");
+    codeCheck = true;
+  }
+}
+
 DataSubscribe::DataSubscribe(CoreAPI *API) {
   for (int i = 0; i < maxPakcageNumber; ++i) package[i] = 0;
-  if (API) setAPI(API);
+  if (API){
+    setAPI(API);
+    checkDataBase();
+  }
   lock = false;
 }
 
@@ -201,6 +218,7 @@ CoreAPI *DataSubscribe::getAPI() const { return api; }
 
 void DataSubscribe::setAPI(CoreAPI *value) {
   api = value;
+  checkDataBase();
   api->setSubscribeCallback(decodeCallback, this);
 }
 
@@ -210,7 +228,7 @@ bool DataSubscribe::setPackage(DataSubscribe::Package *pkg, bool removeOld) {
       if (removeOld) {
         API_LOG(api->getDriver(), STATUS_LOG,
                 "package already exist, remove the old one.")
-        remove(pkg->getPackageID());
+            remove(pkg->getPackageID());
       } else {
         API_LOG(api->getDriver(), DEBUG_LOG, "package %d, already used",
                 pkg->getPackageID());

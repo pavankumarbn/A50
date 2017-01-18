@@ -48,7 +48,7 @@ class Filter {
    private:
     const ID id;
     Method method;
-    Service thread;
+    Service service;
     UserData data;
   };
 

@@ -131,8 +131,11 @@ class DataSubscribe {
 
  public:
   static const int maxPakcageNumber = 5;
+  static bool codeCheck;
 
- private:
+  void checkDataBase();
+
+private:
   CoreAPI* api;
   volatile bool lock;
   Package* package[maxPakcageNumber];
