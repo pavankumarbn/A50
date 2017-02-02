@@ -56,7 +56,7 @@ typedef struct TimeStamp {
 typedef struct SyncStamp {
   uint32_t time_2p5ms;  //! @note relative sync time
   uint16_t tag;
-  uint8_t flag;
+  uint8_t  flag;
 } SyncStamp;
 
 typedef struct Quaternion {
@@ -84,7 +84,7 @@ typedef struct VelocityInfo {
 } VelocityInfo;
 
 typedef struct Velocity {
-  Vector3f data;
+  Vector3f     data;
   VelocityInfo info;
 } Velocity;
 
@@ -93,7 +93,7 @@ typedef struct GlobalPosition {
   float64_t longitude;
   float32_t altitude;
   float32_t height;
-  uint8_t health;
+  uint8_t   health;
 } GlobalPosition;
 
 typedef struct RelativePosition {
@@ -103,13 +103,13 @@ typedef struct RelativePosition {
   float32_t back;
   float32_t left;
   float32_t up;
-  uint8_t downHealth : 1;
-  uint8_t frontHealth : 1;
-  uint8_t rightHealth : 1;
-  uint8_t backHealth : 1;
-  uint8_t leftHealth : 1;
-  uint8_t upHealth : 1;
-  uint8_t reserved : 2;
+  uint8_t   downHealth : 1;
+  uint8_t   frontHealth : 1;
+  uint8_t   rightHealth : 1;
+  uint8_t   backHealth : 1;
+  uint8_t   leftHealth : 1;
+  uint8_t   upHealth : 1;
+  uint8_t   reserved : 2;
 } RelativePosition;
 
 typedef struct PositionTimeStamp {
@@ -125,7 +125,7 @@ typedef struct PositionData {
 
 typedef struct PositionFrame {
   PositionTimeStamp time;
-  PositionData data;
+  PositionData      data;
 } PositionFrame;
 
 typedef struct GPSDetail {
@@ -135,21 +135,21 @@ typedef struct GPSDetail {
   float32_t gnssStatus;
   float32_t hacc;
   float32_t sacc;
-  uint32_t usedGPS;
-  uint32_t usedGLN;
-  uint16_t NSV;
-  uint16_t GPScounter;
+  uint32_t  usedGPS;
+  uint32_t  usedGLN;
+  uint16_t  NSV;
+  uint16_t  GPScounter;
 } GPSDetail;
 
 typedef struct GPSInfo {
   PositionFrame pos;
-  Vector3f velocityNED;
-  GPSDetail detail;
+  Vector3f      velocityNED;
+  GPSDetail     detail;
 } GPSInfo;
 
 typedef struct RTK {
   PositionFrame pos;
-  Vector3f velocityNED;
+  Vector3f      velocityNED;
 
   int16_t yaw;
   uint8_t posFlag;
@@ -199,10 +199,10 @@ typedef struct Gimbal {
   float32_t roll;
   float32_t pitch;
   float32_t yaw;
-  uint8_t pitchLimit : 1;
-  uint8_t rollLimit : 1;
-  uint8_t yawLimit : 1;
-  uint8_t reserved : 5;
+  uint8_t   pitchLimit : 1;
+  uint8_t   rollLimit : 1;
+  uint8_t   yawLimit : 1;
+  uint8_t   reserved : 5;
 } Gimbal;
 
 typedef struct Status {
@@ -214,9 +214,9 @@ typedef struct Status {
 
 typedef struct Battery {
   uint32_t capacity;
-  int32_t voltage;
-  int32_t current;
-  uint8_t percentage;
+  int32_t  voltage;
+  int32_t  current;
+  uint8_t  percentage;
 } Battery;
 
 typedef struct SDKInfo {
@@ -234,16 +234,16 @@ typedef void (*UnpackedCallback)(CoreAPI*, uint8_t*, UserData);
 
 typedef struct DataClauseInfo {
   const uint32_t uid;
-  const size_t size;
+  const size_t   size;
   const uint32_t offset_check;
   const uint16_t maxfreq;  //! @note max freq in Hz
-  uint16_t freq;
-  void* pkg;
-  uint8_t*
-      latest;  //! @note this pointer save the latest data's memory pool pointer
-  UnpackedCallback
-      callback;  //! @note called while received a package contained this clause
-  UserData userData;  //! @note callback's userData
+  uint16_t       freq;
+  void*          pkg;
+  //! @note this pointer save the latest data's memory pool pointer
+  uint8_t* latest;
+  //! @note called while received a package contained this clause
+  UnpackedCallback callback;
+  UserData         userData;  //! @note callback's userData
   //  char brief[64];
 } DataClauseInfo;
 
@@ -253,15 +253,15 @@ typedef struct DataClauseInfo {
 //! a class
 extern DataClauseInfo DataBase[];
 extern const uint32_t DBVersion;
-extern const size_t toaltalClauseNumber;
+extern const size_t   toaltalClauseNumber;
 
 template <uint32_t UID>
 struct Structure {
-  typedef void type;
+  typedef void          type;
   static const uint32_t offset = 0xFFFFFFFF;
 };
 
-template <uint32_t UID>
+template <uint32_t            UID>
 typename Structure<UID>::type getData(CoreAPI* api, uint8_t* buffer) {
   if (Structure<UID>::offset < toaltalClauseNumber) {
     if (DataBase[Structure<UID>::offset].callback)  //! @todo remove this design

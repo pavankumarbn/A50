@@ -78,13 +78,13 @@ bool DJI::onboardSDK::CoreAPI::getBroadcastFrameStatus() {
 #include "devApp.cpp"
 #else
 void CoreAPI::unpackData(Header *protocolHeader) {
-  unsigned char *pdata = ((unsigned char *)protocolHeader) + sizeof(Header);
+  unsigned char * pdata = ((unsigned char *)protocolHeader) + sizeof(Header);
   unsigned short *enableFlag;
   serialDevice->lockMSG();
   pdata += 2;
-  enableFlag = (unsigned short *)pdata;
+  enableFlag             = (unsigned short *)pdata;
   broadcastData.dataFlag = *enableFlag;
-  size_t len = MSG_ENABLE_FLAG_LEN;
+  size_t len             = MSG_ENABLE_FLAG_LEN;
 
   //! @warning Change to const (+change interface for passData) in next
   //! release
@@ -173,7 +173,9 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
         broadcast(protocolHeader);
         break;
       case CODE_FROMMOBILE:
-        API_LOG(serialDevice, STATUS_LOG, "Receive data from mobile\n");
+        API_LOG(serialDevice, STATUS_LOG, "Receive data from mobile %.*s\n",
+                protocolHeader->length - PackageMin,
+                ((uint8_t *)protocolHeader) + sizeof(Header));
         if (fromMobileCallback.callback) {
           fromMobileCallback.callback(this, protocolHeader,
                                       fromMobileCallback.userData);
@@ -186,10 +188,10 @@ void DJI::onboardSDK::CoreAPI::recvReqData(Header *protocolHeader) {
         if (protocolHeader->sessionID > 0) {
           buf[0] = buf[1] = 0;
           param.sessionID = protocolHeader->sessionID;
-          param.seqNum = protocolHeader->sequenceNumber;
-          param.encrypt = protocolHeader->enc;
-          param.buf = buf;
-          param.length = 2;
+          param.seqNum    = protocolHeader->sequenceNumber;
+          param.encrypt   = protocolHeader->enc;
+          param.buf       = buf;
+          param.length    = 2;
           ackInterface(&param);
         }
         break;

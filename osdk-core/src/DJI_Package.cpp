@@ -25,14 +25,14 @@ DataSubscribe::Package::Package(DataSubscribe *API)
   //! @todo check initailization
 }
 
-bool DataSubscribe::Package::addByUID(uint32_t uid){
-  for(int i = 0 ; i < Data::toaltalClauseNumber;i++)
-    if(Data::DataBase[i].uid == uid){
+bool DataSubscribe::Package::addByUID(uint32_t uid) {
+  for (int i = 0; i < Data::toaltalClauseNumber; i++)
+    if (Data::DataBase[i].uid == uid) {
       addByOffset(i);
       return true;
     }
-  API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
-          "UID not found %d\n",uid);
+  API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG, "UID not found %d\n",
+          uid);
   return false;
 }
 
@@ -147,6 +147,25 @@ void DataSubscribe::Package::setUnpackHandler(const CallbackHandler &value) {
 DataSubscribe::Package::PackageBuffer DataSubscribe::Package::getMemoryPool()
     const {
   return memoryPool;
+}
+
+Data::TimeStamp DataSubscribe::Package::getTimeStamp() const {
+  Data::TimeStamp ans;
+  if (getSendStamp()) {
+    ans.time_2p5ms = 0;
+    ans.time_ns    = 0;
+    return ans;
+  } else {
+    if (getMemoryPool() == 0) {
+      API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
+              "Memory not alloced");
+      ans.time_2p5ms = 0;
+      ans.time_ns    = 0;
+      return ans;
+    } else {
+      return *reinterpret_cast<Data::TimeStamp *>(getMemoryPool());
+    }
+  }
 }
 
 uint16_t DataSubscribe::Package::getFreq() const { return freq; }

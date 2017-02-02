@@ -33,14 +33,15 @@ class DataSubscribe::Package {
  public:
   void allocClauseOffset(size_t allocSize);
 
-  bool getSendStamp() const;
-  size_t getClauseNumber() const;
-  size8_t getPackageID() const;
-  uint16_t getFreq() const;
-  uint32_t* getClauseOffset() const;
-  uint32_t* getMemoryOffset() const;
-  DataSubscribe* getSubscribe() const;
-  PackageBuffer getMemoryPool() const;
+  bool            getSendStamp() const;
+  size_t          getClauseNumber() const;
+  size8_t         getPackageID() const;
+  uint16_t        getFreq() const;
+  uint32_t*       getClauseOffset() const;
+  uint32_t*       getMemoryOffset() const;
+  DataSubscribe*  getSubscribe() const;
+  PackageBuffer   getMemoryPool() const;
+  Data::TimeStamp getTimeStamp() const;
 
   void setSendStamp(bool value);
   void setPackageID(const size8_t& value);
@@ -56,17 +57,17 @@ class DataSubscribe::Package {
   bool isUsingAPI;
 
   uint16_t freq;
-  bool sendStamp;
+  bool     sendStamp;
 
-  DataSubscribe* subscribe;
-  PackageBuffer memoryPool;
+  DataSubscribe*  subscribe;
+  PackageBuffer   memoryPool;
   CallbackHandler unpackHandler;
-  size16_t size;
-  size8_t packageID;
-  size_t clauseInited;
-  size_t clauseNumber;
-  uint32_t* clauseOffset;
-  uint32_t* memoryOffset;
+  size16_t        size;
+  size8_t         packageID;
+  size_t          clauseInited;
+  size_t          clauseNumber;
+  uint32_t*       clauseOffset;
+  uint32_t*       memoryOffset;
 
   friend class DataSubscribe;
 };

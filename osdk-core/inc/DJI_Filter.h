@@ -8,6 +8,8 @@ namespace onboardSDK {
 
 //! @todo refactory funtionality part, used to replace appHandler's
 //! implementation
+class Poller;
+
 class Filter {
  public:
   typedef uint8_t Order;
@@ -24,34 +26,6 @@ class Filter {
 
   } ERROR;
 
-  class Poller {
-   public:
-    friend class Filter;
-
-    typedef uint16_t ID;
-    typedef STATUS (*Method)(Filter*, Header*, UserData);
-    typedef ERROR (*Service)(Filter*, UserData);
-
-   public:
-    Poller(ID registerID = 0, Method userMethod = 0, Service userService = 0,
-           UserData userData = 0)
-        : id(registerID),
-          method(userMethod),
-          service(userService),
-          data(userData) {}
-
-    template <typename T>
-    T getData() const {
-      return data;
-    }
-
-   private:
-    const ID id;
-    Method method;
-    Service service;
-    UserData data;
-  };
-
  public:
   Filter(CoreAPI* API = 0);
 
@@ -62,8 +36,32 @@ class Filter {
 
  protected:
   CoreAPI* api;
-  Poller* pollerlist;
-  size_t pollerLength;
+  Poller*  pollerlist;
+  size_t   pollerLength;
+};
+
+class Poller {
+ public:
+  friend class Filter;
+
+  typedef uint16_t ID;
+
+ public:
+  Poller(ID registerID = 0, UserData userData = 0)
+      : id(registerID), data(userData) {}
+
+  template <typename T>
+  T getData() const {
+    return data;
+  }
+
+ private:
+  virtual Filter::STATUS method(Filter* filter, Header* header);
+  virtual Filter::ERROR service(Filter* filter);
+
+ private:
+  const ID id;
+  UserData data;
 };
 
 }  // onboardSDK

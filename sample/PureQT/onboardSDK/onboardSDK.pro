@@ -24,14 +24,16 @@ HEADERS  += djionboardsdk.h \
     autotest.h \
     qwaypoints.h \
     mfiopannel.h \
-    recorder.h
+    recorder.h \
+    qgimbal.h
 
 SOURCES += main.cpp\
            djionboardsdk.cpp \
     autotest.cpp \
     qwaypoints.cpp \
     mfiopannel.cpp \
-    recorder.cpp
+    recorder.cpp \
+    qgimbal.cpp
 
 DJILIB += ONBOARDSDK\
           #GROUNDSTATION\
@@ -172,7 +174,8 @@ FORMS    += djionboardsdk.ui \
     autotest.ui \
     qwaypoints.ui \
     mfiopannel.ui \
-    recorder.ui
+    recorder.ui \
+    qgimbal.ui
 
 RESOURCES +=
 
