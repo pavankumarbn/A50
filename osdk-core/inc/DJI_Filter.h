@@ -6,7 +6,7 @@
 namespace DJI {
 namespace onboardSDK {
 
-//! @todo refactory funtionality part, used to replace appHandler's
+//! @todo refactor functionality part, used to replace appHandler's
 //! implementation
 class Filter {
  public:

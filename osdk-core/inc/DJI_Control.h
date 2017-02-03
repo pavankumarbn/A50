@@ -60,14 +60,20 @@ class Control {
     HORIZONTAL_PALSTANCE = 0xC0
   };
 
-  enum YawLogic { YAW_ANGLE = 0x00, YAW_RATE = 0x08 };
+  enum YawLogic {
+    YAW_ANGLE = 0x00,
+    YAW_RATE = 0x08
+  };
 
   enum HorizontalCoordinate {
     HORIZONTAL_GROUND = 0x00,
     HORIZONTAL_BODY   = 0x02
   };
 
-  enum SmoothMode { SMOOTH_DISABLE = 0x00, SMOOTH_ENABLE = 0x01 };
+  enum SmoothMode {
+    SMOOTH_DISABLE = 0x00,
+    SMOOTH_ENABLE = 0x01
+  };
 
 #pragma pack(1)
   typedef struct FlightData {

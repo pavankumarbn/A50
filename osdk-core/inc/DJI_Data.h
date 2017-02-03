@@ -81,7 +81,7 @@ class DataSubscribe {
   typedef uint32_t VersionData;
   typedef struct SubscribeData {
     uint8_t packageID;
-    uint16_t ferq;
+    uint16_t freq;
     uint8_t config;
     uint8_t clauseNumber;
     //! @note variable data add through memcpy

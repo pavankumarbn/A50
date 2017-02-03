@@ -25,15 +25,44 @@ DataSubscribe::Package::Package(DataSubscribe *API)
   //! @todo check initailization
 }
 
-bool DataSubscribe::Package::addByUID(uint32_t uid){
+bool DataSubscribe::Package::addByUID(Data::UID uid){
   for(int i = 0 ; i < Data::toaltalClauseNumber;i++)
     if(Data::DataBase[i].uid == uid){
       addByOffset(i);
       return true;
     }
   API_LOG(subscribe->getAPI()->getDriver(), ERROR_LOG,
-          "UID not found %d\n",uid);
+          "UID %x not found\n",uid);
   return false;
+}
+
+bool DataSubscribe::Package::addArrayOfUID(Data::UID  uidArray[],
+                                        size_t     numberOfClause,
+                                        size8_t    id,
+                                        uint16_t   freq,
+                                        bool       flagSendTimeStamp,
+                                        DataSubscribe::Package::Callback packageUnpackCallback)
+{
+  if(!uidArray)
+    return false;
+
+  setPackageID(id);
+  setFreq(freq);
+  setSendStamp(flagSendTimeStamp);
+  allocClauseOffset(numberOfClause);
+
+
+  for(int i=0; i<numberOfClause; i++)
+  {
+    if(!addByUID(uidArray[i]))
+      return false;
+  }
+
+  setUnpackHandler(packageUnpackCallback, NULL);
+
+  getSubscribe()->setPackage(this);
+
+  return true;
 }
 
 bool DataSubscribe::Package::addByOffset(uint16_t offset) {
@@ -56,7 +85,7 @@ bool DataSubscribe::Package::addByOffset(uint16_t offset) {
 bool DataSubscribe::Package::start() {
   if (clauseInited != clauseNumber) return false;
   uint32_t lst[40];
-  for (int i = 0; i < clauseNumber; ++i) {
+  for (int i = 0; i < clauseNumber; i++) {
     lst[i] = Data::DataBase[clauseOffset[i]].uid;
     if (Data::DataBase[clauseOffset[i]].maxfreq < freq) {
       API_LOG(subscribe->getAPI()->getDriver(), STATUS_LOG,

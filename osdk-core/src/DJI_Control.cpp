@@ -18,7 +18,7 @@ void Control::obtain(CallBack callback, UserData userData) {
 }
 
 void Control::release(CallBack callback, UserData userData) {
-  unsigned char data = 1;
+  unsigned char data = 0;
   api->send(2, DJI::onboardSDK::encrypt, SET_CONTROL, CODE_SETCONTROL, &data, 1,
             500, 2, callback ? callback : Control::setControlCallback,
             userData);
