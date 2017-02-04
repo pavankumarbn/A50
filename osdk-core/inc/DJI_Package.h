@@ -19,8 +19,9 @@ class DataSubscribe::Package {
   Package(DataSubscribe* API = 0);
 
  public:
-  bool addByUID(uint32_t uid);
+  bool addByUID(Data::UID uid);
   virtual bool addByOffset(uint16_t offset);
+  bool addArrayOfUID(Data::UID uidArray[], size_t numberOfClause, size8_t id, uint16_t freq, bool flagSendTimeStamp=true, Package::Callback packageUnpackCallback=0);
   //! @todo virtual bool remove(uint16_t offset);
   virtual bool start();
   virtual void stop();

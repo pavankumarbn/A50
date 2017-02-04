@@ -1,4 +1,4 @@
-/** @file DJI_Link.h
+/** @file DJI_Memory.h
  *  @version 3.1.7
  *  @date July 1st, 2016
  *
