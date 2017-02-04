@@ -67,8 +67,8 @@ void DataBroadcast::unpackData(Header *protocolHeader) {
   unpackOne(FLAG_QUATERNION  ,&q         ,pdata,sizeof(q         ));
   unpackOne(FLAG_ACCELERATION,&a         ,pdata,sizeof(a         ));
   unpackOne(FLAG_VELOCITY    ,&v         ,pdata,sizeof(v         ));
-  unpackOne(FLAG_PALSTANCE   ,&w         ,pdata,sizeof(w         ));
   unpackOne(FLAG_VELOCITY    ,&vi        ,pdata,sizeof(vi        ));
+  unpackOne(FLAG_PALSTANCE   ,&w         ,pdata,sizeof(w         ));
   unpackOne(FLAG_POSITION    ,&gp        ,pdata,sizeof(gp        ));
   unpackOne(FLAG_POSITION    ,&rp        ,pdata,sizeof(rp        ));
   unpackOne(FLAG_GPSINFO     ,&gps       ,pdata,sizeof(gps       ));
