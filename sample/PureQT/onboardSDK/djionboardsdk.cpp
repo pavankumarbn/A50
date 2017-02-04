@@ -703,21 +703,22 @@ void DJIonboardSDK::on_btn_cameraShoot_clicked() {
 }
 
 void DJIonboardSDK::on_btn_camera_send_clicked() {
-  GimbalSpeedData speedData;
-  GimbalAngleData angleData;
-  if (ui->btg_cameraMode->checkedButton()->text() == "Speed") {
-    speedData.yaw   = ui->hs_camera_yaw->value();
-    speedData.roll  = ui->hs_camera_roll->value();
-    speedData.pitch = ui->hs_camera_pitch->value();
-    cam->setGimbalSpeed(&speedData);
-  } else {
-    angleData.yaw      = ui->hs_camera_yaw->value();
-    angleData.roll     = ui->hs_camera_roll->value();
-    angleData.pitch    = ui->hs_camera_pitch->value();
-    angleData.mode     = camFlag;
-    angleData.duration = ui->lineEdit_cameraTime->text().toInt();
-    cam->setGimbalAngle(&angleData);
-  }
+  //! @todo reimplement
+  //  GimbalSpeedData speedData;
+  //  GimbalAngleData angleData;
+  //  if (ui->btg_cameraMode->checkedButton()->text() == "Speed") {
+  //    speedData.yaw   = ui->hs_camera_yaw->value();
+  //    speedData.roll  = ui->hs_camera_roll->value();
+  //    speedData.pitch = ui->hs_camera_pitch->value();
+  //    cam->setGimbalSpeed(&speedData);
+  //  } else {
+  //    angleData.yaw      = ui->hs_camera_yaw->value();
+  //    angleData.roll     = ui->hs_camera_roll->value();
+  //    angleData.pitch    = ui->hs_camera_pitch->value();
+  //    angleData.mode     = camFlag;
+  //    angleData.duration = ui->lineEdit_cameraTime->text().toInt();
+  //    cam->setGimbalAngle(&angleData);
+  //  }
 }
 
 void DJIonboardSDK::on_btn_camera_0_clicked() { resetCameraAngle(); }

@@ -24,7 +24,7 @@ void DataSubscribe::subscribe(uint8_t id, uint16_t freq, uint8_t flag,
                               uint8_t clauseNumber, uint32_t *uid) {
   SubscribeData data;
   data.packageID    = id;
-  data.ferq         = freq;
+  data.freq         = freq;
   data.config       = flag;
   data.clauseNumber = clauseNumber;
   //    data.uidList                  = uid;
@@ -33,8 +33,7 @@ void DataSubscribe::subscribe(uint8_t id, uint16_t freq, uint8_t flag,
   size_t size = sizeof(SubscribeData) + sizeof(uint32_t) * clauseNumber;
   if (size > bufferLen) {
     API_LOG(api->getDriver(), ERROR_LOG,
-            "subscribe segementation overflow size %d , max %d\n", size,
-            bufferLen);
+            "Too many clauses subscribed %d , max %d\n", size, bufferLen);
   } else {
     memcpy(buffer, (uint8_t *)&data, sizeof(data));
     memcpy(buffer + sizeof(SubscribeData), (uint8_t *)uid,
@@ -93,7 +92,7 @@ void DataSubscribe::addPackageCallback(CoreAPI *API, Header *header,
 
   DataSubscribe::Package *This = (DataSubscribe::Package *)THIS;
   if (This->getSubscribe()->decodeAck(header) == RESULT_SUCESS) {
-    API_LOG(API->getDriver(),STATUS_LOG,"finishing add %d",This->getPackageID());
+    API_LOG(API->getDriver(),STATUS_LOG,"finishing adding package %d",This->getPackageID());
     size_t tmp    = This->getClauseNumber();
     uint16_t freq = This->getFreq();
     for (size_t i = 0; i < tmp; ++i) {
@@ -103,7 +102,12 @@ void DataSubscribe::addPackageCallback(CoreAPI *API, Header *header,
           This->memoryPool + (This->sendStamp ? 8 : 0) +
           This->getMemoryOffset()[i];
     }
-  } else {
+  }else if(This->getSubscribe()->decodeAck(header) == RESULT_PACKAGE_ALREADY_EXIST){
+    API_LOG(API->getDriver(),STATUS_LOG,"package already exists %d",This->getPackageID());
+  }else if(This->getSubscribe()->decodeAck(header) == RESULT_MULTIPLE_SUBSCRIBE){
+    API_LOG(API->getDriver(),STATUS_LOG,"package %d, multiple subscribe",This->getPackageID());
+  }
+  else {
     API_LOG(API->getDriver(),STATUS_LOG,"fail to subscribe package %d",This->getPackageID());
     //! @todo error management
     //  API->decodeAckDetails(pdata);
@@ -178,7 +182,7 @@ void DataSubscribe::resumeCallback(CoreAPI *API, Header *header,
 
 uint8_t DataSubscribe::decodeAck(Header *protocolHeader) {
   uint8_t *pdata = ((uint8_t *)protocolHeader) + sizeof(Header);
-  API_LOG(api->getDriver(), STATUS_LOG, "ACK %x %d", *pdata,
+  API_LOG(api->getDriver(), STATUS_LOG, "ACK: %x, length: %d", *pdata,
           protocolHeader->length - sizeof(Header));
   return *pdata;
 }
