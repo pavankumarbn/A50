@@ -10,12 +10,12 @@ namespace onboardSDK {
 class DataBroadcast {
  public:
   enum FREQ {
-    FREQ_0HZ = 0,
-    FREQ_1HZ = 1,
-    FREQ_10HZ = 2,
-    FREQ_50HZ = 3,
+    FREQ_0HZ   = 0,
+    FREQ_1HZ   = 1,
+    FREQ_10HZ  = 2,
+    FREQ_50HZ  = 3,
     FREQ_100HZ = 4,
-    FREQ_HOLD = 5,
+    FREQ_HOLD  = 5,
     FREQ_200HZ = 6,
     FREQ_400HZ = 7,
   };
@@ -94,8 +94,8 @@ class DataBroadcast {
   Data::Quaternion          q           ;
   Data::Vector3f            a           ;
   Data::Vector3f            v           ;
-  Data::Vector3f            w           ;
   Data::VelocityInfo        vi          ;
+  Data::Vector3f            w           ;
   Data::GlobalPosition      gp          ;
   Data::RelativePosition    rp          ;
   Data::GPSInfo             gps         ;
@@ -109,8 +109,8 @@ class DataBroadcast {
   // clang-format on
 
  private:
-  CoreAPI* api;
-  uint16_t passFlag;
+  CoreAPI*        api;
+  uint16_t        passFlag;
   CallBackHandler handler;
 };
 
