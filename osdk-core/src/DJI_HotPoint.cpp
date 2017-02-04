@@ -96,14 +96,14 @@ void HotPoint::updateYawRate(HotPoint::YawRate &Data, CallBack callback,
                              UserData userData) {
   hotPointData.yawRate   = Data.yawRate;
   hotPointData.clockwise = Data.clockwise ? 1 : 0;
-  api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_YAWRATE, &Data, sizeof(Data),
+  api->send(0, encrypt, SET_MISSION, CODE_HOTPOINT_YAWRATE, &Data, sizeof(Data),
             500, 2, callback ? callback : missionCallback, userData);
 }
 
 MissionACK HotPoint::updateYawRate(HotPoint::YawRate &Data, int timeout) {
   hotPointData.yawRate   = Data.yawRate;
   hotPointData.clockwise = Data.clockwise ? 1 : 0;
-  api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_YAWRATE, &Data, sizeof(Data),
+  api->send(0, encrypt, SET_MISSION, CODE_HOTPOINT_YAWRATE, &Data, sizeof(Data),
             500, 2, 0, 0);
 
   api->getDriver()->lockACK();
@@ -123,13 +123,13 @@ void HotPoint::updateYawRate(float32_t yawRate, bool isClockwise,
 
 void HotPoint::updateRadius(float32_t meter, CallBack callback,
                             UserData userData) {
-  api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_RADIUS, &meter,
+  api->send(0, encrypt, SET_MISSION, CODE_HOTPOINT_RADIUS, &meter,
             sizeof(meter), 500, 2, callback ? callback : missionCallback,
             userData);
 }
 
 MissionACK HotPoint::updateRadius(float32_t meter, int timeout) {
-  api->send(2, encrypt, SET_MISSION, CODE_HOTPOINT_RADIUS, &meter,
+  api->send(0, encrypt, SET_MISSION, CODE_HOTPOINT_RADIUS, &meter,
             sizeof(meter), 500, 2, 0, 0);
 
   api->getDriver()->lockACK();
@@ -214,7 +214,8 @@ HotPointData HotPoint::getData() const { return hotPointData; }
 void HotPoint::startCallback(CoreAPI *api, Header *protocolHeader,
                              UserData userdata __UNUSED) {
   HotPointStartACK ack;
-  if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(HotPointStartACK)) {
+  if (protocolHeader->length - CoreAPI::PackageMin <=
+      sizeof(HotPointStartACK)) {
     memcpy((unsigned char *)&ack,
            (unsigned char *)protocolHeader + sizeof(Header),
            (protocolHeader->length - CoreAPI::PackageMin));
@@ -231,7 +232,7 @@ void HotPoint::startCallback(CoreAPI *api, Header *protocolHeader,
 
 void HotPoint::readCallback(CoreAPI *api, Header *protocolHeader,
                             UserData userdata) {
-  HotPoint *hp = (HotPoint *)userdata;
+  HotPoint *      hp = (HotPoint *)userdata;
   HotPointReadACK ack;
   if (protocolHeader->length - CoreAPI::PackageMin <= sizeof(HotPointReadACK)) {
     memcpy((unsigned char *)&ack,
