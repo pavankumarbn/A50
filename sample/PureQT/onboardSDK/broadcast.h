@@ -27,21 +27,34 @@ class Broadcast : public QWidget {
                           DJI::onboardSDK::Header *header, DJI::UserData data);
 
  private:
-  void displayGlobalStamp(uint16_t flag) {}
-  void displaySyncStamp(uint16_t flag) {}
-  void displayQuaternion(uint16_t flag) {}
-  void displayAcceleration(uint16_t flag) {}
-  void displayVelocity(uint16_t flag) {}
-  void displayPalstance(uint16_t flag) {}
-  void displayGlobalPosition(uint16_t flag) {}
-  void displayRelativePosition(uint16_t flag) {}
-  void displayGPS(uint16_t flag) {}
-  void displayRTK(uint16_t flag) {}
-  void displayMag(uint16_t flag) {}
-  void displayRC(uint16_t flag) {}
-  void displayGimbal(uint16_t flag) {}
-  void displayBattery(uint16_t flag) {}
-  void displaySDKInfo(uint16_t flag) {}
+  void displayGlobalStamp(uint16_t flag);
+  void displaySyncStamp(uint16_t flag);
+  void displayQuaternion(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayAcceleration(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayVelocity(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayPalstance(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayGlobalPosition(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayRelativePosition(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayGPS(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayRTK(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayMag(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayRC(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayGimbal(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displayBattery(uint16_t flag) { /*! @todo implemet*/
+  }
+  void displaySDKInfo(uint16_t flag) { /*! @todo implemet*/
+  }
 
  private:
   Ui::Broadcast *                ui;

@@ -934,30 +934,77 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
+          <widget class="QComboBox" name="cb_freq_3">
+           <property name="currentIndex">
+            <number>5</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>0Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>1Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>50Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>100Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Hold freq</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>200Hz</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>400Hz</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
           <widget class="QGroupBox" name="groupBox_2">
            <property name="title">
             <string>Global stamp</string>
            </property>
            <layout class="QFormLayout" name="formLayout">
-            <item row="0" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="label">
               <property name="text">
                <string>2p5ms</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lineEdit"/>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="le_gt_2p5ms"/>
             </item>
-            <item row="1" column="0">
+            <item row="2" column="0">
              <widget class="QLabel" name="label_3">
               <property name="text">
                <string>ns</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="lineEdit_3"/>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="le_gt_ns"/>
             </item>
            </layout>
           </widget>
@@ -976,7 +1023,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QLineEdit" name="lineEdit_4"/>
+             <widget class="QLineEdit" name="le_st_2p5ms"/>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_2">
@@ -986,7 +1033,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QLineEdit" name="lineEdit_2"/>
+             <widget class="QLineEdit" name="le_st_tag"/>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_6">
@@ -996,7 +1043,7 @@
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QLineEdit" name="lineEdit_6"/>
+             <widget class="QLineEdit" name="le_st_flag"/>
             </item>
            </layout>
           </widget>

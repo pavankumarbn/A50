@@ -61,7 +61,7 @@ class DataBroadcast {
   static void setFrequencyCallback(CoreAPI* api, Header* protocolHeader,
                                    UserData userData = 0);
 
- private:
+ public:
   // clang-format off
   typedef enum FLAG {
     FLAG_TIME           = 0X0001,
