@@ -27,6 +27,10 @@ HEADERS += \
     $$PWD/inc/DJI_Database.h \
     $$PWD/inc/DJI_Status.h \
     $$PWD/inc/DJI_Broadcast.h \
-    $$PWD/inc/dbauto.h
+    $$PWD/inc/dbauto.h \
+    $$PWD/inc/DJI_List.h
 
 INCLUDEPATH += $$PWD/inc
+
+SOURCES += \
+    $$PWD/src/DJI_List.cpp

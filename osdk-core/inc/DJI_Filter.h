@@ -30,14 +30,24 @@ class Filter {
   Filter(CoreAPI* API = 0);
 
   Order registerFilter(Poller* poller);
+  void poll() {
+    servicesPoll();
+    callbackPoll();
+  }
 
   CoreAPI* getAPI() const;
   void setAPI(CoreAPI* value);
 
  protected:
+  virtual void servicesPoll();
+  virtual void callbackPoll();
+
+ protected:
   CoreAPI* api;
-  Poller*  pollerlist;
+  Poller** pollerlist;
   size_t   pollerLength;
+  Poller** callbackPoller;
+  size_t   callbackPollerLength;
 };
 
 class Poller {

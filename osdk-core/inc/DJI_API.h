@@ -45,10 +45,7 @@ class Filter;
 
 //! @todo sort enum and move to a new file
 
-enum ACK_ERROR_CODE {
-  ACK_SUCCESS = 0x0000,
-  ACK_PARAM_ERROR = 0x0001
-};
+enum ACK_ERROR_CODE { ACK_SUCCESS = 0x0000, ACK_PARAM_ERROR = 0x0001 };
 
 enum ACK_COMMON_CODE {
   ACK_COMMON_SUCCESS          = 0x0000,
@@ -89,10 +86,7 @@ enum ACK_ARM_CODE {
   ACK_ARM_IN_AIR        = 0x0003,
 };
 
-enum TASK_ACK_CODE {
-  TASK_FAILURE = 0x01,
-  TASK_SUCCESS = 0x02
-};
+enum TASK_ACK_CODE { TASK_FAILURE = 0x01, TASK_SUCCESS = 0x02 };
 
 //! @note end of ACKs
 
@@ -108,9 +102,7 @@ enum CMD_SET {
   SET_SUBSCRIBE  = 0x0B
 };
 
-enum SYNC_CODE {
-  CODE_SYNC_BROADCAST = 0x00
-};
+enum SYNC_CODE { CODE_SYNC_BROADCAST = 0x00 };
 
 enum HOTPOINT_CODE {
   CODE_HOTPOINT_START    = 0x20,
@@ -165,10 +157,7 @@ enum BROADCAST_CODE {
   CODE_TEST       = 0xEF
 };
 
-enum VIRTUALRC_CODE {
-  CODE_VIRTUALRC_SETTINGS,
-  CODE_VIRTUALRC_DATA
-};
+enum VIRTUALRC_CODE { CODE_VIRTUALRC_SETTINGS, CODE_VIRTUALRC_DATA };
 
 enum MISSION_TYPE {
   MISSION_MODE_A,
@@ -293,7 +282,6 @@ class CoreAPI {
   bool getBroadcastFrameStatus();
 
   void setSyncFreq(uint32_t freqInHz);
-  void setKey(const char *key);
 
   //@{
   /**
@@ -379,7 +367,7 @@ class CoreAPI {
    *@note  Thread data
    */
 
-  uint32_t ack_data;
+  uint32_t        ack_data;
   HotPointReadACK hotpointReadACK;
   WayPointInitACK waypointInitACK;
   MissionACKUnion missionACKUnion;
@@ -424,19 +412,20 @@ class CoreAPI {
    */
 
  public:
-  static const uint8_t SOF    = 0xAA;
-  static const int maxRecv    = BUFFER_SIZE;
-  static const int CRCHead    = sizeof(uint16_t);
-  static const int CRCData    = sizeof(uint32_t);
-  static const int CRCHeadLen = sizeof(Header) - CRCHead;
-  static const int PackageMin = sizeof(Header) + CRCData;
+  static const uint8_t SOF        = 0xAA;
+  static const int     maxRecv    = BUFFER_SIZE;
+  static const int     CRCHead    = sizeof(uint16_t);
+  static const int     CRCData    = sizeof(uint32_t);
+  static const int     CRCHeadLen = sizeof(Header) - CRCHead;
+  static const int     PackageMin = sizeof(Header) + CRCData;
 
  private:
-  uint32_t ackFrameStatus;
-  bool broadcastFrameStatus;
+  uint32_t      ackFrameStatus;
+  bool          broadcastFrameStatus;
   unsigned char encodeSendData[BUFFER_SIZE];
   unsigned char encodeACK[ACK_SIZE];
 
+  //! @todo replace by DJI_Filter
   //! Mobile Data Transparent Transmission - callbacks
   CallBackHandler fromMobileCallback;
 
@@ -450,13 +439,15 @@ class CoreAPI {
   CallBackHandler recvCallback;
   CallBackHandler testCallback;
 
-  VersionData versionData;
+  VersionData  versionData;
   ActivateData accountData;
 
   unsigned short seq_num;
 
   SDKFilter filter;
 
+  //! @todo find a position to put this private API
+  void setKey(const char *key);
   /// Serial Device Initialization
   void init(HardDriver *Driver, MMU *mmuPtr, CallBackHandler userRecvCallback,
             bool userCallbackThread, Version SDKVersion);
@@ -515,9 +506,9 @@ class CoreAPI {
   //! @sa Porting OSDK from 3.1 to 3.2
   void setActivation(bool isActivated);
   BroadcastData getBroadcastData() const;
-  BatteryData getBatteryCapacity() const;
-  CtrlInfoData getCtrlInfo() const;
-  FlightStatus getFlightStatus() const;
+  BatteryData   getBatteryCapacity() const;
+  CtrlInfoData  getCtrlInfo() const;
+  FlightStatus  getFlightStatus() const;
   TimeStampData getTime() const;
   BroadcastData broadcastData;
 
