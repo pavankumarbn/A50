@@ -13,17 +13,18 @@ bool Gimbal::isIdle() {
 
 bool Gimbal::hasFault() {
   //! @todo
+  return false;
 }
 
 Data::Vector3f Gimbal::getAngles() const {
   return data->getValue<Data::UID_GIMBAL_ANGLES>();
 }
 
-float32_t Gimbal::getYaw() const { return getAngles()[ANGLE_YAW]; }
+float32_t Gimbal::getYaw() const { return getAngles().z /*[ANGLE_YAW]*/; }
 
-float32_t Gimbal::getRoll() const { return getAngles()[ANGLE_ROLL]; }
+float32_t Gimbal::getRoll() const { return getAngles().x /*[ANGLE_ROLL]*/; }
 
-float32_t Gimbal::getPitch() const { return getAngles()[ANGLE_PITCH]; }
+float32_t Gimbal::getPitch() const { return getAngles().y /*[ANGLE_PITCH]*/; }
 
 bool Gimbal::isYawLimit() const {
   return data->getValue<Data::UID_GIMBAL_STATUS>().yawLimited ? true : false;

@@ -28,35 +28,35 @@ class ListMemory {
   int   alloc;
 };
 
-template <typename T>
-class List {
- public:
-  List(alloc = 0);
+// template <typename T>
+// class List {
+// public:
+//  List(alloc = 0);
 
- public:
-  inline int count() const { /*! @todo implement*/
-    return 0;
-  }
-  inline int  length() const { return count(); }
-  inline bool isEmpty() const;
-  void append(const T& t);
-  void append(const List<T>& t);
+// public:
+//  inline int count() const { /*! @todo implement*/
+//    return 0;
+//  }
+//  inline int  length() const { return count(); }
+//  inline bool isEmpty() const;
+//  void append(const T& t);
+//  void append(const List<T>& t);
 
-  const T& at(int i) const;
-  const T& operator[](int i) const;
-  T& operator[](int i);
+//  const T& at(int i) const;
+//  const T& operator[](int i) const;
+//  T& operator[](int i);
 
- private:
-};
+// private:
+//};
 
-template <typename T, int alloc>
-class StaticList : public List<T> {
- public:
-  StaticList();
+// template <typename T, int alloc>
+// class StaticList : public List<T> {
+// public:
+//  StaticList();
 
- private:
-  ListMemory memory;
-  void*      memoryPool[alloc];
-};
+// private:
+//  ListMemory memory;
+//  void*      memoryPool[alloc];
+//};
 }  // namespace DJI
 #endif  // DJI_LIST_H
